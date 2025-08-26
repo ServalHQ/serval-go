@@ -24,7 +24,8 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewAccessPolicyService] method instead.
 type AccessPolicyService struct {
-	Options []option.RequestOption
+	Options            []option.RequestOption
+	ApprovalProcedures AccessPolicyApprovalProcedureService
 }
 
 // NewAccessPolicyService generates a new service that applies the given options to
@@ -33,6 +34,7 @@ type AccessPolicyService struct {
 func NewAccessPolicyService(opts ...option.RequestOption) (r AccessPolicyService) {
 	r = AccessPolicyService{}
 	r.Options = opts
+	r.ApprovalProcedures = NewAccessPolicyApprovalProcedureService(opts...)
 	return
 }
 
