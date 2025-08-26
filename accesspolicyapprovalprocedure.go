@@ -126,11 +126,11 @@ func (r *AccessPolicyApprovalProcedureService) Delete(ctx context.Context, id st
 	return
 }
 
-type ApprovalProcedure struct {
+type WorkflowApproval struct {
 	// The ID of the workflow approval procedure.
 	ID string `json:"id"`
 	// The steps in the approval procedure.
-	Steps []ApprovalProcedureStep `json:"steps"`
+	Steps []WorkflowApprovalStep `json:"steps"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID          respjson.Field
@@ -141,12 +141,12 @@ type ApprovalProcedure struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r ApprovalProcedure) RawJSON() string { return r.JSON.raw }
-func (r *ApprovalProcedure) UnmarshalJSON(data []byte) error {
+func (r WorkflowApproval) RawJSON() string { return r.JSON.raw }
+func (r *WorkflowApproval) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type ApprovalProcedureStep struct {
+type WorkflowApprovalStep struct {
 	// The ID of the approval step.
 	ID string `json:"id"`
 	// Whether the step can be approved by the requester themselves.
@@ -173,8 +173,8 @@ type ApprovalProcedureStep struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r ApprovalProcedureStep) RawJSON() string { return r.JSON.raw }
-func (r *ApprovalProcedureStep) UnmarshalJSON(data []byte) error {
+func (r WorkflowApprovalStep) RawJSON() string { return r.JSON.raw }
+func (r *WorkflowApprovalStep) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
