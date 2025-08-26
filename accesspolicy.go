@@ -4,6 +4,8 @@ package serval
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 
@@ -47,6 +49,23 @@ func (r *AccessPolicyService) New(ctx context.Context, body AccessPolicyNewParam
 	return
 }
 
+// Get a specific access policy by ID.
+func (r *AccessPolicyService) Get(ctx context.Context, id string, query AccessPolicyGetParams, opts ...option.RequestOption) (res *AccessPolicy, err error) {
+	var env AccessPolicyGetResponseEnvelope
+	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	path := fmt.Sprintf("v2/access-policies/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
+	if err != nil {
+		return
+	}
+	res = &env.Data
+	return
+}
+
 // List all access policies for a team.
 func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListParams, opts ...option.RequestOption) (res *[]AccessPolicy, err error) {
 	var env AccessPolicyListResponseEnvelope
@@ -57,6 +76,18 @@ func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListPa
 		return
 	}
 	res = &env.Data
+	return
+}
+
+// Delete an access policy.
+func (r *AccessPolicyService) Delete(ctx context.Context, id string, body AccessPolicyDeleteParams, opts ...option.RequestOption) (res *AccessPolicyDeleteResponse, err error) {
+	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	path := fmt.Sprintf("v2/access-policies/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, body, &res, opts...)
 	return
 }
 
@@ -91,6 +122,8 @@ func (r AccessPolicy) RawJSON() string { return r.JSON.raw }
 func (r *AccessPolicy) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+type AccessPolicyDeleteResponse = any
 
 type AccessPolicyNewParams struct {
 	// The maximum number of minutes that access can be granted for (optional).
@@ -131,6 +164,37 @@ func (r *AccessPolicyNewResponseEnvelope) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type AccessPolicyGetParams struct {
+	// The ID of the access policy.
+	AccessPolicyID param.Opt[string] `query:"accessPolicyId,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [AccessPolicyGetParams]'s query parameters as `url.Values`.
+func (r AccessPolicyGetParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type AccessPolicyGetResponseEnvelope struct {
+	// The access policy.
+	Data AccessPolicy `json:"data"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data        respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyGetResponseEnvelope) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyGetResponseEnvelope) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type AccessPolicyListParams struct {
 	// The ID of the team.
 	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
@@ -160,4 +224,19 @@ type AccessPolicyListResponseEnvelope struct {
 func (r AccessPolicyListResponseEnvelope) RawJSON() string { return r.JSON.raw }
 func (r *AccessPolicyListResponseEnvelope) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+type AccessPolicyDeleteParams struct {
+	// The ID of the access policy.
+	AccessPolicyID param.Opt[string] `query:"accessPolicyId,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [AccessPolicyDeleteParams]'s query parameters as
+// `url.Values`.
+func (r AccessPolicyDeleteParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
