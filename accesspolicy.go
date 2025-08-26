@@ -4,8 +4,6 @@ package serval
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -49,23 +47,6 @@ func (r *AccessPolicyService) New(ctx context.Context, body AccessPolicyNewParam
 	return
 }
 
-// Get a specific access policy by ID.
-func (r *AccessPolicyService) Get(ctx context.Context, accessPolicyID string, opts ...option.RequestOption) (res *AccessPolicy, err error) {
-	var env AccessPolicyGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
-	if accessPolicyID == "" {
-		err = errors.New("missing required access_policy_id parameter")
-		return
-	}
-	path := fmt.Sprintf("v2/access-policies/%s", accessPolicyID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
-	if err != nil {
-		return
-	}
-	res = &env.Data
-	return
-}
-
 // List all access policies for a team.
 func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListParams, opts ...option.RequestOption) (res *[]AccessPolicy, err error) {
 	var env AccessPolicyListResponseEnvelope
@@ -76,18 +57,6 @@ func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListPa
 		return
 	}
 	res = &env.Data
-	return
-}
-
-// Delete an access policy.
-func (r *AccessPolicyService) Delete(ctx context.Context, accessPolicyID string, opts ...option.RequestOption) (res *AccessPolicyDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
-	if accessPolicyID == "" {
-		err = errors.New("missing required access_policy_id parameter")
-		return
-	}
-	path := fmt.Sprintf("v2/access-policies/%s", accessPolicyID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return
 }
 
@@ -122,8 +91,6 @@ func (r AccessPolicy) RawJSON() string { return r.JSON.raw }
 func (r *AccessPolicy) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-type AccessPolicyDeleteResponse = any
 
 type AccessPolicyNewParams struct {
 	// The maximum number of minutes that access can be granted for (optional).
@@ -161,23 +128,6 @@ type AccessPolicyNewResponseEnvelope struct {
 // Returns the unmodified JSON received from the API
 func (r AccessPolicyNewResponseEnvelope) RawJSON() string { return r.JSON.raw }
 func (r *AccessPolicyNewResponseEnvelope) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AccessPolicyGetResponseEnvelope struct {
-	// The access policy.
-	Data AccessPolicy `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AccessPolicyGetResponseEnvelope) RawJSON() string { return r.JSON.raw }
-func (r *AccessPolicyGetResponseEnvelope) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
