@@ -119,8 +119,6 @@ type AccessPolicy struct {
 	Name string `json:"name"`
 	// Whether a business justification is required when requesting access.
 	RequireBusinessJustification bool `json:"requireBusinessJustification"`
-	// The ID of the team that the access policy belongs to.
-	TeamID string `json:"teamId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                           respjson.Field
@@ -128,7 +126,6 @@ type AccessPolicy struct {
 		MaxAccessMinutes             respjson.Field
 		Name                         respjson.Field
 		RequireBusinessJustification respjson.Field
-		TeamID                       respjson.Field
 		ExtraFields                  map[string]respjson.Field
 		raw                          string
 	} `json:"-"`
