@@ -48,7 +48,7 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Printf("%+v\n", accessPolicy.Data)
+	fmt.Printf("%+v\n", accessPolicy.ID)
 }
 
 ```

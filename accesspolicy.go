@@ -37,42 +37,45 @@ func NewAccessPolicyService(opts ...option.RequestOption) (r AccessPolicyService
 }
 
 // Create a new access policy for a team.
-func (r *AccessPolicyService) New(ctx context.Context, body AccessPolicyNewParams, opts ...option.RequestOption) (res *AccessPolicyNewResponse, err error) {
+func (r *AccessPolicyService) New(ctx context.Context, body AccessPolicyNewParams, opts ...option.RequestOption) (res *AccessPolicy, err error) {
+	var env AccessPolicyNewResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	path := "v2/access-policies"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
+	if err != nil {
+		return
+	}
+	res = &env.Data
 	return
 }
 
 // Get a specific access policy by ID.
-func (r *AccessPolicyService) Get(ctx context.Context, accessPolicyID string, opts ...option.RequestOption) (res *AccessPolicyGetResponse, err error) {
+func (r *AccessPolicyService) Get(ctx context.Context, accessPolicyID string, opts ...option.RequestOption) (res *AccessPolicy, err error) {
+	var env AccessPolicyGetResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if accessPolicyID == "" {
 		err = errors.New("missing required access_policy_id parameter")
 		return
 	}
 	path := fmt.Sprintf("v2/access-policies/%s", accessPolicyID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
-}
-
-// Update an existing access policy.
-func (r *AccessPolicyService) Update(ctx context.Context, accessPolicyID string, body AccessPolicyUpdateParams, opts ...option.RequestOption) (res *AccessPolicyUpdateResponse, err error) {
-	opts = append(r.Options[:], opts...)
-	if accessPolicyID == "" {
-		err = errors.New("missing required access_policy_id parameter")
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
+	if err != nil {
 		return
 	}
-	path := fmt.Sprintf("v2/access-policies/%s", accessPolicyID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+	res = &env.Data
 	return
 }
 
 // List all access policies for a team.
-func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListParams, opts ...option.RequestOption) (res *AccessPolicyListResponse, err error) {
+func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListParams, opts ...option.RequestOption) (res *[]AccessPolicy, err error) {
+	var env AccessPolicyListResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	path := "v2/access-policies"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
+	if err != nil {
+		return
+	}
+	res = &env.Data
 	return
 }
 
@@ -120,74 +123,6 @@ func (r *AccessPolicy) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type AccessPolicyNewResponse struct {
-	// The created access policy.
-	Data AccessPolicy `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AccessPolicyNewResponse) RawJSON() string { return r.JSON.raw }
-func (r *AccessPolicyNewResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AccessPolicyGetResponse struct {
-	// The access policy.
-	Data AccessPolicy `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AccessPolicyGetResponse) RawJSON() string { return r.JSON.raw }
-func (r *AccessPolicyGetResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AccessPolicyUpdateResponse struct {
-	// The updated access policy.
-	Data AccessPolicy `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AccessPolicyUpdateResponse) RawJSON() string { return r.JSON.raw }
-func (r *AccessPolicyUpdateResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AccessPolicyListResponse struct {
-	// The list of access policies.
-	Data []AccessPolicy `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AccessPolicyListResponse) RawJSON() string { return r.JSON.raw }
-func (r *AccessPolicyListResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 type AccessPolicyDeleteResponse = any
 
 type AccessPolicyNewParams struct {
@@ -212,23 +147,37 @@ func (r *AccessPolicyNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type AccessPolicyUpdateParams struct {
-	// A description of the access policy.
-	Description param.Opt[string] `json:"description,omitzero"`
-	// The maximum number of minutes that access can be granted for.
-	MaxAccessMinutes param.Opt[int64] `json:"maxAccessMinutes,omitzero"`
-	// The name of the access policy.
-	Name param.Opt[string] `json:"name,omitzero"`
-	// Whether a business justification is required when requesting access.
-	RequireBusinessJustification param.Opt[bool] `json:"requireBusinessJustification,omitzero"`
-	paramObj
+type AccessPolicyNewResponseEnvelope struct {
+	// The created access policy.
+	Data AccessPolicy `json:"data"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data        respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
 }
 
-func (r AccessPolicyUpdateParams) MarshalJSON() (data []byte, err error) {
-	type shadow AccessPolicyUpdateParams
-	return param.MarshalObject(r, (*shadow)(&r))
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyNewResponseEnvelope) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyNewResponseEnvelope) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
 }
-func (r *AccessPolicyUpdateParams) UnmarshalJSON(data []byte) error {
+
+type AccessPolicyGetResponseEnvelope struct {
+	// The access policy.
+	Data AccessPolicy `json:"data"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data        respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyGetResponseEnvelope) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyGetResponseEnvelope) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -244,4 +193,21 @@ func (r AccessPolicyListParams) URLQuery() (v url.Values, err error) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
+}
+
+type AccessPolicyListResponseEnvelope struct {
+	// The list of access policies.
+	Data []AccessPolicy `json:"data"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data        respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyListResponseEnvelope) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyListResponseEnvelope) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
 }
