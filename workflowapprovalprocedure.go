@@ -35,7 +35,7 @@ func NewWorkflowApprovalProcedureService(opts ...option.RequestOption) (r Workfl
 }
 
 // Create a new approval procedure for a workflow.
-func (r *WorkflowApprovalProcedureService) New(ctx context.Context, workflowID string, body WorkflowApprovalProcedureNewParams, opts ...option.RequestOption) (res *WorkflowApprovalProcedureNewResponse, err error) {
+func (r *WorkflowApprovalProcedureService) New(ctx context.Context, workflowID string, body WorkflowApprovalProcedureNewParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
 	var env WorkflowApprovalProcedureNewResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if workflowID == "" {
@@ -52,7 +52,7 @@ func (r *WorkflowApprovalProcedureService) New(ctx context.Context, workflowID s
 }
 
 // Get a specific approval procedure by ID for a workflow.
-func (r *WorkflowApprovalProcedureService) Get(ctx context.Context, id string, query WorkflowApprovalProcedureGetParams, opts ...option.RequestOption) (res *WorkflowApprovalProcedureGetResponse, err error) {
+func (r *WorkflowApprovalProcedureService) Get(ctx context.Context, id string, query WorkflowApprovalProcedureGetParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
 	var env WorkflowApprovalProcedureGetResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if query.WorkflowID == "" {
@@ -73,7 +73,7 @@ func (r *WorkflowApprovalProcedureService) Get(ctx context.Context, id string, q
 }
 
 // Update an existing approval procedure for a workflow.
-func (r *WorkflowApprovalProcedureService) Update(ctx context.Context, id string, params WorkflowApprovalProcedureUpdateParams, opts ...option.RequestOption) (res *WorkflowApprovalProcedureUpdateResponse, err error) {
+func (r *WorkflowApprovalProcedureService) Update(ctx context.Context, id string, params WorkflowApprovalProcedureUpdateParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
 	var env WorkflowApprovalProcedureUpdateResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if params.WorkflowID == "" {
@@ -94,7 +94,7 @@ func (r *WorkflowApprovalProcedureService) Update(ctx context.Context, id string
 }
 
 // List all approval procedures for a workflow.
-func (r *WorkflowApprovalProcedureService) List(ctx context.Context, workflowID string, opts ...option.RequestOption) (res *[]WorkflowApprovalProcedureListResponse, err error) {
+func (r *WorkflowApprovalProcedureService) List(ctx context.Context, workflowID string, opts ...option.RequestOption) (res *[]ApprovalProcedure, err error) {
 	var env WorkflowApprovalProcedureListResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if workflowID == "" {
@@ -178,217 +178,6 @@ func (r *ApprovalProcedureStep) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The created approval procedure.
-type WorkflowApprovalProcedureNewResponse struct {
-	// The ID of the workflow approval procedure.
-	ID string `json:"id"`
-	// The steps in the approval procedure.
-	Steps []WorkflowApprovalProcedureNewResponseStep `json:"steps"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Steps       respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r WorkflowApprovalProcedureNewResponse) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowApprovalProcedureNewResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type WorkflowApprovalProcedureNewResponseStep struct {
-	// The ID of the approval step.
-	ID string `json:"id"`
-	// Whether the step can be approved by the requester themselves.
-	AllowSelfApproval bool `json:"allowSelfApproval"`
-	// The IDs of the Serval groups that can approve the step.
-	ServalGroupIDs []string `json:"servalGroupIds"`
-	// The IDs of the specific users that can approve the step.
-	SpecificUserIDs []string `json:"specificUserIds"`
-	// The type of approval step.
-	//
-	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
-	// "SERVAL_GROUPS".
-	StepType string `json:"stepType"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                respjson.Field
-		AllowSelfApproval respjson.Field
-		ServalGroupIDs    respjson.Field
-		SpecificUserIDs   respjson.Field
-		StepType          respjson.Field
-		ExtraFields       map[string]respjson.Field
-		raw               string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r WorkflowApprovalProcedureNewResponseStep) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowApprovalProcedureNewResponseStep) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The approval procedure.
-type WorkflowApprovalProcedureGetResponse struct {
-	// The ID of the workflow approval procedure.
-	ID string `json:"id"`
-	// The steps in the approval procedure.
-	Steps []WorkflowApprovalProcedureGetResponseStep `json:"steps"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Steps       respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r WorkflowApprovalProcedureGetResponse) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowApprovalProcedureGetResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type WorkflowApprovalProcedureGetResponseStep struct {
-	// The ID of the approval step.
-	ID string `json:"id"`
-	// Whether the step can be approved by the requester themselves.
-	AllowSelfApproval bool `json:"allowSelfApproval"`
-	// The IDs of the Serval groups that can approve the step.
-	ServalGroupIDs []string `json:"servalGroupIds"`
-	// The IDs of the specific users that can approve the step.
-	SpecificUserIDs []string `json:"specificUserIds"`
-	// The type of approval step.
-	//
-	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
-	// "SERVAL_GROUPS".
-	StepType string `json:"stepType"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                respjson.Field
-		AllowSelfApproval respjson.Field
-		ServalGroupIDs    respjson.Field
-		SpecificUserIDs   respjson.Field
-		StepType          respjson.Field
-		ExtraFields       map[string]respjson.Field
-		raw               string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r WorkflowApprovalProcedureGetResponseStep) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowApprovalProcedureGetResponseStep) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The updated approval procedure.
-type WorkflowApprovalProcedureUpdateResponse struct {
-	// The ID of the workflow approval procedure.
-	ID string `json:"id"`
-	// The steps in the approval procedure.
-	Steps []WorkflowApprovalProcedureUpdateResponseStep `json:"steps"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Steps       respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r WorkflowApprovalProcedureUpdateResponse) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowApprovalProcedureUpdateResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type WorkflowApprovalProcedureUpdateResponseStep struct {
-	// The ID of the approval step.
-	ID string `json:"id"`
-	// Whether the step can be approved by the requester themselves.
-	AllowSelfApproval bool `json:"allowSelfApproval"`
-	// The IDs of the Serval groups that can approve the step.
-	ServalGroupIDs []string `json:"servalGroupIds"`
-	// The IDs of the specific users that can approve the step.
-	SpecificUserIDs []string `json:"specificUserIds"`
-	// The type of approval step.
-	//
-	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
-	// "SERVAL_GROUPS".
-	StepType string `json:"stepType"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                respjson.Field
-		AllowSelfApproval respjson.Field
-		ServalGroupIDs    respjson.Field
-		SpecificUserIDs   respjson.Field
-		StepType          respjson.Field
-		ExtraFields       map[string]respjson.Field
-		raw               string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r WorkflowApprovalProcedureUpdateResponseStep) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowApprovalProcedureUpdateResponseStep) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type WorkflowApprovalProcedureListResponse struct {
-	// The ID of the workflow approval procedure.
-	ID string `json:"id"`
-	// The steps in the approval procedure.
-	Steps []WorkflowApprovalProcedureListResponseStep `json:"steps"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Steps       respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r WorkflowApprovalProcedureListResponse) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowApprovalProcedureListResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type WorkflowApprovalProcedureListResponseStep struct {
-	// The ID of the approval step.
-	ID string `json:"id"`
-	// Whether the step can be approved by the requester themselves.
-	AllowSelfApproval bool `json:"allowSelfApproval"`
-	// The IDs of the Serval groups that can approve the step.
-	ServalGroupIDs []string `json:"servalGroupIds"`
-	// The IDs of the specific users that can approve the step.
-	SpecificUserIDs []string `json:"specificUserIds"`
-	// The type of approval step.
-	//
-	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
-	// "SERVAL_GROUPS".
-	StepType string `json:"stepType"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                respjson.Field
-		AllowSelfApproval respjson.Field
-		ServalGroupIDs    respjson.Field
-		SpecificUserIDs   respjson.Field
-		StepType          respjson.Field
-		ExtraFields       map[string]respjson.Field
-		raw               string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r WorkflowApprovalProcedureListResponseStep) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowApprovalProcedureListResponseStep) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 type WorkflowApprovalProcedureDeleteResponse = any
 
 type WorkflowApprovalProcedureNewParams struct {
@@ -438,7 +227,7 @@ func init() {
 
 type WorkflowApprovalProcedureNewResponseEnvelope struct {
 	// The created approval procedure.
-	Data WorkflowApprovalProcedureNewResponse `json:"data"`
+	Data ApprovalProcedure `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -461,7 +250,7 @@ type WorkflowApprovalProcedureGetParams struct {
 
 type WorkflowApprovalProcedureGetResponseEnvelope struct {
 	// The approval procedure.
-	Data WorkflowApprovalProcedureGetResponse `json:"data"`
+	Data ApprovalProcedure `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -525,7 +314,7 @@ func init() {
 
 type WorkflowApprovalProcedureUpdateResponseEnvelope struct {
 	// The updated approval procedure.
-	Data WorkflowApprovalProcedureUpdateResponse `json:"data"`
+	Data ApprovalProcedure `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -542,7 +331,7 @@ func (r *WorkflowApprovalProcedureUpdateResponseEnvelope) UnmarshalJSON(data []b
 
 type WorkflowApprovalProcedureListResponseEnvelope struct {
 	// The list of approval procedures.
-	Data []WorkflowApprovalProcedureListResponse `json:"data"`
+	Data []ApprovalProcedure `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
