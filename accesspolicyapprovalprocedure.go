@@ -35,7 +35,7 @@ func NewAccessPolicyApprovalProcedureService(opts ...option.RequestOption) (r Ac
 }
 
 // Create a new approval procedure for an access policy.
-func (r *AccessPolicyApprovalProcedureService) New(ctx context.Context, accessPolicyID string, body AccessPolicyApprovalProcedureNewParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
+func (r *AccessPolicyApprovalProcedureService) New(ctx context.Context, accessPolicyID string, body AccessPolicyApprovalProcedureNewParams, opts ...option.RequestOption) (res *AccessPolicyApprovalProcedureNewResponse, err error) {
 	var env AccessPolicyApprovalProcedureNewResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if accessPolicyID == "" {
@@ -52,7 +52,7 @@ func (r *AccessPolicyApprovalProcedureService) New(ctx context.Context, accessPo
 }
 
 // Get a specific approval procedure by ID for an access policy.
-func (r *AccessPolicyApprovalProcedureService) Get(ctx context.Context, id string, query AccessPolicyApprovalProcedureGetParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
+func (r *AccessPolicyApprovalProcedureService) Get(ctx context.Context, id string, query AccessPolicyApprovalProcedureGetParams, opts ...option.RequestOption) (res *AccessPolicyApprovalProcedureGetResponse, err error) {
 	var env AccessPolicyApprovalProcedureGetResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if query.AccessPolicyID == "" {
@@ -73,7 +73,7 @@ func (r *AccessPolicyApprovalProcedureService) Get(ctx context.Context, id strin
 }
 
 // Update an existing approval procedure for an access policy.
-func (r *AccessPolicyApprovalProcedureService) Update(ctx context.Context, id string, params AccessPolicyApprovalProcedureUpdateParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
+func (r *AccessPolicyApprovalProcedureService) Update(ctx context.Context, id string, params AccessPolicyApprovalProcedureUpdateParams, opts ...option.RequestOption) (res *AccessPolicyApprovalProcedureUpdateResponse, err error) {
 	var env AccessPolicyApprovalProcedureUpdateResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if params.AccessPolicyID == "" {
@@ -94,7 +94,7 @@ func (r *AccessPolicyApprovalProcedureService) Update(ctx context.Context, id st
 }
 
 // List all approval procedures for an access policy.
-func (r *AccessPolicyApprovalProcedureService) List(ctx context.Context, accessPolicyID string, opts ...option.RequestOption) (res *[]ApprovalProcedure, err error) {
+func (r *AccessPolicyApprovalProcedureService) List(ctx context.Context, accessPolicyID string, opts ...option.RequestOption) (res *[]AccessPolicyApprovalProcedureListResponse, err error) {
 	var env AccessPolicyApprovalProcedureListResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if accessPolicyID == "" {
@@ -124,6 +124,217 @@ func (r *AccessPolicyApprovalProcedureService) Delete(ctx context.Context, id st
 	path := fmt.Sprintf("v2/access-policies/%s/approval-procedures/%s", body.AccessPolicyID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return
+}
+
+// The created approval procedure.
+type AccessPolicyApprovalProcedureNewResponse struct {
+	// The ID of the access policy approval procedure.
+	ID string `json:"id"`
+	// The steps in the approval procedure.
+	Steps []AccessPolicyApprovalProcedureNewResponseStep `json:"steps"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID          respjson.Field
+		Steps       respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyApprovalProcedureNewResponse) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyApprovalProcedureNewResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AccessPolicyApprovalProcedureNewResponseStep struct {
+	// The ID of the approval step.
+	ID string `json:"id"`
+	// Whether the step can be approved by the requester themselves.
+	AllowSelfApproval bool `json:"allowSelfApproval"`
+	// The IDs of the Serval groups that can approve the step.
+	ServalGroupIDs []string `json:"servalGroupIds"`
+	// The IDs of the specific users that can approve the step.
+	SpecificUserIDs []string `json:"specificUserIds"`
+	// The type of approval step.
+	//
+	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
+	// "SERVAL_GROUPS".
+	StepType string `json:"stepType"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID                respjson.Field
+		AllowSelfApproval respjson.Field
+		ServalGroupIDs    respjson.Field
+		SpecificUserIDs   respjson.Field
+		StepType          respjson.Field
+		ExtraFields       map[string]respjson.Field
+		raw               string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyApprovalProcedureNewResponseStep) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyApprovalProcedureNewResponseStep) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The approval procedure.
+type AccessPolicyApprovalProcedureGetResponse struct {
+	// The ID of the access policy approval procedure.
+	ID string `json:"id"`
+	// The steps in the approval procedure.
+	Steps []AccessPolicyApprovalProcedureGetResponseStep `json:"steps"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID          respjson.Field
+		Steps       respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyApprovalProcedureGetResponse) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyApprovalProcedureGetResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AccessPolicyApprovalProcedureGetResponseStep struct {
+	// The ID of the approval step.
+	ID string `json:"id"`
+	// Whether the step can be approved by the requester themselves.
+	AllowSelfApproval bool `json:"allowSelfApproval"`
+	// The IDs of the Serval groups that can approve the step.
+	ServalGroupIDs []string `json:"servalGroupIds"`
+	// The IDs of the specific users that can approve the step.
+	SpecificUserIDs []string `json:"specificUserIds"`
+	// The type of approval step.
+	//
+	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
+	// "SERVAL_GROUPS".
+	StepType string `json:"stepType"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID                respjson.Field
+		AllowSelfApproval respjson.Field
+		ServalGroupIDs    respjson.Field
+		SpecificUserIDs   respjson.Field
+		StepType          respjson.Field
+		ExtraFields       map[string]respjson.Field
+		raw               string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyApprovalProcedureGetResponseStep) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyApprovalProcedureGetResponseStep) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The updated approval procedure.
+type AccessPolicyApprovalProcedureUpdateResponse struct {
+	// The ID of the access policy approval procedure.
+	ID string `json:"id"`
+	// The steps in the approval procedure.
+	Steps []AccessPolicyApprovalProcedureUpdateResponseStep `json:"steps"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID          respjson.Field
+		Steps       respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyApprovalProcedureUpdateResponse) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyApprovalProcedureUpdateResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AccessPolicyApprovalProcedureUpdateResponseStep struct {
+	// The ID of the approval step.
+	ID string `json:"id"`
+	// Whether the step can be approved by the requester themselves.
+	AllowSelfApproval bool `json:"allowSelfApproval"`
+	// The IDs of the Serval groups that can approve the step.
+	ServalGroupIDs []string `json:"servalGroupIds"`
+	// The IDs of the specific users that can approve the step.
+	SpecificUserIDs []string `json:"specificUserIds"`
+	// The type of approval step.
+	//
+	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
+	// "SERVAL_GROUPS".
+	StepType string `json:"stepType"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID                respjson.Field
+		AllowSelfApproval respjson.Field
+		ServalGroupIDs    respjson.Field
+		SpecificUserIDs   respjson.Field
+		StepType          respjson.Field
+		ExtraFields       map[string]respjson.Field
+		raw               string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyApprovalProcedureUpdateResponseStep) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyApprovalProcedureUpdateResponseStep) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AccessPolicyApprovalProcedureListResponse struct {
+	// The ID of the access policy approval procedure.
+	ID string `json:"id"`
+	// The steps in the approval procedure.
+	Steps []AccessPolicyApprovalProcedureListResponseStep `json:"steps"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID          respjson.Field
+		Steps       respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyApprovalProcedureListResponse) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyApprovalProcedureListResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AccessPolicyApprovalProcedureListResponseStep struct {
+	// The ID of the approval step.
+	ID string `json:"id"`
+	// Whether the step can be approved by the requester themselves.
+	AllowSelfApproval bool `json:"allowSelfApproval"`
+	// The IDs of the Serval groups that can approve the step.
+	ServalGroupIDs []string `json:"servalGroupIds"`
+	// The IDs of the specific users that can approve the step.
+	SpecificUserIDs []string `json:"specificUserIds"`
+	// The type of approval step.
+	//
+	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
+	// "SERVAL_GROUPS".
+	StepType string `json:"stepType"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID                respjson.Field
+		AllowSelfApproval respjson.Field
+		ServalGroupIDs    respjson.Field
+		SpecificUserIDs   respjson.Field
+		StepType          respjson.Field
+		ExtraFields       map[string]respjson.Field
+		raw               string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyApprovalProcedureListResponseStep) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyApprovalProcedureListResponseStep) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type AccessPolicyApprovalProcedureDeleteResponse = any
@@ -175,7 +386,7 @@ func init() {
 
 type AccessPolicyApprovalProcedureNewResponseEnvelope struct {
 	// The created approval procedure.
-	Data ApprovalProcedure `json:"data"`
+	Data AccessPolicyApprovalProcedureNewResponse `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -198,7 +409,7 @@ type AccessPolicyApprovalProcedureGetParams struct {
 
 type AccessPolicyApprovalProcedureGetResponseEnvelope struct {
 	// The approval procedure.
-	Data ApprovalProcedure `json:"data"`
+	Data AccessPolicyApprovalProcedureGetResponse `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -262,7 +473,7 @@ func init() {
 
 type AccessPolicyApprovalProcedureUpdateResponseEnvelope struct {
 	// The updated approval procedure.
-	Data ApprovalProcedure `json:"data"`
+	Data AccessPolicyApprovalProcedureUpdateResponse `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -279,7 +490,7 @@ func (r *AccessPolicyApprovalProcedureUpdateResponseEnvelope) UnmarshalJSON(data
 
 type AccessPolicyApprovalProcedureListResponseEnvelope struct {
 	// The list of approval procedures.
-	Data []ApprovalProcedure `json:"data"`
+	Data []AccessPolicyApprovalProcedureListResponse `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
