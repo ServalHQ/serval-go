@@ -17,7 +17,6 @@ Methods:
 
 Response Types:
 
-- <a href="https://pkg.go.dev/github.com/stainless-sdks/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/serval-go#ApprovalProcedure">ApprovalProcedure</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/serval-go#AccessPolicyApprovalProcedureDeleteResponse">AccessPolicyApprovalProcedureDeleteResponse</a>
 
 Methods:
@@ -47,6 +46,7 @@ Methods:
 
 Response Types:
 
+- <a href="https://pkg.go.dev/github.com/stainless-sdks/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/serval-go#ApprovalProcedure">ApprovalProcedure</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/serval-go#WorkflowApprovalProcedureDeleteResponse">WorkflowApprovalProcedureDeleteResponse</a>
 
 Methods:
