@@ -17,6 +17,10 @@ import (
 type Client struct {
 	Options        []option.RequestOption
 	AccessPolicies AccessPolicyService
+	Workflows      WorkflowService
+	Guidances      GuidanceService
+	Resources      ResourceService
+	Entitlements   EntitlementService
 }
 
 // DefaultClientOptions read from the environment (SERVAL_API_KEY,
@@ -42,6 +46,10 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r = Client{Options: opts}
 
 	r.AccessPolicies = NewAccessPolicyService(opts...)
+	r.Workflows = NewWorkflowService(opts...)
+	r.Guidances = NewGuidanceService(opts...)
+	r.Resources = NewResourceService(opts...)
+	r.Entitlements = NewEntitlementService(opts...)
 
 	return
 }

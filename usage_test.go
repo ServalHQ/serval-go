@@ -24,7 +24,9 @@ func TestUsage(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	accessPolicy, err := client.AccessPolicies.Get(context.TODO(), "id")
+	accessPolicy, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
+		Name: serval.String("Example Access Policy"),
+	})
 	if err != nil {
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
