@@ -44,7 +44,7 @@ func main() {
 	client := serval.NewClient(
 		option.WithAPIKey("My API Key"), // defaults to os.LookupEnv("SERVAL_API_KEY")
 	)
-	accessPolicy, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{})
+	accessPolicy, err := client.AccessPolicies.Get(context.TODO(), "id")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -254,7 +254,7 @@ client := serval.NewClient(
 	option.WithHeader("X-Some-Header", "custom_header_info"),
 )
 
-client.AccessPolicies.New(context.TODO(), ...,
+client.AccessPolicies.Get(context.TODO(), ...,
 	// Override the header
 	option.WithHeader("X-Some-Header", "some_other_custom_header_info"),
 	// Add an undocumented field to the request body, using sjson syntax
@@ -285,14 +285,14 @@ When the API returns a non-success status code, we return an error with type
 To handle errors, we recommend that you use the `errors.As` pattern:
 
 ```go
-_, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{})
+_, err := client.AccessPolicies.Get(context.TODO(), "id")
 if err != nil {
 	var apierr *serval.Error
 	if errors.As(err, &apierr) {
 		println(string(apierr.DumpRequest(true)))  // Prints the serialized HTTP request
 		println(string(apierr.DumpResponse(true))) // Prints the serialized HTTP response
 	}
-	panic(err.Error()) // GET "/v2/access-policies": 400 Bad Request { ... }
+	panic(err.Error()) // GET "/v2/access-policies/{id}": 400 Bad Request { ... }
 }
 ```
 
@@ -310,9 +310,9 @@ To set a per-retry timeout, use `option.WithRequestTimeout()`.
 // This sets the timeout for the request, including all the retries.
 ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 defer cancel()
-client.AccessPolicies.New(
+client.AccessPolicies.Get(
 	ctx,
-	serval.AccessPolicyNewParams{},
+	"id",
 	// This sets the per-retry timeout
 	option.WithRequestTimeout(20*time.Second),
 )
@@ -346,9 +346,9 @@ client := serval.NewClient(
 )
 
 // Override per-request:
-client.AccessPolicies.New(
+client.AccessPolicies.Get(
 	context.TODO(),
-	serval.AccessPolicyNewParams{},
+	"id",
 	option.WithMaxRetries(5),
 )
 ```
@@ -361,9 +361,9 @@ you need to examine response headers, status codes, or other details.
 ```go
 // Create a variable to store the HTTP response
 var response *http.Response
-accessPolicy, err := client.AccessPolicies.New(
+accessPolicy, err := client.AccessPolicies.Get(
 	context.TODO(),
-	serval.AccessPolicyNewParams{},
+	"id",
 	option.WithResponseInto(&response),
 )
 if err != nil {
