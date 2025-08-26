@@ -4,6 +4,8 @@ package serval
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 
@@ -34,6 +36,53 @@ func NewAppResourceService(opts ...option.RequestOption) (r AppResourceService) 
 	return
 }
 
+// Create a new app resource for an app instance.
+func (r *AppResourceService) New(ctx context.Context, body AppResourceNewParams, opts ...option.RequestOption) (res *AppResource, err error) {
+	var env AppResourceNewResponseEnvelope
+	opts = append(r.Options[:], opts...)
+	path := "v2/app-resources"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
+	if err != nil {
+		return
+	}
+	res = &env.Data
+	return
+}
+
+// Get a specific app resource by ID.
+func (r *AppResourceService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *AppResource, err error) {
+	var env AppResourceGetResponseEnvelope
+	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	path := fmt.Sprintf("v2/app-resources/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
+	if err != nil {
+		return
+	}
+	res = &env.Data
+	return
+}
+
+// Update an existing app resource.
+func (r *AppResourceService) Update(ctx context.Context, id string, body AppResourceUpdateParams, opts ...option.RequestOption) (res *AppResource, err error) {
+	var env AppResourceUpdateResponseEnvelope
+	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	path := fmt.Sprintf("v2/app-resources/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, &env, opts...)
+	if err != nil {
+		return
+	}
+	res = &env.Data
+	return
+}
+
 // List all app resources for an app instance.
 func (r *AppResourceService) List(ctx context.Context, query AppResourceListParams, opts ...option.RequestOption) (res *[]AppResource, err error) {
 	var env AppResourceListResponseEnvelope
@@ -44,6 +93,18 @@ func (r *AppResourceService) List(ctx context.Context, query AppResourceListPara
 		return
 	}
 	res = &env.Data
+	return
+}
+
+// Delete an app resource.
+func (r *AppResourceService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *AppResourceDeleteResponse, err error) {
+	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	path := fmt.Sprintf("v2/app-resources/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return
 }
 
@@ -76,6 +137,101 @@ type AppResource struct {
 // Returns the unmodified JSON received from the API
 func (r AppResource) RawJSON() string { return r.JSON.raw }
 func (r *AppResource) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppResourceDeleteResponse = any
+
+type AppResourceNewParams struct {
+	// The external ID of the resource (optional).
+	ExternalID param.Opt[string] `json:"externalId,omitzero"`
+	// The ID of the app instance.
+	AppInstanceID param.Opt[string] `json:"appInstanceId,omitzero"`
+	// A description of the resource.
+	Description param.Opt[string] `json:"description,omitzero"`
+	// The name of the resource.
+	Name param.Opt[string] `json:"name,omitzero"`
+	// The type of the resource.
+	ResourceType param.Opt[string] `json:"resourceType,omitzero"`
+	paramObj
+}
+
+func (r AppResourceNewParams) MarshalJSON() (data []byte, err error) {
+	type shadow AppResourceNewParams
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *AppResourceNewParams) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppResourceNewResponseEnvelope struct {
+	// The created resource.
+	Data AppResource `json:"data"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data        respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AppResourceNewResponseEnvelope) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceNewResponseEnvelope) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppResourceGetResponseEnvelope struct {
+	// The resource.
+	Data AppResource `json:"data"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data        respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AppResourceGetResponseEnvelope) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceGetResponseEnvelope) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppResourceUpdateParams struct {
+	// The external ID of the resource (optional).
+	ExternalID param.Opt[string] `json:"externalId,omitzero"`
+	// A description of the resource.
+	Description param.Opt[string] `json:"description,omitzero"`
+	// The name of the resource.
+	Name param.Opt[string] `json:"name,omitzero"`
+	// The type of the resource.
+	ResourceType param.Opt[string] `json:"resourceType,omitzero"`
+	paramObj
+}
+
+func (r AppResourceUpdateParams) MarshalJSON() (data []byte, err error) {
+	type shadow AppResourceUpdateParams
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *AppResourceUpdateParams) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppResourceUpdateResponseEnvelope struct {
+	// The updated resource.
+	Data AppResource `json:"data"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data        respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AppResourceUpdateResponseEnvelope) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
