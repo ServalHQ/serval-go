@@ -126,6 +126,58 @@ func (r *WorkflowApprovalProcedureService) Delete(ctx context.Context, id string
 	return
 }
 
+type ApprovalProcedure struct {
+	// The ID of the access policy approval procedure.
+	ID string `json:"id"`
+	// The steps in the approval procedure.
+	Steps []ApprovalProcedureStep `json:"steps"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID          respjson.Field
+		Steps       respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r ApprovalProcedure) RawJSON() string { return r.JSON.raw }
+func (r *ApprovalProcedure) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type ApprovalProcedureStep struct {
+	// The ID of the approval step.
+	ID string `json:"id"`
+	// Whether the step can be approved by the requester themselves.
+	AllowSelfApproval bool `json:"allowSelfApproval"`
+	// The IDs of the Serval groups that can approve the step.
+	ServalGroupIDs []string `json:"servalGroupIds"`
+	// The IDs of the specific users that can approve the step.
+	SpecificUserIDs []string `json:"specificUserIds"`
+	// The type of approval step.
+	//
+	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
+	// "SERVAL_GROUPS".
+	StepType string `json:"stepType"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID                respjson.Field
+		AllowSelfApproval respjson.Field
+		ServalGroupIDs    respjson.Field
+		SpecificUserIDs   respjson.Field
+		StepType          respjson.Field
+		ExtraFields       map[string]respjson.Field
+		raw               string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r ApprovalProcedureStep) RawJSON() string { return r.JSON.raw }
+func (r *ApprovalProcedureStep) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 // The created approval procedure.
 type WorkflowApprovalProcedureNewResponse struct {
 	// The ID of the workflow approval procedure.
