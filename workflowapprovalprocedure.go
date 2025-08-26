@@ -35,7 +35,7 @@ func NewWorkflowApprovalProcedureService(opts ...option.RequestOption) (r Workfl
 }
 
 // Create a new approval procedure for a workflow.
-func (r *WorkflowApprovalProcedureService) New(ctx context.Context, workflowID string, body WorkflowApprovalProcedureNewParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
+func (r *WorkflowApprovalProcedureService) New(ctx context.Context, workflowID string, body WorkflowApprovalProcedureNewParams, opts ...option.RequestOption) (res *WorkflowApproval, err error) {
 	var env WorkflowApprovalProcedureNewResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if workflowID == "" {
@@ -52,7 +52,7 @@ func (r *WorkflowApprovalProcedureService) New(ctx context.Context, workflowID s
 }
 
 // Get a specific approval procedure by ID for a workflow.
-func (r *WorkflowApprovalProcedureService) Get(ctx context.Context, id string, query WorkflowApprovalProcedureGetParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
+func (r *WorkflowApprovalProcedureService) Get(ctx context.Context, id string, query WorkflowApprovalProcedureGetParams, opts ...option.RequestOption) (res *WorkflowApproval, err error) {
 	var env WorkflowApprovalProcedureGetResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if query.WorkflowID == "" {
@@ -73,7 +73,7 @@ func (r *WorkflowApprovalProcedureService) Get(ctx context.Context, id string, q
 }
 
 // Update an existing approval procedure for a workflow.
-func (r *WorkflowApprovalProcedureService) Update(ctx context.Context, id string, params WorkflowApprovalProcedureUpdateParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
+func (r *WorkflowApprovalProcedureService) Update(ctx context.Context, id string, params WorkflowApprovalProcedureUpdateParams, opts ...option.RequestOption) (res *WorkflowApproval, err error) {
 	var env WorkflowApprovalProcedureUpdateResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if params.WorkflowID == "" {
@@ -94,7 +94,7 @@ func (r *WorkflowApprovalProcedureService) Update(ctx context.Context, id string
 }
 
 // List all approval procedures for a workflow.
-func (r *WorkflowApprovalProcedureService) List(ctx context.Context, workflowID string, opts ...option.RequestOption) (res *[]ApprovalProcedure, err error) {
+func (r *WorkflowApprovalProcedureService) List(ctx context.Context, workflowID string, opts ...option.RequestOption) (res *[]WorkflowApproval, err error) {
 	var env WorkflowApprovalProcedureListResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if workflowID == "" {
@@ -227,7 +227,7 @@ func init() {
 
 type WorkflowApprovalProcedureNewResponseEnvelope struct {
 	// The created approval procedure.
-	Data ApprovalProcedure `json:"data"`
+	Data WorkflowApproval `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -250,7 +250,7 @@ type WorkflowApprovalProcedureGetParams struct {
 
 type WorkflowApprovalProcedureGetResponseEnvelope struct {
 	// The approval procedure.
-	Data ApprovalProcedure `json:"data"`
+	Data WorkflowApproval `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -314,7 +314,7 @@ func init() {
 
 type WorkflowApprovalProcedureUpdateResponseEnvelope struct {
 	// The updated approval procedure.
-	Data ApprovalProcedure `json:"data"`
+	Data WorkflowApproval `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -331,7 +331,7 @@ func (r *WorkflowApprovalProcedureUpdateResponseEnvelope) UnmarshalJSON(data []b
 
 type WorkflowApprovalProcedureListResponseEnvelope struct {
 	// The list of approval procedures.
-	Data []ApprovalProcedure `json:"data"`
+	Data []WorkflowApproval `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
