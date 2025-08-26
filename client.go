@@ -15,12 +15,12 @@ import (
 // interacting with the serval API. You should not instantiate this client
 // directly, and instead use the [NewClient] method instead.
 type Client struct {
-	Options        []option.RequestOption
-	AccessPolicies AccessPolicyService
-	Workflows      WorkflowService
-	Guidances      GuidanceService
-	AppResources   AppResourceService
-	Entitlements   EntitlementService
+	Options                 []option.RequestOption
+	AccessPolicies          AccessPolicyService
+	Workflows               WorkflowService
+	Guidances               GuidanceService
+	AppResources            AppResourceService
+	AppResourceEntitlements AppResourceEntitlementService
 }
 
 // DefaultClientOptions read from the environment (SERVAL_API_KEY,
@@ -49,7 +49,7 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r.Workflows = NewWorkflowService(opts...)
 	r.Guidances = NewGuidanceService(opts...)
 	r.AppResources = NewAppResourceService(opts...)
-	r.Entitlements = NewEntitlementService(opts...)
+	r.AppResourceEntitlements = NewAppResourceEntitlementService(opts...)
 
 	return
 }
