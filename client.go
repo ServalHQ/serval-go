@@ -21,6 +21,9 @@ type Client struct {
 	Guidances               GuidanceService
 	AppResources            AppResourceService
 	AppResourceEntitlements AppResourceEntitlementService
+	Users                   UserService
+	Groups                  GroupService
+	Teams                   TeamService
 }
 
 // DefaultClientOptions read from the environment (SERVAL_API_KEY,
@@ -50,6 +53,9 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r.Guidances = NewGuidanceService(opts...)
 	r.AppResources = NewAppResourceService(opts...)
 	r.AppResourceEntitlements = NewAppResourceEntitlementService(opts...)
+	r.Users = NewUserService(opts...)
+	r.Groups = NewGroupService(opts...)
+	r.Teams = NewTeamService(opts...)
 
 	return
 }
