@@ -35,7 +35,7 @@ func NewAccessPolicyApprovalProcedureService(opts ...option.RequestOption) (r Ac
 }
 
 // Create a new approval procedure for an access policy.
-func (r *AccessPolicyApprovalProcedureService) New(ctx context.Context, accessPolicyID string, body AccessPolicyApprovalProcedureNewParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
+func (r *AccessPolicyApprovalProcedureService) New(ctx context.Context, accessPolicyID string, body AccessPolicyApprovalProcedureNewParams, opts ...option.RequestOption) (res *AccessPolicyApprovalProcedure, err error) {
 	var env AccessPolicyApprovalProcedureNewResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if accessPolicyID == "" {
@@ -52,7 +52,7 @@ func (r *AccessPolicyApprovalProcedureService) New(ctx context.Context, accessPo
 }
 
 // Get a specific approval procedure by ID for an access policy.
-func (r *AccessPolicyApprovalProcedureService) Get(ctx context.Context, id string, query AccessPolicyApprovalProcedureGetParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
+func (r *AccessPolicyApprovalProcedureService) Get(ctx context.Context, id string, query AccessPolicyApprovalProcedureGetParams, opts ...option.RequestOption) (res *AccessPolicyApprovalProcedure, err error) {
 	var env AccessPolicyApprovalProcedureGetResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if query.AccessPolicyID == "" {
@@ -73,7 +73,7 @@ func (r *AccessPolicyApprovalProcedureService) Get(ctx context.Context, id strin
 }
 
 // Update an existing approval procedure for an access policy.
-func (r *AccessPolicyApprovalProcedureService) Update(ctx context.Context, id string, params AccessPolicyApprovalProcedureUpdateParams, opts ...option.RequestOption) (res *ApprovalProcedure, err error) {
+func (r *AccessPolicyApprovalProcedureService) Update(ctx context.Context, id string, params AccessPolicyApprovalProcedureUpdateParams, opts ...option.RequestOption) (res *AccessPolicyApprovalProcedure, err error) {
 	var env AccessPolicyApprovalProcedureUpdateResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if params.AccessPolicyID == "" {
@@ -94,7 +94,7 @@ func (r *AccessPolicyApprovalProcedureService) Update(ctx context.Context, id st
 }
 
 // List all approval procedures for an access policy.
-func (r *AccessPolicyApprovalProcedureService) List(ctx context.Context, accessPolicyID string, opts ...option.RequestOption) (res *[]ApprovalProcedure, err error) {
+func (r *AccessPolicyApprovalProcedureService) List(ctx context.Context, accessPolicyID string, opts ...option.RequestOption) (res *[]AccessPolicyApprovalProcedure, err error) {
 	var env AccessPolicyApprovalProcedureListResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if accessPolicyID == "" {
@@ -126,11 +126,11 @@ func (r *AccessPolicyApprovalProcedureService) Delete(ctx context.Context, id st
 	return
 }
 
-type WorkflowApproval struct {
-	// The ID of the workflow approval procedure.
+type AccessPolicyApprovalProcedure struct {
+	// The ID of the access policy approval procedure.
 	ID string `json:"id"`
 	// The steps in the approval procedure.
-	Steps []WorkflowApprovalStep `json:"steps"`
+	Steps []AccessPolicyApprovalProcedureStep `json:"steps"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID          respjson.Field
@@ -141,12 +141,12 @@ type WorkflowApproval struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r WorkflowApproval) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowApproval) UnmarshalJSON(data []byte) error {
+func (r AccessPolicyApprovalProcedure) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyApprovalProcedure) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type WorkflowApprovalStep struct {
+type AccessPolicyApprovalProcedureStep struct {
 	// The ID of the approval step.
 	ID string `json:"id"`
 	// Whether the step can be approved by the requester themselves.
@@ -173,8 +173,8 @@ type WorkflowApprovalStep struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r WorkflowApprovalStep) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowApprovalStep) UnmarshalJSON(data []byte) error {
+func (r AccessPolicyApprovalProcedureStep) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyApprovalProcedureStep) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -227,7 +227,7 @@ func init() {
 
 type AccessPolicyApprovalProcedureNewResponseEnvelope struct {
 	// The created approval procedure.
-	Data ApprovalProcedure `json:"data"`
+	Data AccessPolicyApprovalProcedure `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -250,7 +250,7 @@ type AccessPolicyApprovalProcedureGetParams struct {
 
 type AccessPolicyApprovalProcedureGetResponseEnvelope struct {
 	// The approval procedure.
-	Data ApprovalProcedure `json:"data"`
+	Data AccessPolicyApprovalProcedure `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -314,7 +314,7 @@ func init() {
 
 type AccessPolicyApprovalProcedureUpdateResponseEnvelope struct {
 	// The updated approval procedure.
-	Data ApprovalProcedure `json:"data"`
+	Data AccessPolicyApprovalProcedure `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -331,7 +331,7 @@ func (r *AccessPolicyApprovalProcedureUpdateResponseEnvelope) UnmarshalJSON(data
 
 type AccessPolicyApprovalProcedureListResponseEnvelope struct {
 	// The list of approval procedures.
-	Data []ApprovalProcedure `json:"data"`
+	Data []AccessPolicyApprovalProcedure `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
