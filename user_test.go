@@ -31,7 +31,6 @@ func TestUserNewWithOptionalParams(t *testing.T) {
 		FirstName: serval.String("firstName"),
 		LastName:  serval.String("lastName"),
 		Role:      serval.UserNewParamsRoleUserRoleUnspecified,
-		TeamIDs:   []string{"string"},
 	})
 	if err != nil {
 		var apierr *serval.Error

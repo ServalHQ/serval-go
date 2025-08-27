@@ -346,8 +346,7 @@ type UserNewParams struct {
 	FirstName param.Opt[string] `json:"firstName,omitzero"`
 	LastName  param.Opt[string] `json:"lastName,omitzero"`
 	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN".
-	Role    UserNewParamsRole `json:"role,omitzero"`
-	TeamIDs []string          `json:"teamIds,omitzero"`
+	Role UserNewParamsRole `json:"role,omitzero"`
 	paramObj
 }
 
