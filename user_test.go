@@ -30,7 +30,7 @@ func TestUserNewWithOptionalParams(t *testing.T) {
 		Email:     serval.String("email"),
 		FirstName: serval.String("firstName"),
 		LastName:  serval.String("lastName"),
-		Role:      serval.String("role"),
+		Role:      serval.UserNewParamsRoleUserRoleUnspecified,
 		TeamIDs:   []string{"string"},
 	})
 	if err != nil {
@@ -86,7 +86,7 @@ func TestUserUpdateWithOptionalParams(t *testing.T) {
 			Email:     serval.String("email"),
 			FirstName: serval.String("firstName"),
 			LastName:  serval.String("lastName"),
-			Role:      serval.String("role"),
+			Role:      serval.UserUpdateParamsRoleUserRoleUnspecified,
 		},
 	)
 	if err != nil {

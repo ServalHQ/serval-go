@@ -283,18 +283,20 @@ type Group struct {
 	// Joda Time's
 	// [`ISODateTimeFormat.dateTime()`](<http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()>)
 	// to obtain a formatter capable of generating timestamps in this format.
-	DeletedAt time.Time `json:"deletedAt,nullable" format:"date-time"`
-	Name      string    `json:"name"`
-	Users     []User    `json:"users"`
+	DeletedAt      time.Time `json:"deletedAt,nullable" format:"date-time"`
+	Name           string    `json:"name"`
+	OrganizationID string    `json:"organizationId"`
+	Users          []User    `json:"users"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		ID          respjson.Field
-		CreatedAt   respjson.Field
-		DeletedAt   respjson.Field
-		Name        respjson.Field
-		Users       respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
+		ID             respjson.Field
+		CreatedAt      respjson.Field
+		DeletedAt      respjson.Field
+		Name           respjson.Field
+		OrganizationID respjson.Field
+		Users          respjson.Field
+		ExtraFields    map[string]respjson.Field
+		raw            string
 	} `json:"-"`
 }
 
