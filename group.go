@@ -51,7 +51,7 @@ func (r *GroupService) New(ctx context.Context, body GroupNewParams, opts ...opt
 }
 
 // Get a specific group by ID.
-func (r *GroupService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *GroupGetResponse, err error) {
+func (r *GroupService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Group, err error) {
 	var env GroupGetResponseEnvelope
 	opts = append(r.Options[:], opts...)
 	if id == "" {
@@ -285,12 +285,14 @@ type Group struct {
 	// to obtain a formatter capable of generating timestamps in this format.
 	DeletedAt time.Time `json:"deletedAt,nullable" format:"date-time"`
 	Name      string    `json:"name"`
+	Users     []User    `json:"users"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID          respjson.Field
 		CreatedAt   respjson.Field
 		DeletedAt   respjson.Field
 		Name        respjson.Field
+		Users       respjson.Field
 		ExtraFields map[string]respjson.Field
 		raw         string
 	} `json:"-"`
@@ -299,25 +301,6 @@ type Group struct {
 // Returns the unmodified JSON received from the API
 func (r Group) RawJSON() string { return r.JSON.raw }
 func (r *Group) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Wrapper types for complex responses
-type GroupGetResponse struct {
-	Group Group  `json:"group"`
-	Users []User `json:"users"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Group       respjson.Field
-		Users       respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r GroupGetResponse) RawJSON() string { return r.JSON.raw }
-func (r *GroupGetResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -372,8 +355,7 @@ func (r *GroupNewResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type GroupGetResponseEnvelope struct {
-	// Wrapper types for complex responses
-	Data GroupGetResponse `json:"data"`
+	Data Group `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
