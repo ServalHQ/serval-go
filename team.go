@@ -199,7 +199,7 @@ type Team struct {
 	Name           string    `json:"name"`
 	OrganizationID string    `json:"organizationId"`
 	Prefix         string    `json:"prefix"`
-	Users          []User    `json:"users"`
+	UserIDs        []string  `json:"userIds"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID             respjson.Field
@@ -208,7 +208,7 @@ type Team struct {
 		Name           respjson.Field
 		OrganizationID respjson.Field
 		Prefix         respjson.Field
-		Users          respjson.Field
+		UserIDs        respjson.Field
 		ExtraFields    map[string]respjson.Field
 		raw            string
 	} `json:"-"`
