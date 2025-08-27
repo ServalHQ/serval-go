@@ -287,11 +287,10 @@ type User struct {
 	DeactivatedAt time.Time `json:"deactivatedAt,nullable" format:"date-time"`
 	Email         string    `json:"email"`
 	FirstName     string    `json:"firstName"`
-	Groups        []Group   `json:"groups"`
 	LastName      string    `json:"lastName"`
 	Name          string    `json:"name"`
-	Role          string    `json:"role"`
-	Teams         []any     `json:"teams"`
+	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN".
+	Role UserRole `json:"role"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID            respjson.Field
@@ -300,11 +299,9 @@ type User struct {
 		DeactivatedAt respjson.Field
 		Email         respjson.Field
 		FirstName     respjson.Field
-		Groups        respjson.Field
 		LastName      respjson.Field
 		Name          respjson.Field
 		Role          respjson.Field
-		Teams         respjson.Field
 		ExtraFields   map[string]respjson.Field
 		raw           string
 	} `json:"-"`
@@ -315,6 +312,14 @@ func (r User) RawJSON() string { return r.JSON.raw }
 func (r *User) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+type UserRole string
+
+const (
+	UserRoleUserRoleUnspecified UserRole = "USER_ROLE_UNSPECIFIED"
+	UserRoleUserRoleOrgMember   UserRole = "USER_ROLE_ORG_MEMBER"
+	UserRoleUserRoleOrgAdmin    UserRole = "USER_ROLE_ORG_ADMIN"
+)
 
 type UserListResponse struct {
 	Data       []User `json:"data"`
@@ -340,8 +345,9 @@ type UserNewParams struct {
 	Email     param.Opt[string] `json:"email,omitzero"`
 	FirstName param.Opt[string] `json:"firstName,omitzero"`
 	LastName  param.Opt[string] `json:"lastName,omitzero"`
-	Role      param.Opt[string] `json:"role,omitzero"`
-	TeamIDs   []string          `json:"teamIds,omitzero"`
+	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN".
+	Role    UserNewParamsRole `json:"role,omitzero"`
+	TeamIDs []string          `json:"teamIds,omitzero"`
 	paramObj
 }
 
@@ -352,6 +358,14 @@ func (r UserNewParams) MarshalJSON() (data []byte, err error) {
 func (r *UserNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+type UserNewParamsRole string
+
+const (
+	UserNewParamsRoleUserRoleUnspecified UserNewParamsRole = "USER_ROLE_UNSPECIFIED"
+	UserNewParamsRoleUserRoleOrgMember   UserNewParamsRole = "USER_ROLE_ORG_MEMBER"
+	UserNewParamsRoleUserRoleOrgAdmin    UserNewParamsRole = "USER_ROLE_ORG_ADMIN"
+)
 
 type UserNewResponseEnvelope struct {
 	Data User `json:"data"`
@@ -390,7 +404,8 @@ type UserUpdateParams struct {
 	Email     param.Opt[string] `json:"email,omitzero"`
 	FirstName param.Opt[string] `json:"firstName,omitzero"`
 	LastName  param.Opt[string] `json:"lastName,omitzero"`
-	Role      param.Opt[string] `json:"role,omitzero"`
+	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN".
+	Role UserUpdateParamsRole `json:"role,omitzero"`
 	paramObj
 }
 
@@ -401,6 +416,14 @@ func (r UserUpdateParams) MarshalJSON() (data []byte, err error) {
 func (r *UserUpdateParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+type UserUpdateParamsRole string
+
+const (
+	UserUpdateParamsRoleUserRoleUnspecified UserUpdateParamsRole = "USER_ROLE_UNSPECIFIED"
+	UserUpdateParamsRoleUserRoleOrgMember   UserUpdateParamsRole = "USER_ROLE_ORG_MEMBER"
+	UserUpdateParamsRoleUserRoleOrgAdmin    UserUpdateParamsRole = "USER_ROLE_ORG_ADMIN"
+)
 
 type UserUpdateResponseEnvelope struct {
 	Data User `json:"data"`
