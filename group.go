@@ -286,7 +286,7 @@ type Group struct {
 	DeletedAt      time.Time `json:"deletedAt,nullable" format:"date-time"`
 	Name           string    `json:"name"`
 	OrganizationID string    `json:"organizationId"`
-	Users          []User    `json:"users"`
+	UserIDs        []string  `json:"userIds"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID             respjson.Field
@@ -294,7 +294,7 @@ type Group struct {
 		DeletedAt      respjson.Field
 		Name           respjson.Field
 		OrganizationID respjson.Field
-		Users          respjson.Field
+		UserIDs        respjson.Field
 		ExtraFields    map[string]respjson.Field
 		raw            string
 	} `json:"-"`
