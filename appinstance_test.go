@@ -27,10 +27,12 @@ func TestAppInstanceNewWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.AppInstances.New(context.TODO(), serval.AppInstanceNewParams{
-		InstanceID: serval.String("instanceId"),
-		Name:       serval.String("name"),
-		Service:    serval.String("service"),
-		TeamID:     serval.String("teamId"),
+		AccessRequestsEnabled: serval.Bool(true),
+		DefaultAccessPolicyID: serval.String("defaultAccessPolicyId"),
+		InstanceID:            serval.String("instanceId"),
+		Name:                  serval.String("name"),
+		Service:               serval.String("service"),
+		TeamID:                serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -81,8 +83,10 @@ func TestAppInstanceUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		serval.AppInstanceUpdateParams{
-			InstanceID: serval.String("instanceId"),
-			Name:       serval.String("name"),
+			AccessRequestsEnabled: serval.Bool(true),
+			DefaultAccessPolicyID: serval.String("defaultAccessPolicyId"),
+			InstanceID:            serval.String("instanceId"),
+			Name:                  serval.String("name"),
 		},
 	)
 	if err != nil {

@@ -146,6 +146,10 @@ func (r *AppInstance) UnmarshalJSON(data []byte) error {
 type AppInstanceDeleteResponse = any
 
 type AppInstanceNewParams struct {
+	// The default access policy for the app instance (optional).
+	DefaultAccessPolicyID param.Opt[string] `json:"defaultAccessPolicyId,omitzero"`
+	// Whether access requests are enabled for the app instance.
+	AccessRequestsEnabled param.Opt[bool] `json:"accessRequestsEnabled,omitzero"`
 	// The instance ID of the app instance.
 	InstanceID param.Opt[string] `json:"instanceId,omitzero"`
 	// The name of the app instance.
@@ -200,6 +204,10 @@ func (r *AppInstanceGetResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type AppInstanceUpdateParams struct {
+	// The default access policy for the app instance (optional).
+	DefaultAccessPolicyID param.Opt[string] `json:"defaultAccessPolicyId,omitzero"`
+	// Whether access requests are enabled for the app instance.
+	AccessRequestsEnabled param.Opt[bool] `json:"accessRequestsEnabled,omitzero"`
 	// The instance ID of the app instance.
 	InstanceID param.Opt[string] `json:"instanceId,omitzero"`
 	// The name of the app instance.
