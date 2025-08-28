@@ -21,7 +21,6 @@ type Client struct {
 	Guidances               GuidanceService
 	AppResources            AppResourceService
 	AppResourceEntitlements AppResourceEntitlementService
-	AppInstances            AppInstanceService
 	Users                   UserService
 	Groups                  GroupService
 	Teams                   TeamService
@@ -54,7 +53,6 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r.Guidances = NewGuidanceService(opts...)
 	r.AppResources = NewAppResourceService(opts...)
 	r.AppResourceEntitlements = NewAppResourceEntitlementService(opts...)
-	r.AppInstances = NewAppInstanceService(opts...)
 	r.Users = NewUserService(opts...)
 	r.Groups = NewGroupService(opts...)
 	r.Teams = NewTeamService(opts...)
