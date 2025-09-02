@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stainless-sdks/serval-go"
-	"github.com/stainless-sdks/serval-go/internal/testutil"
-	"github.com/stainless-sdks/serval-go/option"
+	"github.com/ServalHQ/serval-go"
+	"github.com/ServalHQ/serval-go/internal/testutil"
+	"github.com/ServalHQ/serval-go/option"
 )
 
 func TestGuidanceNewWithOptionalParams(t *testing.T) {

@@ -2,7 +2,7 @@ package apijson
 
 import (
 	"errors"
-	"github.com/stainless-sdks/serval-go/packages/param"
+	"github.com/ServalHQ/serval-go/packages/param"
 	"reflect"
 
 	"github.com/tidwall/gjson"

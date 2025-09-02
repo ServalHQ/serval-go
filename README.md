@@ -1,6 +1,6 @@
 # Serval Go API Library
 
-<a href="https://pkg.go.dev/github.com/stainless-sdks/serval-go"><img src="https://pkg.go.dev/badge/github.com/stainless-sdks/serval-go.svg" alt="Go Reference"></a>
+<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go"><img src="https://pkg.go.dev/badge/github.com/ServalHQ/serval-go.svg" alt="Go Reference"></a>
 
 The Serval Go library provides convenient access to the [Serval REST API](https://serval.com)
 from applications written in Go.
@@ -9,17 +9,25 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
+<!-- x-release-please-start-version -->
+
 ```go
 import (
-	"github.com/stainless-sdks/serval-go" // imported as serval
+	"github.com/ServalHQ/serval-go" // imported as serval
 )
 ```
 
+<!-- x-release-please-end -->
+
 Or to pin the version:
 
+<!-- x-release-please-start-version -->
+
 ```sh
-go get -u 'github.com/stainless-sdks/serval-go@v0.0.1'
+go get -u 'github.com/ServalHQ/serval-go@v0.0.1'
 ```
+
+<!-- x-release-please-end -->
 
 ## Requirements
 
@@ -36,8 +44,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/serval-go"
-	"github.com/stainless-sdks/serval-go/option"
+	"github.com/ServalHQ/serval-go"
+	"github.com/ServalHQ/serval-go/option"
 )
 
 func main() {
@@ -266,7 +274,7 @@ client.AccessPolicies.List(context.TODO(), ...,
 
 The request option `option.WithDebugLog(nil)` may be helpful while debugging.
 
-See the [full list of request options](https://pkg.go.dev/github.com/stainless-sdks/serval-go/option).
+See the [full list of request options](https://pkg.go.dev/github.com/ServalHQ/serval-go/option).
 
 ### Pagination
 
@@ -472,7 +480,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/serval-go/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/ServalHQ/serval-go/issues) with questions, bugs, or suggestions.
 
 ## Contributing
 

@@ -3,8 +3,8 @@
 package serval
 
 import (
-	"github.com/stainless-sdks/serval-go/internal/apierror"
-	"github.com/stainless-sdks/serval-go/packages/param"
+	"github.com/ServalHQ/serval-go/internal/apierror"
+	"github.com/ServalHQ/serval-go/packages/param"
 )
 
 // aliased to make [param.APIUnion] private when embedding

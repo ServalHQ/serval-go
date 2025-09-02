@@ -2,7 +2,7 @@ package param_test
 
 import (
 	"encoding/json"
-	"github.com/stainless-sdks/serval-go/packages/param"
+	"github.com/ServalHQ/serval-go/packages/param"
 	"testing"
 )
 
