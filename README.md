@@ -5,8 +5,6 @@
 The Serval Go library provides convenient access to the [Serval REST API](https://serval.com)
 from applications written in Go.
 
-It is generated with [Stainless](https://www.stainless.com/).
-
 ## Installation
 
 <!-- x-release-please-start-version -->
