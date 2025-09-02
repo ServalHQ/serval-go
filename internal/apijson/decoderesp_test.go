@@ -2,8 +2,8 @@ package apijson_test
 
 import (
 	"encoding/json"
-	"github.com/stainless-sdks/serval-go/internal/apijson"
-	"github.com/stainless-sdks/serval-go/packages/respjson"
+	"github.com/ServalHQ/serval-go/internal/apijson"
+	"github.com/ServalHQ/serval-go/packages/respjson"
 	"testing"
 )
 

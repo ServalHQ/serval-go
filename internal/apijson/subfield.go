@@ -1,7 +1,7 @@
 package apijson
 
 import (
-	"github.com/stainless-sdks/serval-go/packages/respjson"
+	"github.com/ServalHQ/serval-go/packages/respjson"
 	"reflect"
 )
 

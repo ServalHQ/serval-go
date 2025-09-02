@@ -2,7 +2,7 @@ package paramutil
 
 import (
 	"fmt"
-	"github.com/stainless-sdks/serval-go/packages/param"
+	"github.com/ServalHQ/serval-go/packages/param"
 	"reflect"
 )
 

@@ -1,4 +1,4 @@
-module github.com/stainless-sdks/serval-go
+module github.com/ServalHQ/serval-go
 
 go 1.21
 

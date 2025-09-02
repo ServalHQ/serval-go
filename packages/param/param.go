@@ -2,7 +2,7 @@ package param
 
 import (
 	"encoding/json"
-	"github.com/stainless-sdks/serval-go/internal/encoding/json/sentinel"
+	"github.com/ServalHQ/serval-go/internal/encoding/json/sentinel"
 	"reflect"
 )
 

@@ -1,8 +1,8 @@
 package paramutil
 
 import (
-	"github.com/stainless-sdks/serval-go/packages/param"
-	"github.com/stainless-sdks/serval-go/packages/respjson"
+	"github.com/ServalHQ/serval-go/packages/param"
+	"github.com/ServalHQ/serval-go/packages/respjson"
 )
 
 func AddrIfPresent[T comparable](v param.Opt[T]) *T {
