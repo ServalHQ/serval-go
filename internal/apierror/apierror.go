@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"net/http/httputil"
 
-	"github.com/stainless-sdks/serval-go/internal/apijson"
-	"github.com/stainless-sdks/serval-go/packages/respjson"
+	"github.com/ServalHQ/serval-go/internal/apijson"
+	"github.com/ServalHQ/serval-go/packages/respjson"
 )
 
 // Error represents an error that originates from the API, i.e. when a request is

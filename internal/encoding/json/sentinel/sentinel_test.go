@@ -1,8 +1,8 @@
 package sentinel_test
 
 import (
-	"github.com/stainless-sdks/serval-go/internal/encoding/json/sentinel"
-	"github.com/stainless-sdks/serval-go/packages/param"
+	"github.com/ServalHQ/serval-go/internal/encoding/json/sentinel"
+	"github.com/ServalHQ/serval-go/packages/param"
 	"reflect"
 	"slices"
 	"testing"

@@ -3,8 +3,8 @@ package respjson_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/stainless-sdks/serval-go/internal/apijson"
-	rj "github.com/stainless-sdks/serval-go/packages/respjson"
+	"github.com/ServalHQ/serval-go/internal/apijson"
+	rj "github.com/ServalHQ/serval-go/packages/respjson"
 	"reflect"
 	"testing"
 )

@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/stainless-sdks/serval-go/internal/apijson"
-	"github.com/stainless-sdks/serval-go/internal/requestconfig"
-	"github.com/stainless-sdks/serval-go/option"
-	"github.com/stainless-sdks/serval-go/packages/param"
-	"github.com/stainless-sdks/serval-go/packages/respjson"
+	"github.com/ServalHQ/serval-go/internal/apijson"
+	"github.com/ServalHQ/serval-go/internal/requestconfig"
+	"github.com/ServalHQ/serval-go/option"
+	"github.com/ServalHQ/serval-go/packages/param"
+	"github.com/ServalHQ/serval-go/packages/respjson"
 )
 
 // AccessPolicyApprovalProcedureService contains methods and other services that

@@ -18,10 +18,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/stainless-sdks/serval-go/internal"
-	"github.com/stainless-sdks/serval-go/internal/apierror"
-	"github.com/stainless-sdks/serval-go/internal/apiform"
-	"github.com/stainless-sdks/serval-go/internal/apiquery"
+	"github.com/ServalHQ/serval-go/internal"
+	"github.com/ServalHQ/serval-go/internal/apierror"
+	"github.com/ServalHQ/serval-go/internal/apiform"
+	"github.com/ServalHQ/serval-go/internal/apiquery"
 )
 
 func getDefaultHeaders() map[string]string {

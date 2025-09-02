@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stainless-sdks/serval-go"
-	"github.com/stainless-sdks/serval-go/internal"
-	"github.com/stainless-sdks/serval-go/option"
+	"github.com/ServalHQ/serval-go"
+	"github.com/ServalHQ/serval-go/internal"
+	"github.com/ServalHQ/serval-go/option"
 )
 
 type closureTransport struct {

@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/stainless-sdks/serval-go/internal/requestconfig"
-	"github.com/stainless-sdks/serval-go/option"
+	"github.com/ServalHQ/serval-go/internal/requestconfig"
+	"github.com/ServalHQ/serval-go/option"
 )
 
 // Client creates a struct with services and top level methods that help with
