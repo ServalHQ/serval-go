@@ -1,6 +1,10 @@
 # Serval Go API Library
 
+<!-- x-release-please-start-version -->
+
 <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go"><img src="https://pkg.go.dev/badge/github.com/ServalHQ/serval-go.svg" alt="Go Reference"></a>
+
+<!-- x-release-please-end -->
 
 The Serval Go library provides convenient access to the [Serval REST API](https://serval.com)
 from applications written in Go.
