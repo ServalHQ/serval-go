@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.2.0 (2025-09-06)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/ServalHQ/serval-go/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** update via SDK Studio ([cc250ed](https://github.com/ServalHQ/serval-go/commit/cc250ede97e670f39585bbd43839f1c92cfc2991))
+
+
+### Bug Fixes
+
+* **internal:** unmarshal correctly when there are multiple discriminators ([08e5ff7](https://github.com/ServalHQ/serval-go/commit/08e5ff739dfe1bc6f28edc36a0a134e12f994fd9))
+
+
+### Chores
+
+* **internal:** codegen related update ([29a1f4c](https://github.com/ServalHQ/serval-go/commit/29a1f4c8370c63d6badfa1348add7c95e852a3c4))
+
 ## 0.1.0 (2025-09-02)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/ServalHQ/serval-go/compare/v0.0.1...v0.1.0)
