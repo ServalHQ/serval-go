@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
 	"github.com/ServalHQ/serval-go/internal/apiquery"
@@ -39,7 +40,7 @@ func NewGuidanceService(opts ...option.RequestOption) (r GuidanceService) {
 // Create a new guidance for a team.
 func (r *GuidanceService) New(ctx context.Context, body GuidanceNewParams, opts ...option.RequestOption) (res *Guidance, err error) {
 	var env GuidanceNewResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/guidances"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
@@ -52,7 +53,7 @@ func (r *GuidanceService) New(ctx context.Context, body GuidanceNewParams, opts 
 // Get a specific guidance by ID.
 func (r *GuidanceService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Guidance, err error) {
 	var env GuidanceGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -69,7 +70,7 @@ func (r *GuidanceService) Get(ctx context.Context, id string, opts ...option.Req
 // Update an existing guidance.
 func (r *GuidanceService) Update(ctx context.Context, id string, body GuidanceUpdateParams, opts ...option.RequestOption) (res *Guidance, err error) {
 	var env GuidanceUpdateResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -86,7 +87,7 @@ func (r *GuidanceService) Update(ctx context.Context, id string, body GuidanceUp
 // List all guidances for a team.
 func (r *GuidanceService) List(ctx context.Context, query GuidanceListParams, opts ...option.RequestOption) (res *[]Guidance, err error) {
 	var env GuidanceListResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/guidances"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
 	if err != nil {
@@ -98,7 +99,7 @@ func (r *GuidanceService) List(ctx context.Context, query GuidanceListParams, op
 
 // Delete a guidance.
 func (r *GuidanceService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *GuidanceDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
