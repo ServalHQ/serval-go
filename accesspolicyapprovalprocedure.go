@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
 	"github.com/ServalHQ/serval-go/internal/requestconfig"
@@ -37,7 +38,7 @@ func NewAccessPolicyApprovalProcedureService(opts ...option.RequestOption) (r Ac
 // Create a new approval procedure for an access policy.
 func (r *AccessPolicyApprovalProcedureService) New(ctx context.Context, accessPolicyID string, body AccessPolicyApprovalProcedureNewParams, opts ...option.RequestOption) (res *AccessPolicyApprovalProcedure, err error) {
 	var env AccessPolicyApprovalProcedureNewResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if accessPolicyID == "" {
 		err = errors.New("missing required access_policy_id parameter")
 		return
@@ -54,7 +55,7 @@ func (r *AccessPolicyApprovalProcedureService) New(ctx context.Context, accessPo
 // Get a specific approval procedure by ID for an access policy.
 func (r *AccessPolicyApprovalProcedureService) Get(ctx context.Context, id string, query AccessPolicyApprovalProcedureGetParams, opts ...option.RequestOption) (res *AccessPolicyApprovalProcedure, err error) {
 	var env AccessPolicyApprovalProcedureGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if query.AccessPolicyID == "" {
 		err = errors.New("missing required access_policy_id parameter")
 		return
@@ -75,7 +76,7 @@ func (r *AccessPolicyApprovalProcedureService) Get(ctx context.Context, id strin
 // Update an existing approval procedure for an access policy.
 func (r *AccessPolicyApprovalProcedureService) Update(ctx context.Context, id string, params AccessPolicyApprovalProcedureUpdateParams, opts ...option.RequestOption) (res *AccessPolicyApprovalProcedure, err error) {
 	var env AccessPolicyApprovalProcedureUpdateResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if params.AccessPolicyID == "" {
 		err = errors.New("missing required access_policy_id parameter")
 		return
@@ -96,7 +97,7 @@ func (r *AccessPolicyApprovalProcedureService) Update(ctx context.Context, id st
 // List all approval procedures for an access policy.
 func (r *AccessPolicyApprovalProcedureService) List(ctx context.Context, accessPolicyID string, opts ...option.RequestOption) (res *[]AccessPolicyApprovalProcedure, err error) {
 	var env AccessPolicyApprovalProcedureListResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if accessPolicyID == "" {
 		err = errors.New("missing required access_policy_id parameter")
 		return
@@ -112,7 +113,7 @@ func (r *AccessPolicyApprovalProcedureService) List(ctx context.Context, accessP
 
 // Delete an approval procedure for an access policy.
 func (r *AccessPolicyApprovalProcedureService) Delete(ctx context.Context, id string, body AccessPolicyApprovalProcedureDeleteParams, opts ...option.RequestOption) (res *AccessPolicyApprovalProcedureDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if body.AccessPolicyID == "" {
 		err = errors.New("missing required access_policy_id parameter")
 		return

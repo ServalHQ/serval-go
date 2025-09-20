@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
 	"github.com/ServalHQ/serval-go/internal/apiquery"
@@ -39,7 +40,7 @@ func NewAppInstanceService(opts ...option.RequestOption) (r AppInstanceService) 
 // Create a new app instance for a team.
 func (r *AppInstanceService) New(ctx context.Context, body AppInstanceNewParams, opts ...option.RequestOption) (res *AppInstance, err error) {
 	var env AppInstanceNewResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/app-instances"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
@@ -52,7 +53,7 @@ func (r *AppInstanceService) New(ctx context.Context, body AppInstanceNewParams,
 // Get a specific app instance by ID.
 func (r *AppInstanceService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *AppInstance, err error) {
 	var env AppInstanceGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -69,7 +70,7 @@ func (r *AppInstanceService) Get(ctx context.Context, id string, opts ...option.
 // Update an existing app instance.
 func (r *AppInstanceService) Update(ctx context.Context, id string, body AppInstanceUpdateParams, opts ...option.RequestOption) (res *AppInstance, err error) {
 	var env AppInstanceUpdateResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -86,7 +87,7 @@ func (r *AppInstanceService) Update(ctx context.Context, id string, body AppInst
 // List all app instances for a team.
 func (r *AppInstanceService) List(ctx context.Context, query AppInstanceListParams, opts ...option.RequestOption) (res *[]AppInstance, err error) {
 	var env AppInstanceListResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/app-instances"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
 	if err != nil {
@@ -98,7 +99,7 @@ func (r *AppInstanceService) List(ctx context.Context, query AppInstanceListPara
 
 // Delete an app instance.
 func (r *AppInstanceService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *AppInstanceDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

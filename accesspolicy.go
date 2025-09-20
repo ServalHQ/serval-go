@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
 	"github.com/ServalHQ/serval-go/internal/apiquery"
@@ -41,7 +42,7 @@ func NewAccessPolicyService(opts ...option.RequestOption) (r AccessPolicyService
 // Create a new access policy for a team.
 func (r *AccessPolicyService) New(ctx context.Context, body AccessPolicyNewParams, opts ...option.RequestOption) (res *AccessPolicy, err error) {
 	var env AccessPolicyNewResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/access-policies"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
@@ -54,7 +55,7 @@ func (r *AccessPolicyService) New(ctx context.Context, body AccessPolicyNewParam
 // Get a specific access policy by ID.
 func (r *AccessPolicyService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *AccessPolicy, err error) {
 	var env AccessPolicyGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -71,7 +72,7 @@ func (r *AccessPolicyService) Get(ctx context.Context, id string, opts ...option
 // Update an existing access policy.
 func (r *AccessPolicyService) Update(ctx context.Context, id string, body AccessPolicyUpdateParams, opts ...option.RequestOption) (res *AccessPolicy, err error) {
 	var env AccessPolicyUpdateResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -88,7 +89,7 @@ func (r *AccessPolicyService) Update(ctx context.Context, id string, body Access
 // List all access policies for a team.
 func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListParams, opts ...option.RequestOption) (res *[]AccessPolicy, err error) {
 	var env AccessPolicyListResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/access-policies"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
 	if err != nil {
@@ -100,7 +101,7 @@ func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListPa
 
 // Delete an access policy.
 func (r *AccessPolicyService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *AccessPolicyDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

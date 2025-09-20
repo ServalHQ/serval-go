@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
@@ -40,7 +41,7 @@ func NewUserService(opts ...option.RequestOption) (r UserService) {
 // Create a new user.
 func (r *UserService) New(ctx context.Context, body UserNewParams, opts ...option.RequestOption) (res *User, err error) {
 	var env UserNewResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/users"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
@@ -53,7 +54,7 @@ func (r *UserService) New(ctx context.Context, body UserNewParams, opts ...optio
 // Get a specific user by ID.
 func (r *UserService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *User, err error) {
 	var env UserGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -70,7 +71,7 @@ func (r *UserService) Get(ctx context.Context, id string, opts ...option.Request
 // Update an existing user.
 func (r *UserService) Update(ctx context.Context, id string, body UserUpdateParams, opts ...option.RequestOption) (res *User, err error) {
 	var env UserUpdateResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -86,7 +87,7 @@ func (r *UserService) Update(ctx context.Context, id string, body UserUpdatePara
 
 // List all users.
 func (r *UserService) List(ctx context.Context, query UserListParams, opts ...option.RequestOption) (res *UserListResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/users"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
@@ -94,7 +95,7 @@ func (r *UserService) List(ctx context.Context, query UserListParams, opts ...op
 
 // Delete a user.
 func (r *UserService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *UserDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
