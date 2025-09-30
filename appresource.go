@@ -97,6 +97,18 @@ func (r *AppResourceService) List(ctx context.Context, query AppResourceListPara
 	return
 }
 
+// Delete an app resource.
+func (r *AppResourceService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *AppResourceDeleteResponse, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	path := fmt.Sprintf("v2/app-resources/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
+	return
+}
+
 type AppResource struct {
 	// The ID of the resource.
 	ID string `json:"id"`
@@ -128,6 +140,8 @@ func (r AppResource) RawJSON() string { return r.JSON.raw }
 func (r *AppResource) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+type AppResourceDeleteResponse = any
 
 type AppResourceNewParams struct {
 	// The external ID of the resource (optional).

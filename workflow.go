@@ -99,6 +99,18 @@ func (r *WorkflowService) List(ctx context.Context, query WorkflowListParams, op
 	return
 }
 
+// Delete a workflow.
+func (r *WorkflowService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *WorkflowDeleteResponse, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	path := fmt.Sprintf("v2/workflows/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
+	return
+}
+
 type Workflow struct {
 	// The ID of the workflow.
 	ID string `json:"id"`
@@ -164,6 +176,8 @@ const (
 	WorkflowTypeExecutable              WorkflowType = "EXECUTABLE"
 	WorkflowTypeGuidance                WorkflowType = "GUIDANCE"
 )
+
+type WorkflowDeleteResponse = any
 
 type WorkflowNewParams struct {
 	// The content/code of the workflow (optional).
