@@ -52,7 +52,8 @@ import (
 
 func main() {
 	client := serval.NewClient(
-		option.WithAPIKey("My API Key"), // defaults to os.LookupEnv("SERVAL_API_KEY")
+		option.WithClientID("My Client ID"),         // defaults to os.LookupEnv("SERVAL_CLIENT_ID")
+		option.WithClientSecret("My Client Secret"), // defaults to os.LookupEnv("SERVAL_CLIENT_SECRET")
 	)
 	accessPolicy, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
 		Name: serval.String("Example Access Policy"),

@@ -22,7 +22,8 @@ func TestUsage(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	accessPolicy, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
 		Name: serval.String("Example Access Policy"),

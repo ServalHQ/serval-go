@@ -24,7 +24,8 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Workflows.New(context.TODO(), serval.WorkflowNewParams{
 		Content:                 serval.String("content"),
@@ -57,7 +58,8 @@ func TestWorkflowGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Workflows.Get(context.TODO(), "id")
 	if err != nil {
@@ -80,7 +82,8 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Workflows.Update(
 		context.TODO(),
@@ -116,7 +119,8 @@ func TestWorkflowListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Workflows.List(context.TODO(), serval.WorkflowListParams{
 		IncludeTemporary: serval.Bool(true),
@@ -142,7 +146,8 @@ func TestWorkflowDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Workflows.Delete(context.TODO(), "id")
 	if err != nil {
