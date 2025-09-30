@@ -266,10 +266,18 @@ func WithEnvironmentProduction() RequestOption {
 	return requestconfig.WithDefaultBaseURL("https://public.api.serval.com/")
 }
 
-// WithAPIKey returns a RequestOption that sets the client setting "api_key".
-func WithAPIKey(value string) RequestOption {
+// WithClientID returns a RequestOption that sets the client setting "client_id".
+func WithClientID(value string) RequestOption {
 	return requestconfig.RequestOptionFunc(func(r *requestconfig.RequestConfig) error {
-		r.APIKey = value
-		return r.Apply(WithHeader("authorization", fmt.Sprintf("Bearer %s", r.APIKey)))
+		r.ClientID = value
+		return nil
+	})
+}
+
+// WithClientSecret returns a RequestOption that sets the client setting "client_secret".
+func WithClientSecret(value string) RequestOption {
+	return requestconfig.RequestOptionFunc(func(r *requestconfig.RequestConfig) error {
+		r.ClientSecret = value
+		return nil
 	})
 }

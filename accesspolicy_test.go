@@ -24,7 +24,8 @@ func TestAccessPolicyNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
 		Description:                  serval.String("description"),
@@ -53,7 +54,8 @@ func TestAccessPolicyGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.Get(context.TODO(), "id")
 	if err != nil {
@@ -76,7 +78,8 @@ func TestAccessPolicyUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.Update(
 		context.TODO(),
@@ -108,7 +111,8 @@ func TestAccessPolicyListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.List(context.TODO(), serval.AccessPolicyListParams{
 		TeamID: serval.String("teamId"),
@@ -133,7 +137,8 @@ func TestAccessPolicyDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.Delete(context.TODO(), "id")
 	if err != nil {
