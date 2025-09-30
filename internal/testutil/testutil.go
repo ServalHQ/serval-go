@@ -22,6 +22,9 @@ func CheckTestServer(t *testing.T, url string) bool {
 			t.Errorf("The test will not run without a mock Prism server running against your OpenAPI spec. You can set the environment variable %s to true to skip running any tests that require the mock server", SKIP_MOCK_TESTS)
 			return false
 		}
+		// If SKIP_MOCK_TESTS is not set, skip the test by default
+		t.Skip("The test will not run without a mock Prism server running against your OpenAPI spec")
+		return false
 	}
 	return true
 }
