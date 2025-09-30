@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.2.0 (2025-09-30)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/ServalHQ/serval-go/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** manual updates ([a086c26](https://github.com/ServalHQ/serval-go/commit/a086c2620c6957e427c7ee8aa2104fa04b66064b))
+* **api:** manual updates ([4794932](https://github.com/ServalHQ/serval-go/commit/479493259218384888bb409920458c6c4f61e29d))
+* **api:** update via SDK Studio ([cc250ed](https://github.com/ServalHQ/serval-go/commit/cc250ede97e670f39585bbd43839f1c92cfc2991))
+
+
+### Bug Fixes
+
+* bugfix for setting JSON keys with special characters ([0b7a844](https://github.com/ServalHQ/serval-go/commit/0b7a8449d45309a4f57f1221acb1c69578867dac))
+* **internal:** unmarshal correctly when there are multiple discriminators ([08e5ff7](https://github.com/ServalHQ/serval-go/commit/08e5ff739dfe1bc6f28edc36a0a134e12f994fd9))
+* use slices.Concat instead of sometimes modifying r.Options ([93ff4c2](https://github.com/ServalHQ/serval-go/commit/93ff4c2e5197c9d25bd6122e64f3c60a119b6b0a))
+
+
+### Chores
+
+* bump minimum go version to 1.22 ([3172e67](https://github.com/ServalHQ/serval-go/commit/3172e6797947c9e77a00a4abf86ceb37250dc959))
+* do not install brew dependencies in ./scripts/bootstrap by default ([030f836](https://github.com/ServalHQ/serval-go/commit/030f83693b84a4276196a531692e954428231e32))
+* **internal:** codegen related update ([29a1f4c](https://github.com/ServalHQ/serval-go/commit/29a1f4c8370c63d6badfa1348add7c95e852a3c4))
+* update more docs for 1.22 ([5fa4922](https://github.com/ServalHQ/serval-go/commit/5fa4922abb492a6a0c5fdd7450e798384aaaac19))
+
 ## 0.1.0 (2025-09-02)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/ServalHQ/serval-go/compare/v0.0.1...v0.1.0)

@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/requestconfig"
 	"github.com/ServalHQ/serval-go/option"
@@ -18,7 +19,6 @@ type Client struct {
 	Options                 []option.RequestOption
 	AccessPolicies          AccessPolicyService
 	Workflows               WorkflowService
-	Guidances               GuidanceService
 	AppInstances            AppInstanceService
 	AppResources            AppResourceService
 	AppResourceEntitlements AppResourceEntitlementService
@@ -27,23 +27,27 @@ type Client struct {
 	Teams                   TeamService
 }
 
-// DefaultClientOptions read from the environment (SERVAL_API_KEY,
-// SERVAL_BASE_URL). This should be used to initialize new clients.
+// DefaultClientOptions read from the environment (SERVAL_CLIENT_ID,
+// SERVAL_CLIENT_SECRET, SERVAL_BASE_URL). This should be used to initialize new
+// clients.
 func DefaultClientOptions() []option.RequestOption {
 	defaults := []option.RequestOption{option.WithEnvironmentProduction()}
 	if o, ok := os.LookupEnv("SERVAL_BASE_URL"); ok {
 		defaults = append(defaults, option.WithBaseURL(o))
 	}
-	if o, ok := os.LookupEnv("SERVAL_API_KEY"); ok {
-		defaults = append(defaults, option.WithAPIKey(o))
+	if o, ok := os.LookupEnv("SERVAL_CLIENT_ID"); ok {
+		defaults = append(defaults, option.WithClientID(o))
+	}
+	if o, ok := os.LookupEnv("SERVAL_CLIENT_SECRET"); ok {
+		defaults = append(defaults, option.WithClientSecret(o))
 	}
 	return defaults
 }
 
 // NewClient generates a new client with the default option read from the
-// environment (SERVAL_API_KEY, SERVAL_BASE_URL). The option passed in as arguments
-// are applied after these default arguments, and all option will be passed down to
-// the services and requests that this client makes.
+// environment (SERVAL_CLIENT_ID, SERVAL_CLIENT_SECRET, SERVAL_BASE_URL). The
+// option passed in as arguments are applied after these default arguments, and all
+// option will be passed down to the services and requests that this client makes.
 func NewClient(opts ...option.RequestOption) (r Client) {
 	opts = append(DefaultClientOptions(), opts...)
 
@@ -51,7 +55,6 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 
 	r.AccessPolicies = NewAccessPolicyService(opts...)
 	r.Workflows = NewWorkflowService(opts...)
-	r.Guidances = NewGuidanceService(opts...)
 	r.AppInstances = NewAppInstanceService(opts...)
 	r.AppResources = NewAppResourceService(opts...)
 	r.AppResourceEntitlements = NewAppResourceEntitlementService(opts...)
@@ -94,7 +97,7 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 // For even greater flexibility, see [option.WithResponseInto] and
 // [option.WithResponseBodyInto].
 func (r *Client) Execute(ctx context.Context, method string, path string, params any, res any, opts ...option.RequestOption) error {
-	opts = append(r.Options, opts...)
+	opts = slices.Concat(r.Options, opts)
 	return requestconfig.ExecuteNewRequest(ctx, method, path, params, res, opts...)
 }
 

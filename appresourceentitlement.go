@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
 	"github.com/ServalHQ/serval-go/internal/apiquery"
@@ -39,7 +40,7 @@ func NewAppResourceEntitlementService(opts ...option.RequestOption) (r AppResour
 // Create a new app resource entitlement for a resource.
 func (r *AppResourceEntitlementService) New(ctx context.Context, body AppResourceEntitlementNewParams, opts ...option.RequestOption) (res *AppResourceEntitlement, err error) {
 	var env AppResourceEntitlementNewResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/app-resource-entitlements"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
@@ -52,7 +53,7 @@ func (r *AppResourceEntitlementService) New(ctx context.Context, body AppResourc
 // Get a specific app resource entitlement by ID.
 func (r *AppResourceEntitlementService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *AppResourceEntitlement, err error) {
 	var env AppResourceEntitlementGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -69,7 +70,7 @@ func (r *AppResourceEntitlementService) Get(ctx context.Context, id string, opts
 // Update an existing app resource entitlement.
 func (r *AppResourceEntitlementService) Update(ctx context.Context, id string, body AppResourceEntitlementUpdateParams, opts ...option.RequestOption) (res *AppResourceEntitlement, err error) {
 	var env AppResourceEntitlementUpdateResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -86,7 +87,7 @@ func (r *AppResourceEntitlementService) Update(ctx context.Context, id string, b
 // List all app resource entitlements for a resource.
 func (r *AppResourceEntitlementService) List(ctx context.Context, query AppResourceEntitlementListParams, opts ...option.RequestOption) (res *[]AppResourceEntitlement, err error) {
 	var env AppResourceEntitlementListResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/app-resource-entitlements"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
 	if err != nil {
@@ -98,7 +99,7 @@ func (r *AppResourceEntitlementService) List(ctx context.Context, query AppResou
 
 // Delete an app resource entitlement.
 func (r *AppResourceEntitlementService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *AppResourceEntitlementDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

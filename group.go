@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
@@ -40,7 +41,7 @@ func NewGroupService(opts ...option.RequestOption) (r GroupService) {
 // Create a new group.
 func (r *GroupService) New(ctx context.Context, body GroupNewParams, opts ...option.RequestOption) (res *Group, err error) {
 	var env GroupNewResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/groups"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
@@ -53,7 +54,7 @@ func (r *GroupService) New(ctx context.Context, body GroupNewParams, opts ...opt
 // Get a specific group by ID.
 func (r *GroupService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Group, err error) {
 	var env GroupGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -70,7 +71,7 @@ func (r *GroupService) Get(ctx context.Context, id string, opts ...option.Reques
 // Update an existing group.
 func (r *GroupService) Update(ctx context.Context, id string, body GroupUpdateParams, opts ...option.RequestOption) (res *Group, err error) {
 	var env GroupUpdateResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -86,7 +87,7 @@ func (r *GroupService) Update(ctx context.Context, id string, body GroupUpdatePa
 
 // List all groups.
 func (r *GroupService) List(ctx context.Context, query GroupListParams, opts ...option.RequestOption) (res *GroupListResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/groups"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
@@ -94,7 +95,7 @@ func (r *GroupService) List(ctx context.Context, query GroupListParams, opts ...
 
 // Delete a group.
 func (r *GroupService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *GroupDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

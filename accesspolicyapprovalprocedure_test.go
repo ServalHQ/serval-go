@@ -24,7 +24,8 @@ func TestAccessPolicyApprovalProcedureNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.ApprovalProcedures.New(
 		context.TODO(),
@@ -59,7 +60,8 @@ func TestAccessPolicyApprovalProcedureGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.ApprovalProcedures.Get(
 		context.TODO(),
@@ -88,7 +90,8 @@ func TestAccessPolicyApprovalProcedureUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.ApprovalProcedures.Update(
 		context.TODO(),
@@ -124,7 +127,8 @@ func TestAccessPolicyApprovalProcedureList(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.ApprovalProcedures.List(context.TODO(), "access_policy_id")
 	if err != nil {
@@ -147,7 +151,8 @@ func TestAccessPolicyApprovalProcedureDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.ApprovalProcedures.Delete(
 		context.TODO(),

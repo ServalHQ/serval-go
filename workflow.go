@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
 	"github.com/ServalHQ/serval-go/internal/apiquery"
@@ -41,7 +42,7 @@ func NewWorkflowService(opts ...option.RequestOption) (r WorkflowService) {
 // Create a new workflow for a team.
 func (r *WorkflowService) New(ctx context.Context, body WorkflowNewParams, opts ...option.RequestOption) (res *Workflow, err error) {
 	var env WorkflowNewResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/workflows"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
@@ -54,7 +55,7 @@ func (r *WorkflowService) New(ctx context.Context, body WorkflowNewParams, opts 
 // Get a specific workflow by ID.
 func (r *WorkflowService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Workflow, err error) {
 	var env WorkflowGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -71,7 +72,7 @@ func (r *WorkflowService) Get(ctx context.Context, id string, opts ...option.Req
 // Update an existing workflow.
 func (r *WorkflowService) Update(ctx context.Context, id string, body WorkflowUpdateParams, opts ...option.RequestOption) (res *Workflow, err error) {
 	var env WorkflowUpdateResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -88,7 +89,7 @@ func (r *WorkflowService) Update(ctx context.Context, id string, body WorkflowUp
 // List all workflows for a team.
 func (r *WorkflowService) List(ctx context.Context, query WorkflowListParams, opts ...option.RequestOption) (res *[]Workflow, err error) {
 	var env WorkflowListResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/workflows"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
 	if err != nil {
@@ -100,7 +101,7 @@ func (r *WorkflowService) List(ctx context.Context, query WorkflowListParams, op
 
 // Delete a workflow.
 func (r *WorkflowService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *WorkflowDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

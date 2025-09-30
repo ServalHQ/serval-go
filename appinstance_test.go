@@ -24,7 +24,8 @@ func TestAppInstanceNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppInstances.New(context.TODO(), serval.AppInstanceNewParams{
 		AccessRequestsEnabled: serval.Bool(true),
@@ -54,7 +55,8 @@ func TestAppInstanceGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppInstances.Get(context.TODO(), "id")
 	if err != nil {
@@ -77,7 +79,8 @@ func TestAppInstanceUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppInstances.Update(
 		context.TODO(),
@@ -109,7 +112,8 @@ func TestAppInstanceListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppInstances.List(context.TODO(), serval.AppInstanceListParams{
 		TeamID: serval.String("teamId"),
@@ -134,7 +138,8 @@ func TestAppInstanceDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppInstances.Delete(context.TODO(), "id")
 	if err != nil {

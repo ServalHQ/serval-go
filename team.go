@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
@@ -40,7 +41,7 @@ func NewTeamService(opts ...option.RequestOption) (r TeamService) {
 // Create a new team.
 func (r *TeamService) New(ctx context.Context, body TeamNewParams, opts ...option.RequestOption) (res *Team, err error) {
 	var env TeamNewResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/teams"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
@@ -53,7 +54,7 @@ func (r *TeamService) New(ctx context.Context, body TeamNewParams, opts ...optio
 // Get a specific team by ID.
 func (r *TeamService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Team, err error) {
 	var env TeamGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -70,7 +71,7 @@ func (r *TeamService) Get(ctx context.Context, id string, opts ...option.Request
 // Update an existing team.
 func (r *TeamService) Update(ctx context.Context, id string, body TeamUpdateParams, opts ...option.RequestOption) (res *Team, err error) {
 	var env TeamUpdateResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -86,7 +87,7 @@ func (r *TeamService) Update(ctx context.Context, id string, body TeamUpdatePara
 
 // List all teams.
 func (r *TeamService) List(ctx context.Context, query TeamListParams, opts ...option.RequestOption) (res *TeamListResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/teams"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
@@ -94,7 +95,7 @@ func (r *TeamService) List(ctx context.Context, query TeamListParams, opts ...op
 
 // Delete a team.
 func (r *TeamService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *TeamDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

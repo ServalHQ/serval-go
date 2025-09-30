@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
 	"github.com/ServalHQ/serval-go/internal/requestconfig"
@@ -37,7 +38,7 @@ func NewWorkflowApprovalProcedureService(opts ...option.RequestOption) (r Workfl
 // Create a new approval procedure for a workflow.
 func (r *WorkflowApprovalProcedureService) New(ctx context.Context, workflowID string, body WorkflowApprovalProcedureNewParams, opts ...option.RequestOption) (res *WorkflowApprovalProcedure, err error) {
 	var env WorkflowApprovalProcedureNewResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if workflowID == "" {
 		err = errors.New("missing required workflow_id parameter")
 		return
@@ -54,7 +55,7 @@ func (r *WorkflowApprovalProcedureService) New(ctx context.Context, workflowID s
 // Get a specific approval procedure by ID for a workflow.
 func (r *WorkflowApprovalProcedureService) Get(ctx context.Context, id string, query WorkflowApprovalProcedureGetParams, opts ...option.RequestOption) (res *WorkflowApprovalProcedure, err error) {
 	var env WorkflowApprovalProcedureGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if query.WorkflowID == "" {
 		err = errors.New("missing required workflow_id parameter")
 		return
@@ -75,7 +76,7 @@ func (r *WorkflowApprovalProcedureService) Get(ctx context.Context, id string, q
 // Update an existing approval procedure for a workflow.
 func (r *WorkflowApprovalProcedureService) Update(ctx context.Context, id string, params WorkflowApprovalProcedureUpdateParams, opts ...option.RequestOption) (res *WorkflowApprovalProcedure, err error) {
 	var env WorkflowApprovalProcedureUpdateResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if params.WorkflowID == "" {
 		err = errors.New("missing required workflow_id parameter")
 		return
@@ -96,7 +97,7 @@ func (r *WorkflowApprovalProcedureService) Update(ctx context.Context, id string
 // List all approval procedures for a workflow.
 func (r *WorkflowApprovalProcedureService) List(ctx context.Context, workflowID string, opts ...option.RequestOption) (res *[]WorkflowApprovalProcedure, err error) {
 	var env WorkflowApprovalProcedureListResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if workflowID == "" {
 		err = errors.New("missing required workflow_id parameter")
 		return
@@ -112,7 +113,7 @@ func (r *WorkflowApprovalProcedureService) List(ctx context.Context, workflowID 
 
 // Delete an approval procedure for a workflow.
 func (r *WorkflowApprovalProcedureService) Delete(ctx context.Context, id string, body WorkflowApprovalProcedureDeleteParams, opts ...option.RequestOption) (res *WorkflowApprovalProcedureDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if body.WorkflowID == "" {
 		err = errors.New("missing required workflow_id parameter")
 		return

@@ -24,7 +24,8 @@ func TestAppResourceEntitlementNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppResourceEntitlements.New(context.TODO(), serval.AppResourceEntitlementNewParams{
 		AccessPolicyID:     serval.String("accessPolicyId"),
@@ -54,7 +55,8 @@ func TestAppResourceEntitlementGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppResourceEntitlements.Get(context.TODO(), "id")
 	if err != nil {
@@ -77,7 +79,8 @@ func TestAppResourceEntitlementUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppResourceEntitlements.Update(
 		context.TODO(),
@@ -110,7 +113,8 @@ func TestAppResourceEntitlementListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppResourceEntitlements.List(context.TODO(), serval.AppResourceEntitlementListParams{
 		ResourceID: serval.String("resourceId"),
@@ -135,7 +139,8 @@ func TestAppResourceEntitlementDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppResourceEntitlements.Delete(context.TODO(), "id")
 	if err != nil {

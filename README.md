@@ -1,11 +1,13 @@
 # Serval Go API Library
 
+<!-- x-release-please-start-version -->
+
 <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go"><img src="https://pkg.go.dev/badge/github.com/ServalHQ/serval-go.svg" alt="Go Reference"></a>
+
+<!-- x-release-please-end -->
 
 The Serval Go library provides convenient access to the [Serval REST API](https://serval.com)
 from applications written in Go.
-
-It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
@@ -24,14 +26,14 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/ServalHQ/serval-go@v0.1.0'
+go get -u 'github.com/ServalHQ/serval-go@v0.2.0'
 ```
 
 <!-- x-release-please-end -->
 
 ## Requirements
 
-This library requires Go 1.18+.
+This library requires Go 1.22+.
 
 ## Usage
 
@@ -50,7 +52,8 @@ import (
 
 func main() {
 	client := serval.NewClient(
-		option.WithAPIKey("My API Key"), // defaults to os.LookupEnv("SERVAL_API_KEY")
+		option.WithClientID("My Client ID"),         // defaults to os.LookupEnv("SERVAL_CLIENT_ID")
+		option.WithClientSecret("My Client Secret"), // defaults to os.LookupEnv("SERVAL_CLIENT_SECRET")
 	)
 	accessPolicy, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
 		Name: serval.String("Example Access Policy"),

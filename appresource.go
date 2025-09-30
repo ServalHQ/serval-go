@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
 	"github.com/ServalHQ/serval-go/internal/apiquery"
@@ -39,7 +40,7 @@ func NewAppResourceService(opts ...option.RequestOption) (r AppResourceService) 
 // Create a new app resource for an app instance.
 func (r *AppResourceService) New(ctx context.Context, body AppResourceNewParams, opts ...option.RequestOption) (res *AppResource, err error) {
 	var env AppResourceNewResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/app-resources"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
@@ -52,7 +53,7 @@ func (r *AppResourceService) New(ctx context.Context, body AppResourceNewParams,
 // Get a specific app resource by ID.
 func (r *AppResourceService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *AppResource, err error) {
 	var env AppResourceGetResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -69,7 +70,7 @@ func (r *AppResourceService) Get(ctx context.Context, id string, opts ...option.
 // Update an existing app resource.
 func (r *AppResourceService) Update(ctx context.Context, id string, body AppResourceUpdateParams, opts ...option.RequestOption) (res *AppResource, err error) {
 	var env AppResourceUpdateResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -86,7 +87,7 @@ func (r *AppResourceService) Update(ctx context.Context, id string, body AppReso
 // List all app resources for an app instance.
 func (r *AppResourceService) List(ctx context.Context, query AppResourceListParams, opts ...option.RequestOption) (res *[]AppResource, err error) {
 	var env AppResourceListResponseEnvelope
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v2/app-resources"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
 	if err != nil {
@@ -98,7 +99,7 @@ func (r *AppResourceService) List(ctx context.Context, query AppResourceListPara
 
 // Delete an app resource.
 func (r *AppResourceService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *AppResourceDeleteResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
