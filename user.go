@@ -93,18 +93,6 @@ func (r *UserService) List(ctx context.Context, query UserListParams, opts ...op
 	return
 }
 
-// Delete a user.
-func (r *UserService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *UserDeleteResponse, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return
-	}
-	path := fmt.Sprintf("v2/users/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
-}
-
 type User struct {
 	ID        string `json:"id"`
 	AvatarURL string `json:"avatarUrl"`
@@ -339,8 +327,6 @@ func (r UserListResponse) RawJSON() string { return r.JSON.raw }
 func (r *UserListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-type UserDeleteResponse = any
 
 type UserNewParams struct {
 	Email     param.Opt[string] `json:"email,omitzero"`

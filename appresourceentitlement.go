@@ -97,18 +97,6 @@ func (r *AppResourceEntitlementService) List(ctx context.Context, query AppResou
 	return
 }
 
-// Delete an app resource entitlement.
-func (r *AppResourceEntitlementService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *AppResourceEntitlementDeleteResponse, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return
-	}
-	path := fmt.Sprintf("v2/app-resource-entitlements/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
-}
-
 type AppResourceEntitlement struct {
 	// The ID of the entitlement.
 	ID string `json:"id"`
@@ -143,8 +131,6 @@ func (r AppResourceEntitlement) RawJSON() string { return r.JSON.raw }
 func (r *AppResourceEntitlement) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-type AppResourceEntitlementDeleteResponse = any
 
 type AppResourceEntitlementNewParams struct {
 	// The default access policy for the entitlement (optional).

@@ -99,18 +99,6 @@ func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListPa
 	return
 }
 
-// Delete an access policy.
-func (r *AccessPolicyService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *AccessPolicyDeleteResponse, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return
-	}
-	path := fmt.Sprintf("v2/access-policies/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
-}
-
 type AccessPolicy struct {
 	// The ID of the access policy.
 	ID string `json:"id"`
@@ -139,8 +127,6 @@ func (r AccessPolicy) RawJSON() string { return r.JSON.raw }
 func (r *AccessPolicy) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-type AccessPolicyDeleteResponse = any
 
 type AccessPolicyNewParams struct {
 	// The maximum number of minutes that access can be granted for (optional).
