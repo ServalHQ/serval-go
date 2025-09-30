@@ -3,7 +3,6 @@
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicy">AccessPolicy</a>
-- <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyDeleteResponse">AccessPolicyDeleteResponse</a>
 
 Methods:
 
@@ -11,7 +10,6 @@ Methods:
 - <code title="get /v2/access-policies/{id}">client.AccessPolicies.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicy">AccessPolicy</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="put /v2/access-policies/{id}">client.AccessPolicies.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyUpdateParams">AccessPolicyUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicy">AccessPolicy</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v2/access-policies">client.AccessPolicies.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyListParams">AccessPolicyListParams</a>) ([]<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicy">AccessPolicy</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="delete /v2/access-policies/{id}">client.AccessPolicies.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyDeleteResponse">AccessPolicyDeleteResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 ## ApprovalProcedures
 
@@ -33,7 +31,6 @@ Methods:
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Workflow">Workflow</a>
-- <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#WorkflowDeleteResponse">WorkflowDeleteResponse</a>
 
 Methods:
 
@@ -41,7 +38,6 @@ Methods:
 - <code title="get /v2/workflows/{id}">client.Workflows.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#WorkflowService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Workflow">Workflow</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="put /v2/workflows/{id}">client.Workflows.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#WorkflowService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#WorkflowUpdateParams">WorkflowUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Workflow">Workflow</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v2/workflows">client.Workflows.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#WorkflowService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#WorkflowListParams">WorkflowListParams</a>) ([]<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Workflow">Workflow</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="delete /v2/workflows/{id}">client.Workflows.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#WorkflowService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#WorkflowDeleteResponse">WorkflowDeleteResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 ## ApprovalProcedures
 
@@ -63,7 +59,6 @@ Methods:
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstance">AppInstance</a>
-- <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstanceDeleteResponse">AppInstanceDeleteResponse</a>
 
 Methods:
 
@@ -71,14 +66,12 @@ Methods:
 - <code title="get /v2/app-instances/{id}">client.AppInstances.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstanceService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstance">AppInstance</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="put /v2/app-instances/{id}">client.AppInstances.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstanceService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstanceUpdateParams">AppInstanceUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstance">AppInstance</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v2/app-instances">client.AppInstances.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstanceService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstanceListParams">AppInstanceListParams</a>) ([]<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstance">AppInstance</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="delete /v2/app-instances/{id}">client.AppInstances.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstanceService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppInstanceDeleteResponse">AppInstanceDeleteResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # AppResources
 
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResource">AppResource</a>
-- <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceDeleteResponse">AppResourceDeleteResponse</a>
 
 Methods:
 
@@ -86,14 +79,12 @@ Methods:
 - <code title="get /v2/app-resources/{id}">client.AppResources.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResource">AppResource</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="put /v2/app-resources/{id}">client.AppResources.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceUpdateParams">AppResourceUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResource">AppResource</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v2/app-resources">client.AppResources.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceListParams">AppResourceListParams</a>) ([]<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResource">AppResource</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="delete /v2/app-resources/{id}">client.AppResources.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceDeleteResponse">AppResourceDeleteResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # AppResourceEntitlements
 
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlement">AppResourceEntitlement</a>
-- <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlementDeleteResponse">AppResourceEntitlementDeleteResponse</a>
 
 Methods:
 
@@ -101,7 +92,6 @@ Methods:
 - <code title="get /v2/app-resource-entitlements/{id}">client.AppResourceEntitlements.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlementService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlement">AppResourceEntitlement</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="put /v2/app-resource-entitlements/{id}">client.AppResourceEntitlements.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlementService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlementUpdateParams">AppResourceEntitlementUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlement">AppResourceEntitlement</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v2/app-resource-entitlements">client.AppResourceEntitlements.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlementService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlementListParams">AppResourceEntitlementListParams</a>) ([]<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlement">AppResourceEntitlement</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="delete /v2/app-resource-entitlements/{id}">client.AppResourceEntitlements.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlementService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AppResourceEntitlementDeleteResponse">AppResourceEntitlementDeleteResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Users
 
@@ -109,7 +99,6 @@ Response Types:
 
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#User">User</a>
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#UserListResponse">UserListResponse</a>
-- <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#UserDeleteResponse">UserDeleteResponse</a>
 
 Methods:
 
@@ -117,7 +106,6 @@ Methods:
 - <code title="get /v2/users/{id}">client.Users.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#UserService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#User">User</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="put /v2/users/{id}">client.Users.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#UserService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#UserUpdateParams">UserUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#User">User</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v2/users">client.Users.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#UserService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#UserListParams">UserListParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#UserListResponse">UserListResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="delete /v2/users/{id}">client.Users.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#UserService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#UserDeleteResponse">UserDeleteResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Groups
 
@@ -125,7 +113,6 @@ Response Types:
 
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Group">Group</a>
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#GroupListResponse">GroupListResponse</a>
-- <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#GroupDeleteResponse">GroupDeleteResponse</a>
 
 Methods:
 
@@ -133,7 +120,6 @@ Methods:
 - <code title="get /v2/groups/{id}">client.Groups.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#GroupService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Group">Group</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="put /v2/groups/{id}">client.Groups.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#GroupService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#GroupUpdateParams">GroupUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Group">Group</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v2/groups">client.Groups.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#GroupService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#GroupListParams">GroupListParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#GroupListResponse">GroupListResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="delete /v2/groups/{id}">client.Groups.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#GroupService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#GroupDeleteResponse">GroupDeleteResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Teams
 
@@ -141,7 +127,6 @@ Response Types:
 
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Team">Team</a>
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamListResponse">TeamListResponse</a>
-- <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamDeleteResponse">TeamDeleteResponse</a>
 
 Methods:
 
@@ -149,4 +134,3 @@ Methods:
 - <code title="get /v2/teams/{id}">client.Teams.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Team">Team</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="put /v2/teams/{id}">client.Teams.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamUpdateParams">TeamUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Team">Team</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v2/teams">client.Teams.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamListParams">TeamListParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamListResponse">TeamListResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="delete /v2/teams/{id}">client.Teams.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamDeleteResponse">TeamDeleteResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
