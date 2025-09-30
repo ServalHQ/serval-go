@@ -47,10 +47,14 @@ import (
 	"fmt"
 
 	"github.com/ServalHQ/serval-go"
+	"github.com/ServalHQ/serval-go/option"
 )
 
 func main() {
-	client := serval.NewClient()
+	client := serval.NewClient(
+		option.WithClientID("My Client ID"),         // defaults to os.LookupEnv("SERVAL_CLIENT_ID")
+		option.WithClientSecret("My Client Secret"), // defaults to os.LookupEnv("SERVAL_CLIENT_SECRET")
+	)
 	accessPolicy, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
 		Name: serval.String("Example Access Policy"),
 	})
