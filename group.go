@@ -93,6 +93,18 @@ func (r *GroupService) List(ctx context.Context, query GroupListParams, opts ...
 	return
 }
 
+// Delete a group.
+func (r *GroupService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *GroupDeleteResponse, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	path := fmt.Sprintf("v2/groups/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
+	return
+}
+
 type Group struct {
 	ID string `json:"id"`
 	// A Timestamp represents a point in time independent of any time zone or local
@@ -312,6 +324,8 @@ func (r GroupListResponse) RawJSON() string { return r.JSON.raw }
 func (r *GroupListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+type GroupDeleteResponse = any
 
 type GroupNewParams struct {
 	Name    param.Opt[string] `json:"name,omitzero"`

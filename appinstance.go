@@ -97,6 +97,18 @@ func (r *AppInstanceService) List(ctx context.Context, query AppInstanceListPara
 	return
 }
 
+// Delete an app instance.
+func (r *AppInstanceService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *AppInstanceDeleteResponse, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	path := fmt.Sprintf("v2/app-instances/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
+	return
+}
+
 type AppInstance struct {
 	// The ID of the app instance.
 	ID string `json:"id"`
@@ -131,6 +143,8 @@ func (r AppInstance) RawJSON() string { return r.JSON.raw }
 func (r *AppInstance) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+type AppInstanceDeleteResponse = any
 
 type AppInstanceNewParams struct {
 	// The default access policy for the app instance (optional).
