@@ -3,6 +3,7 @@
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicy">AccessPolicy</a>
+- <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyDeleteResponse">AccessPolicyDeleteResponse</a>
 
 Methods:
 
@@ -10,6 +11,7 @@ Methods:
 - <code title="get /v2/access-policies/{id}">client.AccessPolicies.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicy">AccessPolicy</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="put /v2/access-policies/{id}">client.AccessPolicies.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyUpdateParams">AccessPolicyUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicy">AccessPolicy</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v2/access-policies">client.AccessPolicies.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyListParams">AccessPolicyListParams</a>) ([]<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicy">AccessPolicy</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="delete /v2/access-policies/{id}">client.AccessPolicies.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#AccessPolicyDeleteResponse">AccessPolicyDeleteResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 ## ApprovalProcedures
 
