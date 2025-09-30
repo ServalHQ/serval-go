@@ -268,16 +268,20 @@ func WithEnvironmentProduction() RequestOption {
 
 // WithClientID returns a RequestOption that sets the client setting "client_id".
 func WithClientID(value string) RequestOption {
+	oauthState := requestconfig.OAuth2Cache["/v1/auth/token"]
 	return requestconfig.RequestOptionFunc(func(r *requestconfig.RequestConfig) error {
 		r.ClientID = value
+		r.OAuth2State = oauthState
 		return nil
 	})
 }
 
 // WithClientSecret returns a RequestOption that sets the client setting "client_secret".
 func WithClientSecret(value string) RequestOption {
+	oauthState := requestconfig.OAuth2Cache["/v1/auth/token"]
 	return requestconfig.RequestOptionFunc(func(r *requestconfig.RequestConfig) error {
 		r.ClientSecret = value
+		r.OAuth2State = oauthState
 		return nil
 	})
 }

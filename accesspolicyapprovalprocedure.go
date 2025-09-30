@@ -152,22 +152,19 @@ type AccessPolicyApprovalProcedureStep struct {
 	ID string `json:"id"`
 	// Whether the step can be approved by the requester themselves.
 	AllowSelfApproval bool `json:"allowSelfApproval"`
+	// If step_type is CUSTOM_WORKFLOW, this is the workflow ID to execute
+	CustomWorkflowID string `json:"customWorkflowId"`
 	// The IDs of the Serval groups that can approve the step.
 	ServalGroupIDs []string `json:"servalGroupIds"`
 	// The IDs of the specific users that can approve the step.
 	SpecificUserIDs []string `json:"specificUserIds"`
-	// The type of approval step.
-	//
-	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
-	// "SERVAL_GROUPS".
-	StepType string `json:"stepType"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                respjson.Field
 		AllowSelfApproval respjson.Field
+		CustomWorkflowID  respjson.Field
 		ServalGroupIDs    respjson.Field
 		SpecificUserIDs   respjson.Field
-		StepType          respjson.Field
 		ExtraFields       map[string]respjson.Field
 		raw               string
 	} `json:"-"`
@@ -200,15 +197,12 @@ type AccessPolicyApprovalProcedureNewParamsStep struct {
 	ID param.Opt[string] `json:"id,omitzero"`
 	// Whether the step can be approved by the requester themselves.
 	AllowSelfApproval param.Opt[bool] `json:"allowSelfApproval,omitzero"`
+	// If step_type is CUSTOM_WORKFLOW, this is the workflow ID to execute
+	CustomWorkflowID param.Opt[string] `json:"customWorkflowId,omitzero"`
 	// The IDs of the Serval groups that can approve the step.
 	ServalGroupIDs []string `json:"servalGroupIds,omitzero"`
 	// The IDs of the specific users that can approve the step.
 	SpecificUserIDs []string `json:"specificUserIds,omitzero"`
-	// The type of approval step.
-	//
-	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
-	// "SERVAL_GROUPS".
-	StepType string `json:"stepType,omitzero"`
 	paramObj
 }
 
@@ -218,12 +212,6 @@ func (r AccessPolicyApprovalProcedureNewParamsStep) MarshalJSON() (data []byte, 
 }
 func (r *AccessPolicyApprovalProcedureNewParamsStep) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
-}
-
-func init() {
-	apijson.RegisterFieldValidator[AccessPolicyApprovalProcedureNewParamsStep](
-		"stepType", "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS", "SERVAL_GROUPS",
-	)
 }
 
 type AccessPolicyApprovalProcedureNewResponseEnvelope struct {
@@ -287,15 +275,12 @@ type AccessPolicyApprovalProcedureUpdateParamsStep struct {
 	ID param.Opt[string] `json:"id,omitzero"`
 	// Whether the step can be approved by the requester themselves.
 	AllowSelfApproval param.Opt[bool] `json:"allowSelfApproval,omitzero"`
+	// If step_type is CUSTOM_WORKFLOW, this is the workflow ID to execute
+	CustomWorkflowID param.Opt[string] `json:"customWorkflowId,omitzero"`
 	// The IDs of the Serval groups that can approve the step.
 	ServalGroupIDs []string `json:"servalGroupIds,omitzero"`
 	// The IDs of the specific users that can approve the step.
 	SpecificUserIDs []string `json:"specificUserIds,omitzero"`
-	// The type of approval step.
-	//
-	// Any of "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS",
-	// "SERVAL_GROUPS".
-	StepType string `json:"stepType,omitzero"`
 	paramObj
 }
 
@@ -305,12 +290,6 @@ func (r AccessPolicyApprovalProcedureUpdateParamsStep) MarshalJSON() (data []byt
 }
 func (r *AccessPolicyApprovalProcedureUpdateParamsStep) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
-}
-
-func init() {
-	apijson.RegisterFieldValidator[AccessPolicyApprovalProcedureUpdateParamsStep](
-		"stepType", "APPROVAL_PROCEDURE_STEP_TYPE_UNSPECIFIED", "SPECIFIC_USERS", "SERVAL_GROUPS",
-	)
 }
 
 type AccessPolicyApprovalProcedureUpdateResponseEnvelope struct {
