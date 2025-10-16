@@ -18,6 +18,7 @@ import (
 type Client struct {
 	Options                 []option.RequestOption
 	AccessPolicies          AccessPolicyService
+	Guidances               GuidanceService
 	Workflows               WorkflowService
 	AppInstances            AppInstanceService
 	AppResources            AppResourceService
@@ -54,6 +55,7 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r = Client{Options: opts}
 
 	r.AccessPolicies = NewAccessPolicyService(opts...)
+	r.Guidances = NewGuidanceService(opts...)
 	r.Workflows = NewWorkflowService(opts...)
 	r.AppInstances = NewAppInstanceService(opts...)
 	r.AppResources = NewAppResourceService(opts...)
