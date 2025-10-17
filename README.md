@@ -6,7 +6,7 @@
 
 <!-- x-release-please-end -->
 
-The Serval Go library provides convenient access to the [Serval REST API](https://serval.com)
+The Serval Go library provides convenient access to the [Serval REST API](https://docs.serval.com)
 from applications written in Go.
 
 ## Installation
@@ -26,7 +26,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/ServalHQ/serval-go@v0.4.0'
+go get -u 'github.com/ServalHQ/serval-go@v0.5.0'
 ```
 
 <!-- x-release-please-end -->
