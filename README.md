@@ -6,7 +6,7 @@
 
 <!-- x-release-please-end -->
 
-The Serval Go library provides convenient access to the [Serval REST API](https://serval.com)
+The Serval Go library provides convenient access to the [Serval REST API](https://docs.serval.com)
 from applications written in Go.
 
 ## Installation
