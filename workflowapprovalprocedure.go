@@ -152,7 +152,8 @@ type WorkflowApprovalProcedureStep struct {
 	ID string `json:"id"`
 	// Whether the step can be approved by the requester themselves.
 	AllowSelfApproval bool `json:"allowSelfApproval"`
-	// If step_type is CUSTOM_WORKFLOW, this is the workflow ID to execute
+	// A workflow ID to execute to determine the approvers for this step (or to
+	// auto-approve the step).
 	CustomWorkflowID string `json:"customWorkflowId"`
 	// The IDs of the Serval groups that can approve the step.
 	ServalGroupIDs []string `json:"servalGroupIds"`
@@ -197,7 +198,8 @@ type WorkflowApprovalProcedureNewParamsStep struct {
 	ID param.Opt[string] `json:"id,omitzero"`
 	// Whether the step can be approved by the requester themselves.
 	AllowSelfApproval param.Opt[bool] `json:"allowSelfApproval,omitzero"`
-	// If step_type is CUSTOM_WORKFLOW, this is the workflow ID to execute
+	// A workflow ID to execute to determine the approvers for this step (or to
+	// auto-approve the step).
 	CustomWorkflowID param.Opt[string] `json:"customWorkflowId,omitzero"`
 	// The IDs of the Serval groups that can approve the step.
 	ServalGroupIDs []string `json:"servalGroupIds,omitzero"`
@@ -275,7 +277,8 @@ type WorkflowApprovalProcedureUpdateParamsStep struct {
 	ID param.Opt[string] `json:"id,omitzero"`
 	// Whether the step can be approved by the requester themselves.
 	AllowSelfApproval param.Opt[bool] `json:"allowSelfApproval,omitzero"`
-	// If step_type is CUSTOM_WORKFLOW, this is the workflow ID to execute
+	// A workflow ID to execute to determine the approvers for this step (or to
+	// auto-approve the step).
 	CustomWorkflowID param.Opt[string] `json:"customWorkflowId,omitzero"`
 	// The IDs of the Serval groups that can approve the step.
 	ServalGroupIDs []string `json:"servalGroupIds,omitzero"`
