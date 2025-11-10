@@ -116,6 +116,11 @@ type AppResourceEntitlement struct {
 	AccessPolicyID string `json:"accessPolicyId,nullable"`
 	// A description of the entitlement.
 	Description string `json:"description"`
+	// The IDs of entitlements that must be provisioned before this entitlement can be
+	// provisioned (prerequisite entitlements).
+	LinkedEntitlementIDs []string `json:"linkedEntitlementIds"`
+	// The manual provisioning assignees (users and groups) for this entitlement.
+	ManualProvisioningAssignees []AppResourceEntitlementManualProvisioningAssignee `json:"manualProvisioningAssignees"`
 	// The name of the entitlement.
 	Name string `json:"name"`
 	// The provisioning method for the entitlement.
@@ -126,21 +131,47 @@ type AppResourceEntitlement struct {
 	ResourceID string `json:"resourceId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		ID                 respjson.Field
-		AccessPolicyID     respjson.Field
-		Description        respjson.Field
-		Name               respjson.Field
-		ProvisioningMethod respjson.Field
-		RequestsEnabled    respjson.Field
-		ResourceID         respjson.Field
-		ExtraFields        map[string]respjson.Field
-		raw                string
+		ID                          respjson.Field
+		AccessPolicyID              respjson.Field
+		Description                 respjson.Field
+		LinkedEntitlementIDs        respjson.Field
+		ManualProvisioningAssignees respjson.Field
+		Name                        respjson.Field
+		ProvisioningMethod          respjson.Field
+		RequestsEnabled             respjson.Field
+		ResourceID                  respjson.Field
+		ExtraFields                 map[string]respjson.Field
+		raw                         string
 	} `json:"-"`
 }
 
 // Returns the unmodified JSON received from the API
 func (r AppResourceEntitlement) RawJSON() string { return r.JSON.raw }
 func (r *AppResourceEntitlement) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppResourceEntitlementManualProvisioningAssignee struct {
+	// The ID of the user or group.
+	AssigneeID string `json:"assigneeId"`
+	// The type of assignee.
+	//
+	// Any of "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
+	// "MANUAL_PROVISIONING_ASSIGNEE_TYPE_USER",
+	// "MANUAL_PROVISIONING_ASSIGNEE_TYPE_GROUP".
+	AssigneeType string `json:"assigneeType"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		AssigneeID   respjson.Field
+		AssigneeType respjson.Field
+		ExtraFields  map[string]respjson.Field
+		raw          string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AppResourceEntitlementManualProvisioningAssignee) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceEntitlementManualProvisioningAssignee) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -159,6 +190,9 @@ type AppResourceEntitlementNewParams struct {
 	RequestsEnabled param.Opt[bool] `json:"requestsEnabled,omitzero"`
 	// The ID of the resource.
 	ResourceID param.Opt[string] `json:"resourceId,omitzero"`
+	// The IDs of entitlements that must be provisioned before this entitlement can be
+	// provisioned (optional).
+	LinkedEntitlementIDs []string `json:"linkedEntitlementIds,omitzero"`
 	paramObj
 }
 
@@ -215,6 +249,12 @@ type AppResourceEntitlementUpdateParams struct {
 	ProvisioningMethod param.Opt[string] `json:"provisioningMethod,omitzero"`
 	// Whether requests are enabled for the entitlement.
 	RequestsEnabled param.Opt[bool] `json:"requestsEnabled,omitzero"`
+	// The IDs of entitlements that must be provisioned before this entitlement can be
+	// provisioned (optional).
+	LinkedEntitlementIDs []string `json:"linkedEntitlementIds,omitzero"`
+	// The manual provisioning assignees (users and groups) for this entitlement
+	// (optional, only used when provisioning_method is "manual").
+	ManualProvisioningAssignees []AppResourceEntitlementUpdateParamsManualProvisioningAssignee `json:"manualProvisioningAssignees,omitzero"`
 	paramObj
 }
 
@@ -224,6 +264,32 @@ func (r AppResourceEntitlementUpdateParams) MarshalJSON() (data []byte, err erro
 }
 func (r *AppResourceEntitlementUpdateParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppResourceEntitlementUpdateParamsManualProvisioningAssignee struct {
+	// The ID of the user or group.
+	AssigneeID param.Opt[string] `json:"assigneeId,omitzero"`
+	// The type of assignee.
+	//
+	// Any of "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
+	// "MANUAL_PROVISIONING_ASSIGNEE_TYPE_USER",
+	// "MANUAL_PROVISIONING_ASSIGNEE_TYPE_GROUP".
+	AssigneeType string `json:"assigneeType,omitzero"`
+	paramObj
+}
+
+func (r AppResourceEntitlementUpdateParamsManualProvisioningAssignee) MarshalJSON() (data []byte, err error) {
+	type shadow AppResourceEntitlementUpdateParamsManualProvisioningAssignee
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *AppResourceEntitlementUpdateParamsManualProvisioningAssignee) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func init() {
+	apijson.RegisterFieldValidator[AppResourceEntitlementUpdateParamsManualProvisioningAssignee](
+		"assigneeType", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_USER", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_GROUP",
+	)
 }
 
 type AppResourceEntitlementUpdateResponseEnvelope struct {

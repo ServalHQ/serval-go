@@ -28,12 +28,13 @@ func TestAppResourceEntitlementNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppResourceEntitlements.New(context.TODO(), serval.AppResourceEntitlementNewParams{
-		AccessPolicyID:     serval.String("accessPolicyId"),
-		Description:        serval.String("description"),
-		Name:               serval.String("name"),
-		ProvisioningMethod: serval.String("provisioningMethod"),
-		RequestsEnabled:    serval.Bool(true),
-		ResourceID:         serval.String("resourceId"),
+		AccessPolicyID:       serval.String("accessPolicyId"),
+		Description:          serval.String("description"),
+		LinkedEntitlementIDs: []string{"string"},
+		Name:                 serval.String("name"),
+		ProvisioningMethod:   serval.String("provisioningMethod"),
+		RequestsEnabled:      serval.Bool(true),
+		ResourceID:           serval.String("resourceId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -86,8 +87,13 @@ func TestAppResourceEntitlementUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		serval.AppResourceEntitlementUpdateParams{
-			AccessPolicyID:     serval.String("accessPolicyId"),
-			Description:        serval.String("description"),
+			AccessPolicyID:       serval.String("accessPolicyId"),
+			Description:          serval.String("description"),
+			LinkedEntitlementIDs: []string{"string"},
+			ManualProvisioningAssignees: []serval.AppResourceEntitlementUpdateParamsManualProvisioningAssignee{{
+				AssigneeID:   serval.String("assigneeId"),
+				AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
+			}},
 			Name:               serval.String("name"),
 			ProvisioningMethod: serval.String("provisioningMethod"),
 			RequestsEnabled:    serval.Bool(true),

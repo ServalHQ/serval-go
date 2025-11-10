@@ -120,6 +120,8 @@ type AccessPolicy struct {
 	MaxAccessMinutes int64 `json:"maxAccessMinutes"`
 	// The name of the access policy.
 	Name string `json:"name"`
+	// The recommended duration in minutes for access requests (optional).
+	RecommendedAccessMinutes int64 `json:"recommendedAccessMinutes,nullable"`
 	// Whether a business justification is required when requesting access.
 	RequireBusinessJustification bool `json:"requireBusinessJustification"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -128,6 +130,7 @@ type AccessPolicy struct {
 		Description                  respjson.Field
 		MaxAccessMinutes             respjson.Field
 		Name                         respjson.Field
+		RecommendedAccessMinutes     respjson.Field
 		RequireBusinessJustification respjson.Field
 		ExtraFields                  map[string]respjson.Field
 		raw                          string
@@ -145,6 +148,8 @@ type AccessPolicyDeleteResponse = any
 type AccessPolicyNewParams struct {
 	// The maximum number of minutes that access can be granted for (optional).
 	MaxAccessMinutes param.Opt[int64] `json:"maxAccessMinutes,omitzero"`
+	// The recommended duration in minutes for access requests (optional).
+	RecommendedAccessMinutes param.Opt[int64] `json:"recommendedAccessMinutes,omitzero"`
 	// Whether a business justification is required when requesting access (optional).
 	RequireBusinessJustification param.Opt[bool] `json:"requireBusinessJustification,omitzero"`
 	// A description of the access policy.
@@ -199,6 +204,8 @@ func (r *AccessPolicyGetResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type AccessPolicyUpdateParams struct {
+	// The recommended duration in minutes for access requests (optional).
+	RecommendedAccessMinutes param.Opt[int64] `json:"recommendedAccessMinutes,omitzero"`
 	// A description of the access policy.
 	Description param.Opt[string] `json:"description,omitzero"`
 	// The maximum number of minutes that access can be granted for.
