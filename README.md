@@ -6,7 +6,7 @@
 
 <!-- x-release-please-end -->
 
-The Serval Go library provides convenient access to the [Serval REST API](https://serval.com)
+The Serval Go library provides convenient access to the [Serval REST API](https://docs.serval.com)
 from applications written in Go.
 
 ## Installation
@@ -26,7 +26,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/ServalHQ/serval-go@v0.4.0'
+go get -u 'github.com/ServalHQ/serval-go@v0.5.0'
 ```
 
 <!-- x-release-please-end -->
@@ -47,14 +47,10 @@ import (
 	"fmt"
 
 	"github.com/ServalHQ/serval-go"
-	"github.com/ServalHQ/serval-go/option"
 )
 
 func main() {
-	client := serval.NewClient(
-		option.WithClientID("My Client ID"),         // defaults to os.LookupEnv("SERVAL_CLIENT_ID")
-		option.WithClientSecret("My Client Secret"), // defaults to os.LookupEnv("SERVAL_CLIENT_SECRET")
-	)
+	client := serval.NewClient()
 	accessPolicy, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
 		Name: serval.String("Example Access Policy"),
 	})
@@ -126,7 +122,7 @@ custom := param.Override[serval.FooParams](12)
 
 ### Request unions
 
-Unions are represented as a struct with fields prefixed by "Of" for each of it's variants,
+Unions are represented as a struct with fields prefixed by "Of" for each of its variants,
 only one field can be non-zero. The non-zero field will be serialized.
 
 Sub-properties of the union can be accessed via methods on the union struct.

@@ -31,6 +31,7 @@ func TestAccessPolicyNewWithOptionalParams(t *testing.T) {
 		Description:                  serval.String("description"),
 		MaxAccessMinutes:             serval.Int(0),
 		Name:                         serval.String("name"),
+		RecommendedAccessMinutes:     serval.Int(0),
 		RequireBusinessJustification: serval.Bool(true),
 		TeamID:                       serval.String("teamId"),
 	})
@@ -88,6 +89,7 @@ func TestAccessPolicyUpdateWithOptionalParams(t *testing.T) {
 			Description:                  serval.String("description"),
 			MaxAccessMinutes:             serval.Int(0),
 			Name:                         serval.String("name"),
+			RecommendedAccessMinutes:     serval.Int(0),
 			RequireBusinessJustification: serval.Bool(true),
 		},
 	)

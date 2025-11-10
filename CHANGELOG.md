@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.5.0 (2025-11-10)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/ServalHQ/serval-go/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* **api:** manual updates ([4e73c79](https://github.com/ServalHQ/serval-go/commit/4e73c79a78f32e8f0f0853bc28233f6046f4a912))
+* **api:** manual updates ([25bb480](https://github.com/ServalHQ/serval-go/commit/25bb4800c125534a054b269c65e1658106806aac))
+
+
+### Chores
+
+* **internal:** grammar fix (it's -&gt; its) ([e191ec8](https://github.com/ServalHQ/serval-go/commit/e191ec87af7f9fb84812def38f6cfe36bf8f998e))
+
 ## 0.4.0 (2025-10-16)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/ServalHQ/serval-go/compare/v0.3.0...v0.4.0)
