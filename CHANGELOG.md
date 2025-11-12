@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.1 (2025-11-12)
+
+Full Changelog: [v0.5.0...v0.5.1](https://github.com/ServalHQ/serval-go/compare/v0.5.0...v0.5.1)
+
+### Chores
+
+* bump gjson version ([c92fa8b](https://github.com/ServalHQ/serval-go/commit/c92fa8bac4f3d8dd5ec2bda1733af44a1e092a26))
+
 ## 0.5.0 (2025-11-10)
 
 Full Changelog: [v0.4.0...v0.5.0](https://github.com/ServalHQ/serval-go/compare/v0.4.0...v0.5.0)
