@@ -29,6 +29,7 @@ func TestAppInstanceNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.AppInstances.New(context.TODO(), serval.AppInstanceNewParams{
 		AccessRequestsEnabled: serval.Bool(true),
+		CustomServiceID:       serval.String("customServiceId"),
 		DefaultAccessPolicyID: serval.String("defaultAccessPolicyId"),
 		InstanceID:            serval.String("instanceId"),
 		Name:                  serval.String("name"),

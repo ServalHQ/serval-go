@@ -122,6 +122,10 @@ type Workflow struct {
 	//
 	// Any of "WORKFLOW_EXECUTION_SCOPE_UNSPECIFIED", "TEAM_PRIVATE", "TEAM_PUBLIC".
 	ExecutionScope WorkflowExecutionScope `json:"executionScope"`
+	// Whether there are unpublished changes to the workflow.
+	HasUnpublishedChanges bool `json:"hasUnpublishedChanges"`
+	// Whether the workflow has been published at least once.
+	IsPublished bool `json:"isPublished"`
 	// Whether the workflow is temporary.
 	IsTemporary bool `json:"isTemporary"`
 	// The name of the workflow.
@@ -130,6 +134,8 @@ type Workflow struct {
 	Parameters string `json:"parameters"`
 	// Whether the workflow requires form confirmation.
 	RequireFormConfirmation bool `json:"requireFormConfirmation"`
+	// Tags associated with this workflow.
+	Tags []WorkflowTag `json:"tags"`
 	// The ID of the team that the workflow belongs to.
 	TeamID string `json:"teamId"`
 	// The type of the workflow.
@@ -142,10 +148,13 @@ type Workflow struct {
 		Content                 respjson.Field
 		Description             respjson.Field
 		ExecutionScope          respjson.Field
+		HasUnpublishedChanges   respjson.Field
+		IsPublished             respjson.Field
 		IsTemporary             respjson.Field
 		Name                    respjson.Field
 		Parameters              respjson.Field
 		RequireFormConfirmation respjson.Field
+		Tags                    respjson.Field
 		TeamID                  respjson.Field
 		Type                    respjson.Field
 		ExtraFields             map[string]respjson.Field
@@ -167,6 +176,33 @@ const (
 	WorkflowExecutionScopeTeamPrivate                       WorkflowExecutionScope = "TEAM_PRIVATE"
 	WorkflowExecutionScopeTeamPublic                        WorkflowExecutionScope = "TEAM_PUBLIC"
 )
+
+// A tag that can be associated with workflows.
+type WorkflowTag struct {
+	// The ID of the tag.
+	ID string `json:"id"`
+	// The color of the tag (CSS color string).
+	Color string `json:"color,nullable"`
+	// The icon slug for the tag.
+	IconSlug string `json:"iconSlug,nullable"`
+	// The name of the tag.
+	Name string `json:"name"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID          respjson.Field
+		Color       respjson.Field
+		IconSlug    respjson.Field
+		Name        respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r WorkflowTag) RawJSON() string { return r.JSON.raw }
+func (r *WorkflowTag) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
 
 // The type of the workflow.
 type WorkflowType string

@@ -28,13 +28,27 @@ func TestAppResourceEntitlementNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppResourceEntitlements.New(context.TODO(), serval.AppResourceEntitlementNewParams{
-		AccessPolicyID:       serval.String("accessPolicyId"),
-		Description:          serval.String("description"),
-		LinkedEntitlementIDs: []string{"string"},
-		Name:                 serval.String("name"),
-		ProvisioningMethod:   serval.String("provisioningMethod"),
-		RequestsEnabled:      serval.Bool(true),
-		ResourceID:           serval.String("resourceId"),
+		AccessPolicyID: serval.String("accessPolicyId"),
+		Description:    serval.String("description"),
+		Name:           serval.String("name"),
+		ProvisioningMethod: serval.AppResourceEntitlementNewParamsProvisioningMethod{
+			BuiltinWorkflow: map[string]any{},
+			CustomWorkflow: serval.AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflow{
+				DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
+				ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
+			},
+			LinkedEntitlements: serval.AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlements{
+				LinkedEntitlementIDs: []string{"string"},
+			},
+			Manual: serval.AppResourceEntitlementNewParamsProvisioningMethodManual{
+				Assignees: []serval.AppResourceEntitlementNewParamsProvisioningMethodManualAssignee{{
+					AssigneeID:   serval.String("assigneeId"),
+					AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
+				}},
+			},
+		},
+		RequestsEnabled: serval.Bool(true),
+		ResourceID:      serval.String("resourceId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -87,44 +101,28 @@ func TestAppResourceEntitlementUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		serval.AppResourceEntitlementUpdateParams{
-			AccessPolicyID:       serval.String("accessPolicyId"),
-			Description:          serval.String("description"),
-			LinkedEntitlementIDs: []string{"string"},
-			ManualProvisioningAssignees: []serval.AppResourceEntitlementUpdateParamsManualProvisioningAssignee{{
-				AssigneeID:   serval.String("assigneeId"),
-				AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
-			}},
-			Name:               serval.String("name"),
-			ProvisioningMethod: serval.String("provisioningMethod"),
-			RequestsEnabled:    serval.Bool(true),
+			AccessPolicyID: serval.String("accessPolicyId"),
+			Description:    serval.String("description"),
+			Name:           serval.String("name"),
+			ProvisioningMethod: serval.AppResourceEntitlementUpdateParamsProvisioningMethod{
+				BuiltinWorkflow: map[string]any{},
+				CustomWorkflow: serval.AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflow{
+					DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
+					ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
+				},
+				LinkedEntitlements: serval.AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlements{
+					LinkedEntitlementIDs: []string{"string"},
+				},
+				Manual: serval.AppResourceEntitlementUpdateParamsProvisioningMethodManual{
+					Assignees: []serval.AppResourceEntitlementUpdateParamsProvisioningMethodManualAssignee{{
+						AssigneeID:   serval.String("assigneeId"),
+						AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
+					}},
+				},
+			},
+			RequestsEnabled: serval.Bool(true),
 		},
 	)
-	if err != nil {
-		var apierr *serval.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestAppResourceEntitlementListWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := serval.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
-	)
-	_, err := client.AppResourceEntitlements.List(context.TODO(), serval.AppResourceEntitlementListParams{
-		ResourceID: serval.String("resourceId"),
-	})
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {

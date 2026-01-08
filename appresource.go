@@ -7,11 +7,9 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"net/url"
 	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
-	"github.com/ServalHQ/serval-go/internal/apiquery"
 	"github.com/ServalHQ/serval-go/internal/requestconfig"
 	"github.com/ServalHQ/serval-go/option"
 	"github.com/ServalHQ/serval-go/packages/param"
@@ -77,19 +75,6 @@ func (r *AppResourceService) Update(ctx context.Context, id string, body AppReso
 	}
 	path := fmt.Sprintf("v2/app-resources/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, &env, opts...)
-	if err != nil {
-		return
-	}
-	res = &env.Data
-	return
-}
-
-// List all app resources for an app instance.
-func (r *AppResourceService) List(ctx context.Context, query AppResourceListParams, opts ...option.RequestOption) (res *[]AppResource, err error) {
-	var env AppResourceListResponseEnvelope
-	opts = slices.Concat(r.Options, opts)
-	path := "v2/app-resources"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
 	if err != nil {
 		return
 	}
@@ -233,36 +218,5 @@ type AppResourceUpdateResponseEnvelope struct {
 // Returns the unmodified JSON received from the API
 func (r AppResourceUpdateResponseEnvelope) RawJSON() string { return r.JSON.raw }
 func (r *AppResourceUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AppResourceListParams struct {
-	// The ID of the app instance.
-	AppInstanceID param.Opt[string] `query:"appInstanceId,omitzero" json:"-"`
-	paramObj
-}
-
-// URLQuery serializes [AppResourceListParams]'s query parameters as `url.Values`.
-func (r AppResourceListParams) URLQuery() (v url.Values, err error) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
-type AppResourceListResponseEnvelope struct {
-	// The list of resources.
-	Data []AppResource `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AppResourceListResponseEnvelope) RawJSON() string { return r.JSON.raw }
-func (r *AppResourceListResponseEnvelope) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
