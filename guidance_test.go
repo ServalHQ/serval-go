@@ -115,7 +115,9 @@ func TestGuidanceListWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Guidances.List(context.TODO(), serval.GuidanceListParams{
-		TeamID: serval.String("teamId"),
+		PageSize:  serval.Int(0),
+		PageToken: serval.String("pageToken"),
+		TeamID:    serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error

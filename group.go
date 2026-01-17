@@ -308,14 +308,16 @@ func (r *Group) UnmarshalJSON(data []byte) error {
 }
 
 type GroupListResponse struct {
-	Data       []Group `json:"data"`
-	NextCursor string  `json:"nextCursor,nullable"`
+	// The list of groups.
+	Data []Group `json:"data"`
+	// Token for retrieving the next page of results. Empty if no more results.
+	NextPageToken string `json:"nextPageToken,nullable"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Data        respjson.Field
-		NextCursor  respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
+		Data          respjson.Field
+		NextPageToken respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
 	} `json:"-"`
 }
 
@@ -404,8 +406,10 @@ func (r *GroupUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type GroupListParams struct {
-	Cursor param.Opt[string] `query:"cursor,omitzero" json:"-"`
-	Limit  param.Opt[int64]  `query:"limit,omitzero" json:"-"`
+	// Maximum number of results to return. Default is 5000, maximum is 5000.
+	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
+	// Token for pagination. Leave empty for the first request.
+	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
 	paramObj
 }
 

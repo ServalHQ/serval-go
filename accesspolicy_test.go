@@ -117,7 +117,9 @@ func TestAccessPolicyListWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.List(context.TODO(), serval.AccessPolicyListParams{
-		TeamID: serval.String("teamId"),
+		PageSize:  serval.Int(0),
+		PageToken: serval.String("pageToken"),
+		TeamID:    serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error

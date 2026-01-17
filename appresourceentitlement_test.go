@@ -30,21 +30,12 @@ func TestAppResourceEntitlementNewWithOptionalParams(t *testing.T) {
 	_, err := client.AppResourceEntitlements.New(context.TODO(), serval.AppResourceEntitlementNewParams{
 		AccessPolicyID: serval.String("accessPolicyId"),
 		Description:    serval.String("description"),
+		ExternalData:   serval.String("externalData"),
+		ExternalID:     serval.String("externalId"),
 		Name:           serval.String("name"),
-		ProvisioningMethod: serval.AppResourceEntitlementNewParamsProvisioningMethod{
-			BuiltinWorkflow: map[string]any{},
-			CustomWorkflow: serval.AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflow{
-				DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
-				ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
-			},
-			LinkedEntitlements: serval.AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlements{
-				LinkedEntitlementIDs: []string{"string"},
-			},
-			Manual: serval.AppResourceEntitlementNewParamsProvisioningMethodManual{
-				Assignees: []serval.AppResourceEntitlementNewParamsProvisioningMethodManualAssignee{{
-					AssigneeID:   serval.String("assigneeId"),
-					AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
-				}},
+		ProvisioningMethod: serval.AppResourceEntitlementNewParamsProvisioningMethodUnion{
+			OfBuiltinWorkflow: &serval.AppResourceEntitlementNewParamsProvisioningMethodBuiltinWorkflow{
+				BuiltinWorkflow: map[string]any{},
 			},
 		},
 		RequestsEnabled: serval.Bool(true),
@@ -103,21 +94,12 @@ func TestAppResourceEntitlementUpdateWithOptionalParams(t *testing.T) {
 		serval.AppResourceEntitlementUpdateParams{
 			AccessPolicyID: serval.String("accessPolicyId"),
 			Description:    serval.String("description"),
+			ExternalData:   serval.String("externalData"),
+			ExternalID:     serval.String("externalId"),
 			Name:           serval.String("name"),
-			ProvisioningMethod: serval.AppResourceEntitlementUpdateParamsProvisioningMethod{
-				BuiltinWorkflow: map[string]any{},
-				CustomWorkflow: serval.AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflow{
-					DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
-					ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
-				},
-				LinkedEntitlements: serval.AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlements{
-					LinkedEntitlementIDs: []string{"string"},
-				},
-				Manual: serval.AppResourceEntitlementUpdateParamsProvisioningMethodManual{
-					Assignees: []serval.AppResourceEntitlementUpdateParamsProvisioningMethodManualAssignee{{
-						AssigneeID:   serval.String("assigneeId"),
-						AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
-					}},
+			ProvisioningMethod: serval.AppResourceEntitlementUpdateParamsProvisioningMethodUnion{
+				OfBuiltinWorkflow: &serval.AppResourceEntitlementUpdateParamsProvisioningMethodBuiltinWorkflow{
+					BuiltinWorkflow: map[string]any{},
 				},
 			},
 			RequestsEnabled: serval.Bool(true),

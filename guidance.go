@@ -85,15 +85,10 @@ func (r *GuidanceService) Update(ctx context.Context, id string, body GuidanceUp
 }
 
 // List all guidances for a team.
-func (r *GuidanceService) List(ctx context.Context, query GuidanceListParams, opts ...option.RequestOption) (res *[]Guidance, err error) {
-	var env GuidanceListResponseEnvelope
+func (r *GuidanceService) List(ctx context.Context, query GuidanceListParams, opts ...option.RequestOption) (res *GuidanceListResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v2/guidances"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
-	if err != nil {
-		return
-	}
-	res = &env.Data
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -144,6 +139,26 @@ type Guidance struct {
 // Returns the unmodified JSON received from the API
 func (r Guidance) RawJSON() string { return r.JSON.raw }
 func (r *Guidance) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type GuidanceListResponse struct {
+	// The list of guidances.
+	Data []Guidance `json:"data"`
+	// Token for retrieving the next page of results. Empty if no more results.
+	NextPageToken string `json:"nextPageToken,nullable"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data          respjson.Field
+		NextPageToken respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r GuidanceListResponse) RawJSON() string { return r.JSON.raw }
+func (r *GuidanceListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -243,6 +258,10 @@ func (r *GuidanceUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type GuidanceListParams struct {
+	// Maximum number of results to return. Default is 1000, maximum is 1000.
+	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
+	// Token for pagination. Leave empty for the first request.
+	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
 	// The ID of the team.
 	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
 	paramObj
@@ -254,21 +273,4 @@ func (r GuidanceListParams) URLQuery() (v url.Values, err error) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
-}
-
-type GuidanceListResponseEnvelope struct {
-	// The list of guidances.
-	Data []Guidance `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r GuidanceListResponseEnvelope) RawJSON() string { return r.JSON.raw }
-func (r *GuidanceListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }

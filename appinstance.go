@@ -4,6 +4,7 @@ package serval
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -38,7 +39,7 @@ func NewAppInstanceService(opts ...option.RequestOption) (r AppInstanceService) 
 }
 
 // Create a new app instance for a team.
-func (r *AppInstanceService) New(ctx context.Context, body AppInstanceNewParams, opts ...option.RequestOption) (res *AppInstance, err error) {
+func (r *AppInstanceService) New(ctx context.Context, body AppInstanceNewParams, opts ...option.RequestOption) (res *AppInstanceUnion, err error) {
 	var env AppInstanceNewResponseEnvelope
 	opts = slices.Concat(r.Options, opts)
 	path := "v2/app-instances"
@@ -51,7 +52,7 @@ func (r *AppInstanceService) New(ctx context.Context, body AppInstanceNewParams,
 }
 
 // Get a specific app instance by ID.
-func (r *AppInstanceService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *AppInstance, err error) {
+func (r *AppInstanceService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *AppInstanceUnion, err error) {
 	var env AppInstanceGetResponseEnvelope
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
@@ -68,7 +69,7 @@ func (r *AppInstanceService) Get(ctx context.Context, id string, opts ...option.
 }
 
 // Update an existing app instance.
-func (r *AppInstanceService) Update(ctx context.Context, id string, body AppInstanceUpdateParams, opts ...option.RequestOption) (res *AppInstance, err error) {
+func (r *AppInstanceService) Update(ctx context.Context, id string, body AppInstanceUpdateParams, opts ...option.RequestOption) (res *AppInstanceUnion, err error) {
 	var env AppInstanceUpdateResponseEnvelope
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
@@ -85,15 +86,10 @@ func (r *AppInstanceService) Update(ctx context.Context, id string, body AppInst
 }
 
 // List all app instances for a team.
-func (r *AppInstanceService) List(ctx context.Context, query AppInstanceListParams, opts ...option.RequestOption) (res *[]AppInstance, err error) {
-	var env AppInstanceListResponseEnvelope
+func (r *AppInstanceService) List(ctx context.Context, query AppInstanceListParams, opts ...option.RequestOption) (res *AppInstanceListResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v2/app-instances"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
-	if err != nil {
-		return
-	}
-	res = &env.Data
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -109,36 +105,74 @@ func (r *AppInstanceService) Delete(ctx context.Context, id string, opts ...opti
 	return
 }
 
-// Configuration object.
+// AppInstanceUnion contains all possible properties and values from
+// [AppInstanceCustomServiceID], [AppInstanceService].
 //
-// **Set exactly ONE of:** customServiceId, service
-type AppInstance struct {
+// Use the methods beginning with 'As' to cast the union to one of its variants.
+type AppInstanceUnion struct {
+	// This field is from variant [AppInstanceCustomServiceID].
+	CustomServiceID       string `json:"customServiceId"`
+	ID                    string `json:"id"`
+	AccessRequestsEnabled bool   `json:"accessRequestsEnabled"`
+	DefaultAccessPolicyID string `json:"defaultAccessPolicyId"`
+	InstanceID            string `json:"instanceId"`
+	Name                  string `json:"name"`
+	TeamID                string `json:"teamId"`
+	// This field is from variant [AppInstanceService].
+	Service string `json:"service"`
+	JSON    struct {
+		CustomServiceID       respjson.Field
+		ID                    respjson.Field
+		AccessRequestsEnabled respjson.Field
+		DefaultAccessPolicyID respjson.Field
+		InstanceID            respjson.Field
+		Name                  respjson.Field
+		TeamID                respjson.Field
+		Service               respjson.Field
+		raw                   string
+	} `json:"-"`
+}
+
+func (u AppInstanceUnion) AsCustomServiceID() (v AppInstanceCustomServiceID) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u AppInstanceUnion) AsService() (v AppInstanceService) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+// Returns the unmodified JSON received from the API
+func (u AppInstanceUnion) RawJSON() string { return u.JSON.raw }
+
+func (r *AppInstanceUnion) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppInstanceCustomServiceID struct {
+	// The ID of the custom service (for custom apps).
+	CustomServiceID string `json:"customServiceId,required"`
 	// The ID of the app instance.
 	ID string `json:"id"`
 	// Whether access requests are enabled for the app instance.
 	AccessRequestsEnabled bool `json:"accessRequestsEnabled"`
-	// **Option: custom_service_id** — The ID of the custom service (for custom apps).
-	CustomServiceID string `json:"customServiceId"`
 	// The default access policy for the app instance.
 	DefaultAccessPolicyID string `json:"defaultAccessPolicyId,nullable"`
 	// The instance ID of the app instance.
 	InstanceID string `json:"instanceId"`
 	// The name of the app instance.
 	Name string `json:"name"`
-	// **Option: service** — The service identifier (for built-in services like
-	// "github", "okta", "aws").
-	Service string `json:"service"`
 	// The ID of the Serval team that the app instance belongs to.
 	TeamID string `json:"teamId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
+		CustomServiceID       respjson.Field
 		ID                    respjson.Field
 		AccessRequestsEnabled respjson.Field
-		CustomServiceID       respjson.Field
 		DefaultAccessPolicyID respjson.Field
 		InstanceID            respjson.Field
 		Name                  respjson.Field
-		Service               respjson.Field
 		TeamID                respjson.Field
 		ExtraFields           map[string]respjson.Field
 		raw                   string
@@ -146,44 +180,142 @@ type AppInstance struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r AppInstance) RawJSON() string { return r.JSON.raw }
-func (r *AppInstance) UnmarshalJSON(data []byte) error {
+func (r AppInstanceCustomServiceID) RawJSON() string { return r.JSON.raw }
+func (r *AppInstanceCustomServiceID) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppInstanceService struct {
+	// The service identifier (for built-in services like "github", "okta", "aws").
+	Service string `json:"service,required"`
+	// The ID of the app instance.
+	ID string `json:"id"`
+	// Whether access requests are enabled for the app instance.
+	AccessRequestsEnabled bool `json:"accessRequestsEnabled"`
+	// The default access policy for the app instance.
+	DefaultAccessPolicyID string `json:"defaultAccessPolicyId,nullable"`
+	// The instance ID of the app instance.
+	InstanceID string `json:"instanceId"`
+	// The name of the app instance.
+	Name string `json:"name"`
+	// The ID of the Serval team that the app instance belongs to.
+	TeamID string `json:"teamId"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Service               respjson.Field
+		ID                    respjson.Field
+		AccessRequestsEnabled respjson.Field
+		DefaultAccessPolicyID respjson.Field
+		InstanceID            respjson.Field
+		Name                  respjson.Field
+		TeamID                respjson.Field
+		ExtraFields           map[string]respjson.Field
+		raw                   string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AppInstanceService) RawJSON() string { return r.JSON.raw }
+func (r *AppInstanceService) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppInstanceListResponse struct {
+	// The list of app instances.
+	Data []AppInstanceUnion `json:"data"`
+	// Token for retrieving the next page of results. Empty if no more results.
+	NextPageToken string `json:"nextPageToken,nullable"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data          respjson.Field
+		NextPageToken respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AppInstanceListResponse) RawJSON() string { return r.JSON.raw }
+func (r *AppInstanceListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type AppInstanceDeleteResponse = any
 
 type AppInstanceNewParams struct {
-	// The default access policy for the app instance (optional).
-	DefaultAccessPolicyID param.Opt[string] `json:"defaultAccessPolicyId,omitzero"`
-	// Whether access requests are enabled for the app instance.
-	AccessRequestsEnabled param.Opt[bool] `json:"accessRequestsEnabled,omitzero"`
-	// **Option: custom_service_id** — The ID of a custom service to create the app
-	// instance for.
-	CustomServiceID param.Opt[string] `json:"customServiceId,omitzero"`
-	// The instance ID of the app instance.
-	InstanceID param.Opt[string] `json:"instanceId,omitzero"`
-	// The name of the app instance.
-	Name param.Opt[string] `json:"name,omitzero"`
-	// **Option: service** — The service identifier (for built-in services like
-	// "github", "okta", "aws").
-	Service param.Opt[string] `json:"service,omitzero"`
-	// The ID of the team.
-	TeamID param.Opt[string] `json:"teamId,omitzero"`
+
+	//
+	// Request body variants
+	//
+
+	// This field is a request body variant, only one variant field can be set.
+	OfCustomServiceID *AppInstanceNewParamsBodyCustomServiceID `json:",inline"`
+	// This field is a request body variant, only one variant field can be set.
+	OfService *AppInstanceNewParamsBodyService `json:",inline"`
+
 	paramObj
 }
 
-func (r AppInstanceNewParams) MarshalJSON() (data []byte, err error) {
-	type shadow AppInstanceNewParams
-	return param.MarshalObject(r, (*shadow)(&r))
+func (u AppInstanceNewParams) MarshalJSON() ([]byte, error) {
+	return param.MarshalUnion(u, u.OfCustomServiceID, u.OfService)
 }
 func (r *AppInstanceNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The property CustomServiceID is required.
+type AppInstanceNewParamsBodyCustomServiceID struct {
+	// The ID of a custom service to create the app instance for.
+	CustomServiceID string `json:"customServiceId,required"`
+	// The default access policy for the app instance (optional).
+	DefaultAccessPolicyID param.Opt[string] `json:"defaultAccessPolicyId,omitzero"`
+	// Whether access requests are enabled for the app instance.
+	AccessRequestsEnabled param.Opt[bool] `json:"accessRequestsEnabled,omitzero"`
+	// The instance ID of the app instance.
+	InstanceID param.Opt[string] `json:"instanceId,omitzero"`
+	// The name of the app instance.
+	Name param.Opt[string] `json:"name,omitzero"`
+	// The ID of the team.
+	TeamID param.Opt[string] `json:"teamId,omitzero"`
+	paramObj
+}
+
+func (r AppInstanceNewParamsBodyCustomServiceID) MarshalJSON() (data []byte, err error) {
+	type shadow AppInstanceNewParamsBodyCustomServiceID
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *AppInstanceNewParamsBodyCustomServiceID) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The property Service is required.
+type AppInstanceNewParamsBodyService struct {
+	// The service identifier (for built-in services like "github", "okta", "aws").
+	Service string `json:"service,required"`
+	// The default access policy for the app instance (optional).
+	DefaultAccessPolicyID param.Opt[string] `json:"defaultAccessPolicyId,omitzero"`
+	// Whether access requests are enabled for the app instance.
+	AccessRequestsEnabled param.Opt[bool] `json:"accessRequestsEnabled,omitzero"`
+	// The instance ID of the app instance.
+	InstanceID param.Opt[string] `json:"instanceId,omitzero"`
+	// The name of the app instance.
+	Name param.Opt[string] `json:"name,omitzero"`
+	// The ID of the team.
+	TeamID param.Opt[string] `json:"teamId,omitzero"`
+	paramObj
+}
+
+func (r AppInstanceNewParamsBodyService) MarshalJSON() (data []byte, err error) {
+	type shadow AppInstanceNewParamsBodyService
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *AppInstanceNewParamsBodyService) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type AppInstanceNewResponseEnvelope struct {
 	// The created app instance.
-	Data AppInstance `json:"data"`
+	Data AppInstanceUnion `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -200,7 +332,7 @@ func (r *AppInstanceNewResponseEnvelope) UnmarshalJSON(data []byte) error {
 
 type AppInstanceGetResponseEnvelope struct {
 	// The app instance.
-	Data AppInstance `json:"data"`
+	Data AppInstanceUnion `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -237,7 +369,7 @@ func (r *AppInstanceUpdateParams) UnmarshalJSON(data []byte) error {
 
 type AppInstanceUpdateResponseEnvelope struct {
 	// The updated app instance.
-	Data AppInstance `json:"data"`
+	Data AppInstanceUnion `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data        respjson.Field
@@ -253,6 +385,10 @@ func (r *AppInstanceUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type AppInstanceListParams struct {
+	// Maximum number of results to return. Default is 1000, maximum is 1000.
+	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
+	// Token for pagination. Leave empty for the first request.
+	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
 	// The ID of the team.
 	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
 	paramObj
@@ -264,21 +400,4 @@ func (r AppInstanceListParams) URLQuery() (v url.Values, err error) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
-}
-
-type AppInstanceListResponseEnvelope struct {
-	// The list of app instances.
-	Data []AppInstance `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AppInstanceListResponseEnvelope) RawJSON() string { return r.JSON.raw }
-func (r *AppInstanceListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }
