@@ -87,15 +87,10 @@ func (r *WorkflowService) Update(ctx context.Context, id string, body WorkflowUp
 }
 
 // List all workflows for a team.
-func (r *WorkflowService) List(ctx context.Context, query WorkflowListParams, opts ...option.RequestOption) (res *[]Workflow, err error) {
-	var env WorkflowListResponseEnvelope
+func (r *WorkflowService) List(ctx context.Context, query WorkflowListParams, opts ...option.RequestOption) (res *WorkflowListResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v2/workflows"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
-	if err != nil {
-		return
-	}
-	res = &env.Data
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -134,8 +129,8 @@ type Workflow struct {
 	Parameters string `json:"parameters"`
 	// Whether the workflow requires form confirmation.
 	RequireFormConfirmation bool `json:"requireFormConfirmation"`
-	// Tags associated with this workflow.
-	Tags []WorkflowTag `json:"tags"`
+	// IDs of tags associated with this workflow.
+	TagIDs []string `json:"tagIds"`
 	// The ID of the team that the workflow belongs to.
 	TeamID string `json:"teamId"`
 	// The type of the workflow.
@@ -154,7 +149,7 @@ type Workflow struct {
 		Name                    respjson.Field
 		Parameters              respjson.Field
 		RequireFormConfirmation respjson.Field
-		Tags                    respjson.Field
+		TagIDs                  respjson.Field
 		TeamID                  respjson.Field
 		Type                    respjson.Field
 		ExtraFields             map[string]respjson.Field
@@ -177,33 +172,6 @@ const (
 	WorkflowExecutionScopeTeamPublic                        WorkflowExecutionScope = "TEAM_PUBLIC"
 )
 
-// A tag that can be associated with workflows.
-type WorkflowTag struct {
-	// The ID of the tag.
-	ID string `json:"id"`
-	// The color of the tag (CSS color string).
-	Color string `json:"color,nullable"`
-	// The icon slug for the tag.
-	IconSlug string `json:"iconSlug,nullable"`
-	// The name of the tag.
-	Name string `json:"name"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Color       respjson.Field
-		IconSlug    respjson.Field
-		Name        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r WorkflowTag) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowTag) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 // The type of the workflow.
 type WorkflowType string
 
@@ -212,6 +180,26 @@ const (
 	WorkflowTypeExecutable              WorkflowType = "EXECUTABLE"
 	WorkflowTypeGuidance                WorkflowType = "GUIDANCE"
 )
+
+type WorkflowListResponse struct {
+	// The list of workflows.
+	Data []Workflow `json:"data"`
+	// Token for retrieving the next page of results. Empty if no more results.
+	NextPageToken string `json:"nextPageToken,nullable"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data          respjson.Field
+		NextPageToken respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r WorkflowListResponse) RawJSON() string { return r.JSON.raw }
+func (r *WorkflowListResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
 
 type WorkflowDeleteResponse = any
 
@@ -371,6 +359,10 @@ func (r *WorkflowUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 type WorkflowListParams struct {
 	// Whether to include temporary workflows (optional, defaults to false).
 	IncludeTemporary param.Opt[bool] `query:"includeTemporary,omitzero" json:"-"`
+	// Maximum number of results to return. Default is 1000, maximum is 1000.
+	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
+	// Token for pagination. Leave empty for the first request.
+	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
 	// The ID of the team.
 	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
 	paramObj
@@ -382,21 +374,4 @@ func (r WorkflowListParams) URLQuery() (v url.Values, err error) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
-}
-
-type WorkflowListResponseEnvelope struct {
-	// The list of workflows.
-	Data []Workflow `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r WorkflowListResponseEnvelope) RawJSON() string { return r.JSON.raw }
-func (r *WorkflowListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }

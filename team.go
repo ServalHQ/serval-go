@@ -222,14 +222,16 @@ func (r *Team) UnmarshalJSON(data []byte) error {
 }
 
 type TeamListResponse struct {
-	Data       []Team `json:"data"`
-	NextCursor string `json:"nextCursor,nullable"`
+	// The list of teams.
+	Data []Team `json:"data"`
+	// Token for retrieving the next page of results. Empty if no more results.
+	NextPageToken string `json:"nextPageToken,nullable"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Data        respjson.Field
-		NextCursor  respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
+		Data          respjson.Field
+		NextPageToken respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
 	} `json:"-"`
 }
 
@@ -322,8 +324,10 @@ func (r *TeamUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type TeamListParams struct {
-	Cursor param.Opt[string] `query:"cursor,omitzero" json:"-"`
-	Limit  param.Opt[int64]  `query:"limit,omitzero" json:"-"`
+	// Maximum number of results to return. Default is 1000, maximum is 1000.
+	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
+	// Token for pagination. Leave empty for the first request.
+	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
 	paramObj
 }
 

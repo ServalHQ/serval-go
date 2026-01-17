@@ -115,9 +115,9 @@ func TestUserListWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Users.List(context.TODO(), serval.UserListParams{
-		Cursor:             serval.String("cursor"),
 		IncludeDeactivated: serval.Bool(true),
-		Limit:              serval.Int(0),
+		PageSize:           serval.Int(0),
+		PageToken:          serval.String("pageToken"),
 	})
 	if err != nil {
 		var apierr *serval.Error

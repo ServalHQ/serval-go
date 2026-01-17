@@ -124,6 +124,8 @@ func TestWorkflowListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Workflows.List(context.TODO(), serval.WorkflowListParams{
 		IncludeTemporary: serval.Bool(true),
+		PageSize:         serval.Int(0),
+		PageToken:        serval.String("pageToken"),
 		TeamID:           serval.String("teamId"),
 	})
 	if err != nil {
