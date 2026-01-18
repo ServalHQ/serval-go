@@ -28,10 +28,11 @@ func TestGuidanceNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Guidances.New(context.TODO(), serval.GuidanceNewParams{
-		Content:     serval.String("content"),
-		Description: serval.String("description"),
-		Name:        serval.String("name"),
-		TeamID:      serval.String("teamId"),
+		Content:         serval.String("content"),
+		Description:     serval.String("description"),
+		Name:            serval.String("name"),
+		ShouldAlwaysUse: serval.Bool(true),
+		TeamID:          serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -84,9 +85,10 @@ func TestGuidanceUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		serval.GuidanceUpdateParams{
-			Content:     serval.String("content"),
-			Description: serval.String("description"),
-			Name:        serval.String("name"),
+			Content:         serval.String("content"),
+			Description:     serval.String("description"),
+			Name:            serval.String("name"),
+			ShouldAlwaysUse: serval.Bool(true),
 		},
 	)
 	if err != nil {
@@ -113,7 +115,9 @@ func TestGuidanceListWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Guidances.List(context.TODO(), serval.GuidanceListParams{
-		TeamID: serval.String("teamId"),
+		PageSize:  serval.Int(0),
+		PageToken: serval.String("pageToken"),
+		TeamID:    serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error

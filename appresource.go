@@ -84,16 +84,11 @@ func (r *AppResourceService) Update(ctx context.Context, id string, body AppReso
 	return
 }
 
-// List all app resources for an app instance.
-func (r *AppResourceService) List(ctx context.Context, query AppResourceListParams, opts ...option.RequestOption) (res *[]AppResource, err error) {
-	var env AppResourceListResponseEnvelope
+// List all app resources for a team, optionally filtered by app instance.
+func (r *AppResourceService) List(ctx context.Context, query AppResourceListParams, opts ...option.RequestOption) (res *AppResourceListResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v2/app-resources"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
-	if err != nil {
-		return
-	}
-	res = &env.Data
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -138,6 +133,26 @@ type AppResource struct {
 // Returns the unmodified JSON received from the API
 func (r AppResource) RawJSON() string { return r.JSON.raw }
 func (r *AppResource) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppResourceListResponse struct {
+	// The list of resources.
+	Data []AppResource `json:"data"`
+	// Token for retrieving the next page of results. Empty if no more results.
+	NextPageToken string `json:"nextPageToken,nullable"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data          respjson.Field
+		NextPageToken respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AppResourceListResponse) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -237,8 +252,14 @@ func (r *AppResourceUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type AppResourceListParams struct {
-	// The ID of the app instance.
+	// Filter by app instance ID (optional).
 	AppInstanceID param.Opt[string] `query:"appInstanceId,omitzero" json:"-"`
+	// Maximum number of results to return. Default is 5000, maximum is 5000.
+	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
+	// Token for pagination. Leave empty for the first request.
+	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
+	// The ID of the team.
+	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
 	paramObj
 }
 
@@ -248,21 +269,4 @@ func (r AppResourceListParams) URLQuery() (v url.Values, err error) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
-}
-
-type AppResourceListResponseEnvelope struct {
-	// The list of resources.
-	Data []AppResource `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AppResourceListResponseEnvelope) RawJSON() string { return r.JSON.raw }
-func (r *AppResourceListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }

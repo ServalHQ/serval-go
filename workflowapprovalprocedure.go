@@ -313,7 +313,7 @@ func (r *WorkflowApprovalProcedureUpdateResponseEnvelope) UnmarshalJSON(data []b
 }
 
 type WorkflowApprovalProcedureListResponseEnvelope struct {
-	// The list of approval procedures.
+	// The list of approval procedures (typically 0 or 1).
 	Data []WorkflowApprovalProcedure `json:"data"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {

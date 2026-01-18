@@ -28,13 +28,29 @@ func TestAppResourceEntitlementNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppResourceEntitlements.New(context.TODO(), serval.AppResourceEntitlementNewParams{
-		AccessPolicyID:       serval.String("accessPolicyId"),
-		Description:          serval.String("description"),
-		LinkedEntitlementIDs: []string{"string"},
-		Name:                 serval.String("name"),
-		ProvisioningMethod:   serval.String("provisioningMethod"),
-		RequestsEnabled:      serval.Bool(true),
-		ResourceID:           serval.String("resourceId"),
+		AccessPolicyID: serval.String("accessPolicyId"),
+		Description:    serval.String("description"),
+		ExternalData:   serval.String("externalData"),
+		ExternalID:     serval.String("externalId"),
+		Name:           serval.String("name"),
+		ProvisioningMethod: serval.AppResourceEntitlementNewParamsProvisioningMethod{
+			BuiltinWorkflow: map[string]any{},
+			CustomWorkflow: serval.AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflow{
+				DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
+				ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
+			},
+			LinkedEntitlements: serval.AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlements{
+				LinkedEntitlementIDs: []string{"string"},
+			},
+			Manual: serval.AppResourceEntitlementNewParamsProvisioningMethodManual{
+				Assignees: []serval.AppResourceEntitlementNewParamsProvisioningMethodManualAssignee{{
+					AssigneeID:   serval.String("assigneeId"),
+					AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
+				}},
+			},
+		},
+		RequestsEnabled: serval.Bool(true),
+		ResourceID:      serval.String("resourceId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -87,16 +103,28 @@ func TestAppResourceEntitlementUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		serval.AppResourceEntitlementUpdateParams{
-			AccessPolicyID:       serval.String("accessPolicyId"),
-			Description:          serval.String("description"),
-			LinkedEntitlementIDs: []string{"string"},
-			ManualProvisioningAssignees: []serval.AppResourceEntitlementUpdateParamsManualProvisioningAssignee{{
-				AssigneeID:   serval.String("assigneeId"),
-				AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
-			}},
-			Name:               serval.String("name"),
-			ProvisioningMethod: serval.String("provisioningMethod"),
-			RequestsEnabled:    serval.Bool(true),
+			AccessPolicyID: serval.String("accessPolicyId"),
+			Description:    serval.String("description"),
+			ExternalData:   serval.String("externalData"),
+			ExternalID:     serval.String("externalId"),
+			Name:           serval.String("name"),
+			ProvisioningMethod: serval.AppResourceEntitlementUpdateParamsProvisioningMethod{
+				BuiltinWorkflow: map[string]any{},
+				CustomWorkflow: serval.AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflow{
+					DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
+					ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
+				},
+				LinkedEntitlements: serval.AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlements{
+					LinkedEntitlementIDs: []string{"string"},
+				},
+				Manual: serval.AppResourceEntitlementUpdateParamsProvisioningMethodManual{
+					Assignees: []serval.AppResourceEntitlementUpdateParamsProvisioningMethodManualAssignee{{
+						AssigneeID:   serval.String("assigneeId"),
+						AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
+					}},
+				},
+			},
+			RequestsEnabled: serval.Bool(true),
 		},
 	)
 	if err != nil {
@@ -123,7 +151,10 @@ func TestAppResourceEntitlementListWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppResourceEntitlements.List(context.TODO(), serval.AppResourceEntitlementListParams{
+		PageSize:   serval.Int(0),
+		PageToken:  serval.String("pageToken"),
 		ResourceID: serval.String("resourceId"),
+		TeamID:     serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error

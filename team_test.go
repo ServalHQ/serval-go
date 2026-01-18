@@ -114,8 +114,8 @@ func TestTeamListWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Teams.List(context.TODO(), serval.TeamListParams{
-		Cursor: serval.String("cursor"),
-		Limit:  serval.Int(0),
+		PageSize:  serval.Int(0),
+		PageToken: serval.String("pageToken"),
 	})
 	if err != nil {
 		var apierr *serval.Error

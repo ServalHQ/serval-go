@@ -85,15 +85,10 @@ func (r *GuidanceService) Update(ctx context.Context, id string, body GuidanceUp
 }
 
 // List all guidances for a team.
-func (r *GuidanceService) List(ctx context.Context, query GuidanceListParams, opts ...option.RequestOption) (res *[]Guidance, err error) {
-	var env GuidanceListResponseEnvelope
+func (r *GuidanceService) List(ctx context.Context, query GuidanceListParams, opts ...option.RequestOption) (res *GuidanceListResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v2/guidances"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
-	if err != nil {
-		return
-	}
-	res = &env.Data
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -116,19 +111,28 @@ type Guidance struct {
 	Content string `json:"content"`
 	// A description of the guidance.
 	Description string `json:"description"`
+	// Whether there are unpublished changes to the guidance.
+	HasUnpublishedChanges bool `json:"hasUnpublishedChanges"`
+	// Whether the guidance has been published at least once.
+	IsPublished bool `json:"isPublished"`
 	// The name of the guidance.
 	Name string `json:"name"`
+	// Whether this guidance should always be used (skipping LLM selection).
+	ShouldAlwaysUse bool `json:"shouldAlwaysUse"`
 	// The ID of the team that the guidance belongs to.
 	TeamID string `json:"teamId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		ID          respjson.Field
-		Content     respjson.Field
-		Description respjson.Field
-		Name        respjson.Field
-		TeamID      respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
+		ID                    respjson.Field
+		Content               respjson.Field
+		Description           respjson.Field
+		HasUnpublishedChanges respjson.Field
+		IsPublished           respjson.Field
+		Name                  respjson.Field
+		ShouldAlwaysUse       respjson.Field
+		TeamID                respjson.Field
+		ExtraFields           map[string]respjson.Field
+		raw                   string
 	} `json:"-"`
 }
 
@@ -138,11 +142,33 @@ func (r *Guidance) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type GuidanceListResponse struct {
+	// The list of guidances.
+	Data []Guidance `json:"data"`
+	// Token for retrieving the next page of results. Empty if no more results.
+	NextPageToken string `json:"nextPageToken,nullable"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data          respjson.Field
+		NextPageToken respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r GuidanceListResponse) RawJSON() string { return r.JSON.raw }
+func (r *GuidanceListResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type GuidanceDeleteResponse = any
 
 type GuidanceNewParams struct {
 	// The content of the guidance (optional).
 	Content param.Opt[string] `json:"content,omitzero"`
+	// Whether this guidance should always be used (optional, defaults to false).
+	ShouldAlwaysUse param.Opt[bool] `json:"shouldAlwaysUse,omitzero"`
 	// A description of the guidance.
 	Description param.Opt[string] `json:"description,omitzero"`
 	// The name of the guidance.
@@ -195,6 +221,8 @@ func (r *GuidanceGetResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type GuidanceUpdateParams struct {
+	// Whether this guidance should always be used (optional).
+	ShouldAlwaysUse param.Opt[bool] `json:"shouldAlwaysUse,omitzero"`
 	// The content of the guidance.
 	Content param.Opt[string] `json:"content,omitzero"`
 	// A description of the guidance.
@@ -230,6 +258,10 @@ func (r *GuidanceUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type GuidanceListParams struct {
+	// Maximum number of results to return. Default is 1000, maximum is 1000.
+	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
+	// Token for pagination. Leave empty for the first request.
+	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
 	// The ID of the team.
 	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
 	paramObj
@@ -241,21 +273,4 @@ func (r GuidanceListParams) URLQuery() (v url.Values, err error) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
-}
-
-type GuidanceListResponseEnvelope struct {
-	// The list of guidances.
-	Data []Guidance `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r GuidanceListResponseEnvelope) RawJSON() string { return r.JSON.raw }
-func (r *GuidanceListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }

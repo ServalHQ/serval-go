@@ -87,15 +87,10 @@ func (r *AccessPolicyService) Update(ctx context.Context, id string, body Access
 }
 
 // List all access policies for a team.
-func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListParams, opts ...option.RequestOption) (res *[]AccessPolicy, err error) {
-	var env AccessPolicyListResponseEnvelope
+func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListParams, opts ...option.RequestOption) (res *AccessPolicyListResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v2/access-policies"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
-	if err != nil {
-		return
-	}
-	res = &env.Data
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -140,6 +135,26 @@ type AccessPolicy struct {
 // Returns the unmodified JSON received from the API
 func (r AccessPolicy) RawJSON() string { return r.JSON.raw }
 func (r *AccessPolicy) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AccessPolicyListResponse struct {
+	// The list of access policies.
+	Data []AccessPolicy `json:"data"`
+	// Token for retrieving the next page of results. Empty if no more results.
+	NextPageToken string `json:"nextPageToken,nullable"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data          respjson.Field
+		NextPageToken respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessPolicyListResponse) RawJSON() string { return r.JSON.raw }
+func (r *AccessPolicyListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -243,6 +258,10 @@ func (r *AccessPolicyUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type AccessPolicyListParams struct {
+	// Maximum number of results to return. Default is 1000, maximum is 1000.
+	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
+	// Token for pagination. Leave empty for the first request.
+	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
 	// The ID of the team.
 	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
 	paramObj
@@ -254,21 +273,4 @@ func (r AccessPolicyListParams) URLQuery() (v url.Values, err error) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
-}
-
-type AccessPolicyListResponseEnvelope struct {
-	// The list of access policies.
-	Data []AccessPolicy `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AccessPolicyListResponseEnvelope) RawJSON() string { return r.JSON.raw }
-func (r *AccessPolicyListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }

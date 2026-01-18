@@ -85,15 +85,10 @@ func (r *AppInstanceService) Update(ctx context.Context, id string, body AppInst
 }
 
 // List all app instances for a team.
-func (r *AppInstanceService) List(ctx context.Context, query AppInstanceListParams, opts ...option.RequestOption) (res *[]AppInstance, err error) {
-	var env AppInstanceListResponseEnvelope
+func (r *AppInstanceService) List(ctx context.Context, query AppInstanceListParams, opts ...option.RequestOption) (res *AppInstanceListResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v2/app-instances"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
-	if err != nil {
-		return
-	}
-	res = &env.Data
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -109,18 +104,24 @@ func (r *AppInstanceService) Delete(ctx context.Context, id string, opts ...opti
 	return
 }
 
+// Configuration object.
+//
+// **Set exactly ONE of:** customServiceId, service
 type AppInstance struct {
 	// The ID of the app instance.
 	ID string `json:"id"`
 	// Whether access requests are enabled for the app instance.
 	AccessRequestsEnabled bool `json:"accessRequestsEnabled"`
+	// **Option: custom_service_id** — The ID of the custom service (for custom apps).
+	CustomServiceID string `json:"customServiceId"`
 	// The default access policy for the app instance.
 	DefaultAccessPolicyID string `json:"defaultAccessPolicyId,nullable"`
 	// The instance ID of the app instance.
 	InstanceID string `json:"instanceId"`
 	// The name of the app instance.
 	Name string `json:"name"`
-	// The service of the app instance.
+	// **Option: service** — The service identifier (for built-in services like
+	// "github", "okta", "aws").
 	Service string `json:"service"`
 	// The ID of the Serval team that the app instance belongs to.
 	TeamID string `json:"teamId"`
@@ -128,6 +129,7 @@ type AppInstance struct {
 	JSON struct {
 		ID                    respjson.Field
 		AccessRequestsEnabled respjson.Field
+		CustomServiceID       respjson.Field
 		DefaultAccessPolicyID respjson.Field
 		InstanceID            respjson.Field
 		Name                  respjson.Field
@@ -144,6 +146,26 @@ func (r *AppInstance) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type AppInstanceListResponse struct {
+	// The list of app instances.
+	Data []AppInstance `json:"data"`
+	// Token for retrieving the next page of results. Empty if no more results.
+	NextPageToken string `json:"nextPageToken,nullable"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data          respjson.Field
+		NextPageToken respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AppInstanceListResponse) RawJSON() string { return r.JSON.raw }
+func (r *AppInstanceListResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type AppInstanceDeleteResponse = any
 
 type AppInstanceNewParams struct {
@@ -151,11 +173,15 @@ type AppInstanceNewParams struct {
 	DefaultAccessPolicyID param.Opt[string] `json:"defaultAccessPolicyId,omitzero"`
 	// Whether access requests are enabled for the app instance.
 	AccessRequestsEnabled param.Opt[bool] `json:"accessRequestsEnabled,omitzero"`
+	// **Option: custom_service_id** — The ID of a custom service to create the app
+	// instance for.
+	CustomServiceID param.Opt[string] `json:"customServiceId,omitzero"`
 	// The instance ID of the app instance.
 	InstanceID param.Opt[string] `json:"instanceId,omitzero"`
 	// The name of the app instance.
 	Name param.Opt[string] `json:"name,omitzero"`
-	// The service of the app instance.
+	// **Option: service** — The service identifier (for built-in services like
+	// "github", "okta", "aws").
 	Service param.Opt[string] `json:"service,omitzero"`
 	// The ID of the team.
 	TeamID param.Opt[string] `json:"teamId,omitzero"`
@@ -242,6 +268,10 @@ func (r *AppInstanceUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type AppInstanceListParams struct {
+	// Maximum number of results to return. Default is 1000, maximum is 1000.
+	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
+	// Token for pagination. Leave empty for the first request.
+	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
 	// The ID of the team.
 	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
 	paramObj
@@ -253,21 +283,4 @@ func (r AppInstanceListParams) URLQuery() (v url.Values, err error) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
-}
-
-type AppInstanceListResponseEnvelope struct {
-	// The list of app instances.
-	Data []AppInstance `json:"data"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AppInstanceListResponseEnvelope) RawJSON() string { return r.JSON.raw }
-func (r *AppInstanceListResponseEnvelope) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }

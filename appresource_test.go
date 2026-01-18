@@ -116,6 +116,9 @@ func TestAppResourceListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.AppResources.List(context.TODO(), serval.AppResourceListParams{
 		AppInstanceID: serval.String("appInstanceId"),
+		PageSize:      serval.Int(0),
+		PageToken:     serval.String("pageToken"),
+		TeamID:        serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
