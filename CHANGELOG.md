@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.6.0 (2026-01-18)
+
+Full Changelog: [v0.5.0...v0.6.0](https://github.com/ServalHQ/serval-go/compare/v0.5.0...v0.6.0)
+
+### Features
+
+* **api:** manual updates ([e0e714d](https://github.com/ServalHQ/serval-go/commit/e0e714de4048dba6db4634b07be9d2a935def9bd))
+* **api:** manual updates ([3c40cbd](https://github.com/ServalHQ/serval-go/commit/3c40cbd5275fba03189dfc5132f5a4c34cd347c4))
+* **api:** manual updates ([0e979c5](https://github.com/ServalHQ/serval-go/commit/0e979c56f92341f6ca1d09e56feaa971cddbbe67))
+* **encoder:** support bracket encoding form-data object members ([1577150](https://github.com/ServalHQ/serval-go/commit/1577150c2fa84c50dc8ce4c89abbf9927ccc95b1))
+
+
+### Bug Fixes
+
+* **docs:** add missing pointer prefix to api.md return types ([52269d1](https://github.com/ServalHQ/serval-go/commit/52269d1697568d4df834395c34f6d723e5c34b1b))
+* **mcp:** correct code tool API endpoint ([5721590](https://github.com/ServalHQ/serval-go/commit/572159066aaae06a031bf1a5098ef9db774c0c1d))
+* rename param to avoid collision ([15db281](https://github.com/ServalHQ/serval-go/commit/15db281f6c28882c158264b4c34d34f1fca87a02))
+* skip usage tests that don't work with Prism ([39e34a6](https://github.com/ServalHQ/serval-go/commit/39e34a67d862cd448d504574fde897a8ade3c74c))
+
+
+### Chores
+
+* add float64 to valid types for RegisterFieldValidator ([90e8b7c](https://github.com/ServalHQ/serval-go/commit/90e8b7c332f55305268c6a7dd6ba2376e0a6006c))
+* bump gjson version ([c92fa8b](https://github.com/ServalHQ/serval-go/commit/c92fa8bac4f3d8dd5ec2bda1733af44a1e092a26))
+* elide duplicate aliases ([2acf02d](https://github.com/ServalHQ/serval-go/commit/2acf02d3e59cacadfb0c694e3687bd0d6ef66b45))
+* **internal:** codegen related update ([019173b](https://github.com/ServalHQ/serval-go/commit/019173b14a55c81b612652fef97128d1192605fd))
+* **internal:** codegen related update ([ebfcd43](https://github.com/ServalHQ/serval-go/commit/ebfcd43c07ab019f352d82b4200fdde0e8d23bf8))
+* **internal:** update `actions/checkout` version ([7a4f089](https://github.com/ServalHQ/serval-go/commit/7a4f089707dde8ef596a632dd85f1abd5f6d0e84))
+
 ## 0.5.0 (2025-11-10)
 
 Full Changelog: [v0.4.0...v0.5.0](https://github.com/ServalHQ/serval-go/compare/v0.4.0...v0.5.0)
