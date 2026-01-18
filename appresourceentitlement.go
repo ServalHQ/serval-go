@@ -4,13 +4,14 @@ package serval
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
+	"github.com/ServalHQ/serval-go/internal/apiquery"
 	"github.com/ServalHQ/serval-go/internal/requestconfig"
 	"github.com/ServalHQ/serval-go/option"
 	"github.com/ServalHQ/serval-go/packages/param"
@@ -83,6 +84,14 @@ func (r *AppResourceEntitlementService) Update(ctx context.Context, id string, b
 	return
 }
 
+// List all app resource entitlements for a team, optionally filtered by resource.
+func (r *AppResourceEntitlementService) List(ctx context.Context, query AppResourceEntitlementListParams, opts ...option.RequestOption) (res *AppResourceEntitlementListResponse, err error) {
+	opts = slices.Concat(r.Options, opts)
+	path := "v2/app-resource-entitlements"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	return
+}
+
 // Delete an app resource entitlement.
 func (r *AppResourceEntitlementService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *AppResourceEntitlementDeleteResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
@@ -109,7 +118,7 @@ type AppResourceEntitlement struct {
 	// The name of the entitlement.
 	Name string `json:"name"`
 	// Provisioning configuration. **Exactly one method should be set.**
-	ProvisioningMethod AppResourceEntitlementProvisioningMethodUnion `json:"provisioningMethod"`
+	ProvisioningMethod AppResourceEntitlementProvisioningMethod `json:"provisioningMethod"`
 	// Whether requests are enabled for the entitlement.
 	RequestsEnabled bool `json:"requestsEnabled"`
 	// The ID of the resource that the entitlement belongs to.
@@ -136,97 +145,35 @@ func (r *AppResourceEntitlement) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// AppResourceEntitlementProvisioningMethodUnion contains all possible properties
-// and values from [AppResourceEntitlementProvisioningMethodBuiltinWorkflow],
-// [AppResourceEntitlementProvisioningMethodCustomWorkflow],
-// [AppResourceEntitlementProvisioningMethodLinkedEntitlements],
-// [AppResourceEntitlementProvisioningMethodManual].
-//
-// Use the methods beginning with 'As' to cast the union to one of its variants.
-type AppResourceEntitlementProvisioningMethodUnion struct {
-	// This field is from variant
-	// [AppResourceEntitlementProvisioningMethodBuiltinWorkflow].
+// Provisioning configuration. **Exactly one method should be set.**
+type AppResourceEntitlementProvisioningMethod struct {
+	// **Option: builtin_workflow**
 	BuiltinWorkflow any `json:"builtinWorkflow"`
-	// This field is from variant
-	// [AppResourceEntitlementProvisioningMethodCustomWorkflow].
-	CustomWorkflow AppResourceEntitlementProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow"`
-	// This field is from variant
-	// [AppResourceEntitlementProvisioningMethodLinkedEntitlements].
-	LinkedEntitlements AppResourceEntitlementProvisioningMethodLinkedEntitlementsLinkedEntitlements `json:"linkedEntitlements"`
-	// This field is from variant [AppResourceEntitlementProvisioningMethodManual].
-	Manual AppResourceEntitlementProvisioningMethodManualManual `json:"manual"`
-	JSON   struct {
+	// **Option: custom_workflow**
+	CustomWorkflow AppResourceEntitlementProvisioningMethodCustomWorkflow `json:"customWorkflow"`
+	// **Option: linked_entitlements**
+	LinkedEntitlements AppResourceEntitlementProvisioningMethodLinkedEntitlements `json:"linkedEntitlements"`
+	// **Option: manual**
+	Manual AppResourceEntitlementProvisioningMethodManual `json:"manual"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
 		BuiltinWorkflow    respjson.Field
 		CustomWorkflow     respjson.Field
 		LinkedEntitlements respjson.Field
 		Manual             respjson.Field
+		ExtraFields        map[string]respjson.Field
 		raw                string
 	} `json:"-"`
 }
 
-func (u AppResourceEntitlementProvisioningMethodUnion) AsBuiltinWorkflow() (v AppResourceEntitlementProvisioningMethodBuiltinWorkflow) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u AppResourceEntitlementProvisioningMethodUnion) AsCustomWorkflow() (v AppResourceEntitlementProvisioningMethodCustomWorkflow) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u AppResourceEntitlementProvisioningMethodUnion) AsLinkedEntitlements() (v AppResourceEntitlementProvisioningMethodLinkedEntitlements) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u AppResourceEntitlementProvisioningMethodUnion) AsManual() (v AppResourceEntitlementProvisioningMethodManual) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 // Returns the unmodified JSON received from the API
-func (u AppResourceEntitlementProvisioningMethodUnion) RawJSON() string { return u.JSON.raw }
-
-func (r *AppResourceEntitlementProvisioningMethodUnion) UnmarshalJSON(data []byte) error {
+func (r AppResourceEntitlementProvisioningMethod) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceEntitlementProvisioningMethod) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type AppResourceEntitlementProvisioningMethodBuiltinWorkflow struct {
-	// Provisioning is handled by the service's builtin workflow integration.
-	BuiltinWorkflow any `json:"builtinWorkflow,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		BuiltinWorkflow respjson.Field
-		ExtraFields     map[string]respjson.Field
-		raw             string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AppResourceEntitlementProvisioningMethodBuiltinWorkflow) RawJSON() string { return r.JSON.raw }
-func (r *AppResourceEntitlementProvisioningMethodBuiltinWorkflow) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
+// **Option: custom_workflow**
 type AppResourceEntitlementProvisioningMethodCustomWorkflow struct {
-	// Provisioning is handled by custom workflows for provision + deprovision.
-	CustomWorkflow AppResourceEntitlementProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		CustomWorkflow respjson.Field
-		ExtraFields    map[string]respjson.Field
-		raw            string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AppResourceEntitlementProvisioningMethodCustomWorkflow) RawJSON() string { return r.JSON.raw }
-func (r *AppResourceEntitlementProvisioningMethodCustomWorkflow) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Provisioning is handled by custom workflows for provision + deprovision.
-type AppResourceEntitlementProvisioningMethodCustomWorkflowCustomWorkflow struct {
 	// The workflow ID to deprovision access.
 	DeprovisionWorkflowID string `json:"deprovisionWorkflowId"`
 	// The workflow ID to provision access.
@@ -241,34 +188,13 @@ type AppResourceEntitlementProvisioningMethodCustomWorkflowCustomWorkflow struct
 }
 
 // Returns the unmodified JSON received from the API
-func (r AppResourceEntitlementProvisioningMethodCustomWorkflowCustomWorkflow) RawJSON() string {
-	return r.JSON.raw
-}
-func (r *AppResourceEntitlementProvisioningMethodCustomWorkflowCustomWorkflow) UnmarshalJSON(data []byte) error {
+func (r AppResourceEntitlementProvisioningMethodCustomWorkflow) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceEntitlementProvisioningMethodCustomWorkflow) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// **Option: linked_entitlements**
 type AppResourceEntitlementProvisioningMethodLinkedEntitlements struct {
-	// Provisioning depends on prerequisite entitlements being provisioned first.
-	LinkedEntitlements AppResourceEntitlementProvisioningMethodLinkedEntitlementsLinkedEntitlements `json:"linkedEntitlements,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		LinkedEntitlements respjson.Field
-		ExtraFields        map[string]respjson.Field
-		raw                string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AppResourceEntitlementProvisioningMethodLinkedEntitlements) RawJSON() string {
-	return r.JSON.raw
-}
-func (r *AppResourceEntitlementProvisioningMethodLinkedEntitlements) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Provisioning depends on prerequisite entitlements being provisioned first.
-type AppResourceEntitlementProvisioningMethodLinkedEntitlementsLinkedEntitlements struct {
 	// The IDs of prerequisite entitlements.
 	LinkedEntitlementIDs []string `json:"linkedEntitlementIds"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -280,19 +206,20 @@ type AppResourceEntitlementProvisioningMethodLinkedEntitlementsLinkedEntitlement
 }
 
 // Returns the unmodified JSON received from the API
-func (r AppResourceEntitlementProvisioningMethodLinkedEntitlementsLinkedEntitlements) RawJSON() string {
+func (r AppResourceEntitlementProvisioningMethodLinkedEntitlements) RawJSON() string {
 	return r.JSON.raw
 }
-func (r *AppResourceEntitlementProvisioningMethodLinkedEntitlementsLinkedEntitlements) UnmarshalJSON(data []byte) error {
+func (r *AppResourceEntitlementProvisioningMethodLinkedEntitlements) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// **Option: manual**
 type AppResourceEntitlementProvisioningMethodManual struct {
-	// Provisioning is handled manually by assigned users/groups.
-	Manual AppResourceEntitlementProvisioningMethodManualManual `json:"manual,required"`
+	// Users and groups that should be assigned/notified for manual provisioning.
+	Assignees []AppResourceEntitlementProvisioningMethodManualAssignee `json:"assignees"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Manual      respjson.Field
+		Assignees   respjson.Field
 		ExtraFields map[string]respjson.Field
 		raw         string
 	} `json:"-"`
@@ -304,25 +231,7 @@ func (r *AppResourceEntitlementProvisioningMethodManual) UnmarshalJSON(data []by
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning is handled manually by assigned users/groups.
-type AppResourceEntitlementProvisioningMethodManualManual struct {
-	// Users and groups that should be assigned/notified for manual provisioning.
-	Assignees []AppResourceEntitlementProvisioningMethodManualManualAssignee `json:"assignees"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Assignees   respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AppResourceEntitlementProvisioningMethodManualManual) RawJSON() string { return r.JSON.raw }
-func (r *AppResourceEntitlementProvisioningMethodManualManual) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AppResourceEntitlementProvisioningMethodManualManualAssignee struct {
+type AppResourceEntitlementProvisioningMethodManualAssignee struct {
 	// The ID of the user or group.
 	AssigneeID string `json:"assigneeId"`
 	// The type of assignee.
@@ -341,10 +250,28 @@ type AppResourceEntitlementProvisioningMethodManualManualAssignee struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r AppResourceEntitlementProvisioningMethodManualManualAssignee) RawJSON() string {
-	return r.JSON.raw
+func (r AppResourceEntitlementProvisioningMethodManualAssignee) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceEntitlementProvisioningMethodManualAssignee) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
 }
-func (r *AppResourceEntitlementProvisioningMethodManualManualAssignee) UnmarshalJSON(data []byte) error {
+
+type AppResourceEntitlementListResponse struct {
+	// The list of entitlements.
+	Data []AppResourceEntitlement `json:"data"`
+	// Token for retrieving the next page of results. Empty if no more results.
+	NextPageToken string `json:"nextPageToken,nullable"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data          respjson.Field
+		NextPageToken respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AppResourceEntitlementListResponse) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceEntitlementListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -366,7 +293,7 @@ type AppResourceEntitlementNewParams struct {
 	// The ID of the resource.
 	ResourceID param.Opt[string] `json:"resourceId,omitzero"`
 	// Provisioning configuration. Exactly one method should be set.
-	ProvisioningMethod AppResourceEntitlementNewParamsProvisioningMethodUnion `json:"provisioningMethod,omitzero"`
+	ProvisioningMethod AppResourceEntitlementNewParamsProvisioningMethod `json:"provisioningMethod,omitzero"`
 	paramObj
 }
 
@@ -378,56 +305,33 @@ func (r *AppResourceEntitlementNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Only one field can be non-zero.
-//
-// Use [param.IsOmitted] to confirm if a field is set.
-type AppResourceEntitlementNewParamsProvisioningMethodUnion struct {
-	OfBuiltinWorkflow    *AppResourceEntitlementNewParamsProvisioningMethodBuiltinWorkflow    `json:",omitzero,inline"`
-	OfCustomWorkflow     *AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflow     `json:",omitzero,inline"`
-	OfLinkedEntitlements *AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlements `json:",omitzero,inline"`
-	OfManual             *AppResourceEntitlementNewParamsProvisioningMethodManual             `json:",omitzero,inline"`
-	paramUnion
-}
-
-func (u AppResourceEntitlementNewParamsProvisioningMethodUnion) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfBuiltinWorkflow, u.OfCustomWorkflow, u.OfLinkedEntitlements, u.OfManual)
-}
-func (u *AppResourceEntitlementNewParamsProvisioningMethodUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, u)
-}
-
-func (u *AppResourceEntitlementNewParamsProvisioningMethodUnion) asAny() any {
-	if !param.IsOmitted(u.OfBuiltinWorkflow) {
-		return u.OfBuiltinWorkflow
-	} else if !param.IsOmitted(u.OfCustomWorkflow) {
-		return u.OfCustomWorkflow
-	} else if !param.IsOmitted(u.OfLinkedEntitlements) {
-		return u.OfLinkedEntitlements
-	} else if !param.IsOmitted(u.OfManual) {
-		return u.OfManual
-	}
-	return nil
-}
-
-// The property BuiltinWorkflow is required.
-type AppResourceEntitlementNewParamsProvisioningMethodBuiltinWorkflow struct {
-	// Provisioning is handled by the service's builtin workflow integration.
-	BuiltinWorkflow any `json:"builtinWorkflow,omitzero,required"`
+// Provisioning configuration. Exactly one method should be set.
+type AppResourceEntitlementNewParamsProvisioningMethod struct {
+	// **Option: builtin_workflow**
+	BuiltinWorkflow any `json:"builtinWorkflow,omitzero"`
+	// **Option: custom_workflow**
+	CustomWorkflow AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflow `json:"customWorkflow,omitzero"`
+	// **Option: linked_entitlements**
+	LinkedEntitlements AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlements `json:"linkedEntitlements,omitzero"`
+	// **Option: manual**
+	Manual AppResourceEntitlementNewParamsProvisioningMethodManual `json:"manual,omitzero"`
 	paramObj
 }
 
-func (r AppResourceEntitlementNewParamsProvisioningMethodBuiltinWorkflow) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceEntitlementNewParamsProvisioningMethodBuiltinWorkflow
+func (r AppResourceEntitlementNewParamsProvisioningMethod) MarshalJSON() (data []byte, err error) {
+	type shadow AppResourceEntitlementNewParamsProvisioningMethod
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *AppResourceEntitlementNewParamsProvisioningMethodBuiltinWorkflow) UnmarshalJSON(data []byte) error {
+func (r *AppResourceEntitlementNewParamsProvisioningMethod) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The property CustomWorkflow is required.
+// **Option: custom_workflow**
 type AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflow struct {
-	// Provisioning is handled by custom workflows for provision + deprovision.
-	CustomWorkflow AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow,omitzero,required"`
+	// The workflow ID to deprovision access.
+	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
+	// The workflow ID to provision access.
+	ProvisionWorkflowID param.Opt[string] `json:"provisionWorkflowId,omitzero"`
 	paramObj
 }
 
@@ -439,27 +343,10 @@ func (r *AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflow) Unmars
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning is handled by custom workflows for provision + deprovision.
-type AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflowCustomWorkflow struct {
-	// The workflow ID to deprovision access.
-	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
-	// The workflow ID to provision access.
-	ProvisionWorkflowID param.Opt[string] `json:"provisionWorkflowId,omitzero"`
-	paramObj
-}
-
-func (r AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflowCustomWorkflow) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflowCustomWorkflow
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflowCustomWorkflow) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property LinkedEntitlements is required.
+// **Option: linked_entitlements**
 type AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlements struct {
-	// Provisioning depends on prerequisite entitlements being provisioned first.
-	LinkedEntitlements AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlementsLinkedEntitlements `json:"linkedEntitlements,omitzero,required"`
+	// The IDs of prerequisite entitlements.
+	LinkedEntitlementIDs []string `json:"linkedEntitlementIds,omitzero"`
 	paramObj
 }
 
@@ -471,25 +358,10 @@ func (r *AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlements) Un
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning depends on prerequisite entitlements being provisioned first.
-type AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlementsLinkedEntitlements struct {
-	// The IDs of prerequisite entitlements.
-	LinkedEntitlementIDs []string `json:"linkedEntitlementIds,omitzero"`
-	paramObj
-}
-
-func (r AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlementsLinkedEntitlements) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlementsLinkedEntitlements
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlementsLinkedEntitlements) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property Manual is required.
+// **Option: manual**
 type AppResourceEntitlementNewParamsProvisioningMethodManual struct {
-	// Provisioning is handled manually by assigned users/groups.
-	Manual AppResourceEntitlementNewParamsProvisioningMethodManualManual `json:"manual,omitzero,required"`
+	// Users and groups that should be assigned/notified for manual provisioning.
+	Assignees []AppResourceEntitlementNewParamsProvisioningMethodManualAssignee `json:"assignees,omitzero"`
 	paramObj
 }
 
@@ -501,22 +373,7 @@ func (r *AppResourceEntitlementNewParamsProvisioningMethodManual) UnmarshalJSON(
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning is handled manually by assigned users/groups.
-type AppResourceEntitlementNewParamsProvisioningMethodManualManual struct {
-	// Users and groups that should be assigned/notified for manual provisioning.
-	Assignees []AppResourceEntitlementNewParamsProvisioningMethodManualManualAssignee `json:"assignees,omitzero"`
-	paramObj
-}
-
-func (r AppResourceEntitlementNewParamsProvisioningMethodManualManual) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceEntitlementNewParamsProvisioningMethodManualManual
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceEntitlementNewParamsProvisioningMethodManualManual) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AppResourceEntitlementNewParamsProvisioningMethodManualManualAssignee struct {
+type AppResourceEntitlementNewParamsProvisioningMethodManualAssignee struct {
 	// The ID of the user or group.
 	AssigneeID param.Opt[string] `json:"assigneeId,omitzero"`
 	// The type of assignee.
@@ -528,16 +385,16 @@ type AppResourceEntitlementNewParamsProvisioningMethodManualManualAssignee struc
 	paramObj
 }
 
-func (r AppResourceEntitlementNewParamsProvisioningMethodManualManualAssignee) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceEntitlementNewParamsProvisioningMethodManualManualAssignee
+func (r AppResourceEntitlementNewParamsProvisioningMethodManualAssignee) MarshalJSON() (data []byte, err error) {
+	type shadow AppResourceEntitlementNewParamsProvisioningMethodManualAssignee
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *AppResourceEntitlementNewParamsProvisioningMethodManualManualAssignee) UnmarshalJSON(data []byte) error {
+func (r *AppResourceEntitlementNewParamsProvisioningMethodManualAssignee) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 func init() {
-	apijson.RegisterFieldValidator[AppResourceEntitlementNewParamsProvisioningMethodManualManualAssignee](
+	apijson.RegisterFieldValidator[AppResourceEntitlementNewParamsProvisioningMethodManualAssignee](
 		"assigneeType", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_USER", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_GROUP",
 	)
 }
@@ -590,7 +447,7 @@ type AppResourceEntitlementUpdateParams struct {
 	// Whether requests are enabled for the entitlement.
 	RequestsEnabled param.Opt[bool] `json:"requestsEnabled,omitzero"`
 	// Provisioning configuration. Exactly one method should be set.
-	ProvisioningMethod AppResourceEntitlementUpdateParamsProvisioningMethodUnion `json:"provisioningMethod,omitzero"`
+	ProvisioningMethod AppResourceEntitlementUpdateParamsProvisioningMethod `json:"provisioningMethod,omitzero"`
 	paramObj
 }
 
@@ -602,56 +459,33 @@ func (r *AppResourceEntitlementUpdateParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Only one field can be non-zero.
-//
-// Use [param.IsOmitted] to confirm if a field is set.
-type AppResourceEntitlementUpdateParamsProvisioningMethodUnion struct {
-	OfBuiltinWorkflow    *AppResourceEntitlementUpdateParamsProvisioningMethodBuiltinWorkflow    `json:",omitzero,inline"`
-	OfCustomWorkflow     *AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflow     `json:",omitzero,inline"`
-	OfLinkedEntitlements *AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlements `json:",omitzero,inline"`
-	OfManual             *AppResourceEntitlementUpdateParamsProvisioningMethodManual             `json:",omitzero,inline"`
-	paramUnion
-}
-
-func (u AppResourceEntitlementUpdateParamsProvisioningMethodUnion) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfBuiltinWorkflow, u.OfCustomWorkflow, u.OfLinkedEntitlements, u.OfManual)
-}
-func (u *AppResourceEntitlementUpdateParamsProvisioningMethodUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, u)
-}
-
-func (u *AppResourceEntitlementUpdateParamsProvisioningMethodUnion) asAny() any {
-	if !param.IsOmitted(u.OfBuiltinWorkflow) {
-		return u.OfBuiltinWorkflow
-	} else if !param.IsOmitted(u.OfCustomWorkflow) {
-		return u.OfCustomWorkflow
-	} else if !param.IsOmitted(u.OfLinkedEntitlements) {
-		return u.OfLinkedEntitlements
-	} else if !param.IsOmitted(u.OfManual) {
-		return u.OfManual
-	}
-	return nil
-}
-
-// The property BuiltinWorkflow is required.
-type AppResourceEntitlementUpdateParamsProvisioningMethodBuiltinWorkflow struct {
-	// Provisioning is handled by the service's builtin workflow integration.
-	BuiltinWorkflow any `json:"builtinWorkflow,omitzero,required"`
+// Provisioning configuration. Exactly one method should be set.
+type AppResourceEntitlementUpdateParamsProvisioningMethod struct {
+	// **Option: builtin_workflow**
+	BuiltinWorkflow any `json:"builtinWorkflow,omitzero"`
+	// **Option: custom_workflow**
+	CustomWorkflow AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflow `json:"customWorkflow,omitzero"`
+	// **Option: linked_entitlements**
+	LinkedEntitlements AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlements `json:"linkedEntitlements,omitzero"`
+	// **Option: manual**
+	Manual AppResourceEntitlementUpdateParamsProvisioningMethodManual `json:"manual,omitzero"`
 	paramObj
 }
 
-func (r AppResourceEntitlementUpdateParamsProvisioningMethodBuiltinWorkflow) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceEntitlementUpdateParamsProvisioningMethodBuiltinWorkflow
+func (r AppResourceEntitlementUpdateParamsProvisioningMethod) MarshalJSON() (data []byte, err error) {
+	type shadow AppResourceEntitlementUpdateParamsProvisioningMethod
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *AppResourceEntitlementUpdateParamsProvisioningMethodBuiltinWorkflow) UnmarshalJSON(data []byte) error {
+func (r *AppResourceEntitlementUpdateParamsProvisioningMethod) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The property CustomWorkflow is required.
+// **Option: custom_workflow**
 type AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflow struct {
-	// Provisioning is handled by custom workflows for provision + deprovision.
-	CustomWorkflow AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow,omitzero,required"`
+	// The workflow ID to deprovision access.
+	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
+	// The workflow ID to provision access.
+	ProvisionWorkflowID param.Opt[string] `json:"provisionWorkflowId,omitzero"`
 	paramObj
 }
 
@@ -663,27 +497,10 @@ func (r *AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflow) Unm
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning is handled by custom workflows for provision + deprovision.
-type AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow struct {
-	// The workflow ID to deprovision access.
-	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
-	// The workflow ID to provision access.
-	ProvisionWorkflowID param.Opt[string] `json:"provisionWorkflowId,omitzero"`
-	paramObj
-}
-
-func (r AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property LinkedEntitlements is required.
+// **Option: linked_entitlements**
 type AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlements struct {
-	// Provisioning depends on prerequisite entitlements being provisioned first.
-	LinkedEntitlements AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlementsLinkedEntitlements `json:"linkedEntitlements,omitzero,required"`
+	// The IDs of prerequisite entitlements.
+	LinkedEntitlementIDs []string `json:"linkedEntitlementIds,omitzero"`
 	paramObj
 }
 
@@ -695,25 +512,10 @@ func (r *AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlements)
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning depends on prerequisite entitlements being provisioned first.
-type AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlementsLinkedEntitlements struct {
-	// The IDs of prerequisite entitlements.
-	LinkedEntitlementIDs []string `json:"linkedEntitlementIds,omitzero"`
-	paramObj
-}
-
-func (r AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlementsLinkedEntitlements) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlementsLinkedEntitlements
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlementsLinkedEntitlements) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property Manual is required.
+// **Option: manual**
 type AppResourceEntitlementUpdateParamsProvisioningMethodManual struct {
-	// Provisioning is handled manually by assigned users/groups.
-	Manual AppResourceEntitlementUpdateParamsProvisioningMethodManualManual `json:"manual,omitzero,required"`
+	// Users and groups that should be assigned/notified for manual provisioning.
+	Assignees []AppResourceEntitlementUpdateParamsProvisioningMethodManualAssignee `json:"assignees,omitzero"`
 	paramObj
 }
 
@@ -725,22 +527,7 @@ func (r *AppResourceEntitlementUpdateParamsProvisioningMethodManual) UnmarshalJS
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning is handled manually by assigned users/groups.
-type AppResourceEntitlementUpdateParamsProvisioningMethodManualManual struct {
-	// Users and groups that should be assigned/notified for manual provisioning.
-	Assignees []AppResourceEntitlementUpdateParamsProvisioningMethodManualManualAssignee `json:"assignees,omitzero"`
-	paramObj
-}
-
-func (r AppResourceEntitlementUpdateParamsProvisioningMethodManualManual) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceEntitlementUpdateParamsProvisioningMethodManualManual
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceEntitlementUpdateParamsProvisioningMethodManualManual) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AppResourceEntitlementUpdateParamsProvisioningMethodManualManualAssignee struct {
+type AppResourceEntitlementUpdateParamsProvisioningMethodManualAssignee struct {
 	// The ID of the user or group.
 	AssigneeID param.Opt[string] `json:"assigneeId,omitzero"`
 	// The type of assignee.
@@ -752,16 +539,16 @@ type AppResourceEntitlementUpdateParamsProvisioningMethodManualManualAssignee st
 	paramObj
 }
 
-func (r AppResourceEntitlementUpdateParamsProvisioningMethodManualManualAssignee) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceEntitlementUpdateParamsProvisioningMethodManualManualAssignee
+func (r AppResourceEntitlementUpdateParamsProvisioningMethodManualAssignee) MarshalJSON() (data []byte, err error) {
+	type shadow AppResourceEntitlementUpdateParamsProvisioningMethodManualAssignee
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *AppResourceEntitlementUpdateParamsProvisioningMethodManualManualAssignee) UnmarshalJSON(data []byte) error {
+func (r *AppResourceEntitlementUpdateParamsProvisioningMethodManualAssignee) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 func init() {
-	apijson.RegisterFieldValidator[AppResourceEntitlementUpdateParamsProvisioningMethodManualManualAssignee](
+	apijson.RegisterFieldValidator[AppResourceEntitlementUpdateParamsProvisioningMethodManualAssignee](
 		"assigneeType", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_USER", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_GROUP",
 	)
 }
@@ -781,4 +568,25 @@ type AppResourceEntitlementUpdateResponseEnvelope struct {
 func (r AppResourceEntitlementUpdateResponseEnvelope) RawJSON() string { return r.JSON.raw }
 func (r *AppResourceEntitlementUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppResourceEntitlementListParams struct {
+	// Maximum number of results to return. Default is 5000, maximum is 5000.
+	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
+	// Token for pagination. Leave empty for the first request.
+	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
+	// Filter by resource ID (optional).
+	ResourceID param.Opt[string] `query:"resourceId,omitzero" json:"-"`
+	// The ID of the team.
+	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [AppResourceEntitlementListParams]'s query parameters as
+// `url.Values`.
+func (r AppResourceEntitlementListParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

@@ -33,9 +33,20 @@ func TestAppResourceEntitlementNewWithOptionalParams(t *testing.T) {
 		ExternalData:   serval.String("externalData"),
 		ExternalID:     serval.String("externalId"),
 		Name:           serval.String("name"),
-		ProvisioningMethod: serval.AppResourceEntitlementNewParamsProvisioningMethodUnion{
-			OfBuiltinWorkflow: &serval.AppResourceEntitlementNewParamsProvisioningMethodBuiltinWorkflow{
-				BuiltinWorkflow: map[string]any{},
+		ProvisioningMethod: serval.AppResourceEntitlementNewParamsProvisioningMethod{
+			BuiltinWorkflow: map[string]any{},
+			CustomWorkflow: serval.AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflow{
+				DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
+				ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
+			},
+			LinkedEntitlements: serval.AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlements{
+				LinkedEntitlementIDs: []string{"string"},
+			},
+			Manual: serval.AppResourceEntitlementNewParamsProvisioningMethodManual{
+				Assignees: []serval.AppResourceEntitlementNewParamsProvisioningMethodManualAssignee{{
+					AssigneeID:   serval.String("assigneeId"),
+					AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
+				}},
 			},
 		},
 		RequestsEnabled: serval.Bool(true),
@@ -97,14 +108,54 @@ func TestAppResourceEntitlementUpdateWithOptionalParams(t *testing.T) {
 			ExternalData:   serval.String("externalData"),
 			ExternalID:     serval.String("externalId"),
 			Name:           serval.String("name"),
-			ProvisioningMethod: serval.AppResourceEntitlementUpdateParamsProvisioningMethodUnion{
-				OfBuiltinWorkflow: &serval.AppResourceEntitlementUpdateParamsProvisioningMethodBuiltinWorkflow{
-					BuiltinWorkflow: map[string]any{},
+			ProvisioningMethod: serval.AppResourceEntitlementUpdateParamsProvisioningMethod{
+				BuiltinWorkflow: map[string]any{},
+				CustomWorkflow: serval.AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflow{
+					DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
+					ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
+				},
+				LinkedEntitlements: serval.AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlements{
+					LinkedEntitlementIDs: []string{"string"},
+				},
+				Manual: serval.AppResourceEntitlementUpdateParamsProvisioningMethodManual{
+					Assignees: []serval.AppResourceEntitlementUpdateParamsProvisioningMethodManualAssignee{{
+						AssigneeID:   serval.String("assigneeId"),
+						AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
+					}},
 				},
 			},
 			RequestsEnabled: serval.Bool(true),
 		},
 	)
+	if err != nil {
+		var apierr *serval.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestAppResourceEntitlementListWithOptionalParams(t *testing.T) {
+	t.Skip("Prism tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := serval.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithClientID("My Client ID"),
+		option.WithClientSecret("My Client Secret"),
+	)
+	_, err := client.AppResourceEntitlements.List(context.TODO(), serval.AppResourceEntitlementListParams{
+		PageSize:   serval.Int(0),
+		PageToken:  serval.String("pageToken"),
+		ResourceID: serval.String("resourceId"),
+		TeamID:     serval.String("teamId"),
+	})
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
