@@ -252,13 +252,14 @@ func (r *AppResourceUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type AppResourceListParams struct {
-	// Filter by app instance ID (optional).
+	// Filter by app instance ID. At least one of team_id or app_instance_id must be
+	// provided.
 	AppInstanceID param.Opt[string] `query:"appInstanceId,omitzero" json:"-"`
 	// Maximum number of results to return. Default is 5000, maximum is 5000.
 	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
 	// Token for pagination. Leave empty for the first request.
 	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
-	// The ID of the team.
+	// Filter by team ID. At least one of team_id or app_instance_id must be provided.
 	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
 	paramObj
 }

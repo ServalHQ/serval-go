@@ -13,7 +13,7 @@ import (
 	"github.com/ServalHQ/serval-go/option"
 )
 
-func TestAppResourceEntitlementNewWithOptionalParams(t *testing.T) {
+func TestAppResourceRoleNewWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -27,26 +27,15 @@ func TestAppResourceEntitlementNewWithOptionalParams(t *testing.T) {
 		option.WithClientID("My Client ID"),
 		option.WithClientSecret("My Client Secret"),
 	)
-	_, err := client.AppResourceEntitlements.New(context.TODO(), serval.AppResourceEntitlementNewParams{
+	_, err := client.AppResourceRoles.New(context.TODO(), serval.AppResourceRoleNewParams{
 		AccessPolicyID: serval.String("accessPolicyId"),
 		Description:    serval.String("description"),
 		ExternalData:   serval.String("externalData"),
 		ExternalID:     serval.String("externalId"),
 		Name:           serval.String("name"),
-		ProvisioningMethod: serval.AppResourceEntitlementNewParamsProvisioningMethod{
-			BuiltinWorkflow: map[string]any{},
-			CustomWorkflow: serval.AppResourceEntitlementNewParamsProvisioningMethodCustomWorkflow{
-				DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
-				ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
-			},
-			LinkedEntitlements: serval.AppResourceEntitlementNewParamsProvisioningMethodLinkedEntitlements{
-				LinkedEntitlementIDs: []string{"string"},
-			},
-			Manual: serval.AppResourceEntitlementNewParamsProvisioningMethodManual{
-				Assignees: []serval.AppResourceEntitlementNewParamsProvisioningMethodManualAssignee{{
-					AssigneeID:   serval.String("assigneeId"),
-					AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
-				}},
+		ProvisioningMethod: serval.AppResourceRoleNewParamsProvisioningMethodUnion{
+			OfBuiltinWorkflow: &serval.AppResourceRoleNewParamsProvisioningMethodBuiltinWorkflow{
+				BuiltinWorkflow: map[string]any{},
 			},
 		},
 		RequestsEnabled: serval.Bool(true),
@@ -61,7 +50,7 @@ func TestAppResourceEntitlementNewWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestAppResourceEntitlementGet(t *testing.T) {
+func TestAppResourceRoleGet(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -75,7 +64,7 @@ func TestAppResourceEntitlementGet(t *testing.T) {
 		option.WithClientID("My Client ID"),
 		option.WithClientSecret("My Client Secret"),
 	)
-	_, err := client.AppResourceEntitlements.Get(context.TODO(), "id")
+	_, err := client.AppResourceRoles.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
@@ -85,7 +74,7 @@ func TestAppResourceEntitlementGet(t *testing.T) {
 	}
 }
 
-func TestAppResourceEntitlementUpdateWithOptionalParams(t *testing.T) {
+func TestAppResourceRoleUpdateWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -99,29 +88,18 @@ func TestAppResourceEntitlementUpdateWithOptionalParams(t *testing.T) {
 		option.WithClientID("My Client ID"),
 		option.WithClientSecret("My Client Secret"),
 	)
-	_, err := client.AppResourceEntitlements.Update(
+	_, err := client.AppResourceRoles.Update(
 		context.TODO(),
 		"id",
-		serval.AppResourceEntitlementUpdateParams{
+		serval.AppResourceRoleUpdateParams{
 			AccessPolicyID: serval.String("accessPolicyId"),
 			Description:    serval.String("description"),
 			ExternalData:   serval.String("externalData"),
 			ExternalID:     serval.String("externalId"),
 			Name:           serval.String("name"),
-			ProvisioningMethod: serval.AppResourceEntitlementUpdateParamsProvisioningMethod{
-				BuiltinWorkflow: map[string]any{},
-				CustomWorkflow: serval.AppResourceEntitlementUpdateParamsProvisioningMethodCustomWorkflow{
-					DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
-					ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
-				},
-				LinkedEntitlements: serval.AppResourceEntitlementUpdateParamsProvisioningMethodLinkedEntitlements{
-					LinkedEntitlementIDs: []string{"string"},
-				},
-				Manual: serval.AppResourceEntitlementUpdateParamsProvisioningMethodManual{
-					Assignees: []serval.AppResourceEntitlementUpdateParamsProvisioningMethodManualAssignee{{
-						AssigneeID:   serval.String("assigneeId"),
-						AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
-					}},
+			ProvisioningMethod: serval.AppResourceRoleUpdateParamsProvisioningMethodUnion{
+				OfBuiltinWorkflow: &serval.AppResourceRoleUpdateParamsProvisioningMethodBuiltinWorkflow{
+					BuiltinWorkflow: map[string]any{},
 				},
 			},
 			RequestsEnabled: serval.Bool(true),
@@ -136,7 +114,7 @@ func TestAppResourceEntitlementUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestAppResourceEntitlementListWithOptionalParams(t *testing.T) {
+func TestAppResourceRoleListWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -150,11 +128,12 @@ func TestAppResourceEntitlementListWithOptionalParams(t *testing.T) {
 		option.WithClientID("My Client ID"),
 		option.WithClientSecret("My Client Secret"),
 	)
-	_, err := client.AppResourceEntitlements.List(context.TODO(), serval.AppResourceEntitlementListParams{
-		PageSize:   serval.Int(0),
-		PageToken:  serval.String("pageToken"),
-		ResourceID: serval.String("resourceId"),
-		TeamID:     serval.String("teamId"),
+	_, err := client.AppResourceRoles.List(context.TODO(), serval.AppResourceRoleListParams{
+		AppInstanceID: serval.String("appInstanceId"),
+		PageSize:      serval.Int(0),
+		PageToken:     serval.String("pageToken"),
+		ResourceID:    serval.String("resourceId"),
+		TeamID:        serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -165,7 +144,7 @@ func TestAppResourceEntitlementListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestAppResourceEntitlementDelete(t *testing.T) {
+func TestAppResourceRoleDelete(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -179,7 +158,7 @@ func TestAppResourceEntitlementDelete(t *testing.T) {
 		option.WithClientID("My Client ID"),
 		option.WithClientSecret("My Client Secret"),
 	)
-	_, err := client.AppResourceEntitlements.Delete(context.TODO(), "id")
+	_, err := client.AppResourceRoles.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
