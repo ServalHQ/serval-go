@@ -106,7 +106,7 @@ func (r *AppInstanceService) Delete(ctx context.Context, id string, opts ...opti
 }
 
 // AppInstanceUnion contains all possible properties and values from
-// [AppInstanceCustomServiceID], [AppInstanceService].
+// [AppInstanceCustomServiceID], [AppInstanceBuiltInService].
 //
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type AppInstanceUnion struct {
@@ -118,7 +118,7 @@ type AppInstanceUnion struct {
 	InstanceID            string `json:"instanceId"`
 	Name                  string `json:"name"`
 	TeamID                string `json:"teamId"`
-	// This field is from variant [AppInstanceService].
+	// This field is from variant [AppInstanceBuiltInService].
 	Service string `json:"service"`
 	JSON    struct {
 		CustomServiceID       respjson.Field
@@ -138,7 +138,7 @@ func (u AppInstanceUnion) AsCustomServiceID() (v AppInstanceCustomServiceID) {
 	return
 }
 
-func (u AppInstanceUnion) AsService() (v AppInstanceService) {
+func (u AppInstanceUnion) AsService() (v AppInstanceBuiltInService) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -185,7 +185,7 @@ func (r *AppInstanceCustomServiceID) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type AppInstanceService struct {
+type AppInstanceBuiltInService struct {
 	// The service identifier (for built-in services like "github", "okta", "aws").
 	Service string `json:"service,required"`
 	// The ID of the app instance.
@@ -215,8 +215,8 @@ type AppInstanceService struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r AppInstanceService) RawJSON() string { return r.JSON.raw }
-func (r *AppInstanceService) UnmarshalJSON(data []byte) error {
+func (r AppInstanceBuiltInService) RawJSON() string { return r.JSON.raw }
+func (r *AppInstanceBuiltInService) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
