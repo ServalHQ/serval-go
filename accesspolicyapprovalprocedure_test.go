@@ -32,7 +32,6 @@ func TestAccessPolicyApprovalProcedureNewWithOptionalParams(t *testing.T) {
 		"access_policy_id",
 		serval.AccessPolicyApprovalProcedureNewParams{
 			Steps: []serval.AccessPolicyApprovalProcedureNewParamsStep{{
-				ID:                serval.String("id"),
 				AllowSelfApproval: serval.Bool(true),
 				CustomWorkflowID:  serval.String("customWorkflowId"),
 				ServalGroupIDs:    []string{"string"},
@@ -99,7 +98,6 @@ func TestAccessPolicyApprovalProcedureUpdateWithOptionalParams(t *testing.T) {
 		serval.AccessPolicyApprovalProcedureUpdateParams{
 			AccessPolicyID: "access_policy_id",
 			Steps: []serval.AccessPolicyApprovalProcedureUpdateParamsStep{{
-				ID:                serval.String("id"),
 				AllowSelfApproval: serval.Bool(true),
 				CustomWorkflowID:  serval.String("customWorkflowId"),
 				ServalGroupIDs:    []string{"string"},
