@@ -33,9 +33,20 @@ func TestAppResourceRoleNewWithOptionalParams(t *testing.T) {
 		ExternalData:   serval.String("externalData"),
 		ExternalID:     serval.String("externalId"),
 		Name:           serval.String("name"),
-		ProvisioningMethod: serval.AppResourceRoleNewParamsProvisioningMethodUnion{
-			OfBuiltinWorkflow: &serval.AppResourceRoleNewParamsProvisioningMethodBuiltinWorkflow{
-				BuiltinWorkflow: map[string]any{},
+		ProvisioningMethod: serval.AppResourceRoleNewParamsProvisioningMethod{
+			BuiltinWorkflow: map[string]any{},
+			CustomWorkflow: serval.AppResourceRoleNewParamsProvisioningMethodCustomWorkflow{
+				DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
+				ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
+			},
+			LinkedRoles: serval.AppResourceRoleNewParamsProvisioningMethodLinkedRoles{
+				LinkedRoleIDs: []string{"string"},
+			},
+			Manual: serval.AppResourceRoleNewParamsProvisioningMethodManual{
+				Assignees: []serval.AppResourceRoleNewParamsProvisioningMethodManualAssignee{{
+					AssigneeID:   serval.String("assigneeId"),
+					AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
+				}},
 			},
 		},
 		RequestsEnabled: serval.Bool(true),
@@ -97,9 +108,20 @@ func TestAppResourceRoleUpdateWithOptionalParams(t *testing.T) {
 			ExternalData:   serval.String("externalData"),
 			ExternalID:     serval.String("externalId"),
 			Name:           serval.String("name"),
-			ProvisioningMethod: serval.AppResourceRoleUpdateParamsProvisioningMethodUnion{
-				OfBuiltinWorkflow: &serval.AppResourceRoleUpdateParamsProvisioningMethodBuiltinWorkflow{
-					BuiltinWorkflow: map[string]any{},
+			ProvisioningMethod: serval.AppResourceRoleUpdateParamsProvisioningMethod{
+				BuiltinWorkflow: map[string]any{},
+				CustomWorkflow: serval.AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflow{
+					DeprovisionWorkflowID: serval.String("deprovisionWorkflowId"),
+					ProvisionWorkflowID:   serval.String("provisionWorkflowId"),
+				},
+				LinkedRoles: serval.AppResourceRoleUpdateParamsProvisioningMethodLinkedRoles{
+					LinkedRoleIDs: []string{"string"},
+				},
+				Manual: serval.AppResourceRoleUpdateParamsProvisioningMethodManual{
+					Assignees: []serval.AppResourceRoleUpdateParamsProvisioningMethodManualAssignee{{
+						AssigneeID:   serval.String("assigneeId"),
+						AssigneeType: "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
+					}},
 				},
 			},
 			RequestsEnabled: serval.Bool(true),

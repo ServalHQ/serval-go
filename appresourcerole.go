@@ -4,7 +4,6 @@ package serval
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -120,7 +119,7 @@ type AppResourceRole struct {
 	// The name of the role.
 	Name string `json:"name"`
 	// Provisioning configuration. **Exactly one method should be set.**
-	ProvisioningMethod AppResourceRoleProvisioningMethodUnion `json:"provisioningMethod"`
+	ProvisioningMethod AppResourceRoleProvisioningMethod `json:"provisioningMethod"`
 	// Whether requests are enabled for the role.
 	RequestsEnabled bool `json:"requestsEnabled"`
 	// The ID of the resource that the role belongs to.
@@ -147,94 +146,35 @@ func (r *AppResourceRole) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// AppResourceRoleProvisioningMethodUnion contains all possible properties and
-// values from [AppResourceRoleProvisioningMethodBuiltinWorkflow],
-// [AppResourceRoleProvisioningMethodCustomWorkflow],
-// [AppResourceRoleProvisioningMethodLinkedRoles],
-// [AppResourceRoleProvisioningMethodManual].
-//
-// Use the methods beginning with 'As' to cast the union to one of its variants.
-type AppResourceRoleProvisioningMethodUnion struct {
-	// This field is from variant [AppResourceRoleProvisioningMethodBuiltinWorkflow].
+// Provisioning configuration. **Exactly one method should be set.**
+type AppResourceRoleProvisioningMethod struct {
+	// **Option: builtin_workflow**
 	BuiltinWorkflow any `json:"builtinWorkflow"`
-	// This field is from variant [AppResourceRoleProvisioningMethodCustomWorkflow].
-	CustomWorkflow AppResourceRoleProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow"`
-	// This field is from variant [AppResourceRoleProvisioningMethodLinkedRoles].
-	LinkedRoles AppResourceRoleProvisioningMethodLinkedRolesLinkedRoles `json:"linkedRoles"`
-	// This field is from variant [AppResourceRoleProvisioningMethodManual].
-	Manual AppResourceRoleProvisioningMethodManualManual `json:"manual"`
-	JSON   struct {
+	// **Option: custom_workflow**
+	CustomWorkflow AppResourceRoleProvisioningMethodCustomWorkflow `json:"customWorkflow"`
+	// **Option: linked_roles**
+	LinkedRoles AppResourceRoleProvisioningMethodLinkedRoles `json:"linkedRoles"`
+	// **Option: manual**
+	Manual AppResourceRoleProvisioningMethodManual `json:"manual"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
 		BuiltinWorkflow respjson.Field
 		CustomWorkflow  respjson.Field
 		LinkedRoles     respjson.Field
 		Manual          respjson.Field
-		raw             string
-	} `json:"-"`
-}
-
-func (u AppResourceRoleProvisioningMethodUnion) AsBuiltinWorkflow() (v AppResourceRoleProvisioningMethodBuiltinWorkflow) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u AppResourceRoleProvisioningMethodUnion) AsCustomWorkflow() (v AppResourceRoleProvisioningMethodCustomWorkflow) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u AppResourceRoleProvisioningMethodUnion) AsLinkedRoles() (v AppResourceRoleProvisioningMethodLinkedRoles) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u AppResourceRoleProvisioningMethodUnion) AsManual() (v AppResourceRoleProvisioningMethodManual) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-// Returns the unmodified JSON received from the API
-func (u AppResourceRoleProvisioningMethodUnion) RawJSON() string { return u.JSON.raw }
-
-func (r *AppResourceRoleProvisioningMethodUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AppResourceRoleProvisioningMethodBuiltinWorkflow struct {
-	// Provisioning is handled by the service's builtin workflow integration.
-	BuiltinWorkflow any `json:"builtinWorkflow,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		BuiltinWorkflow respjson.Field
 		ExtraFields     map[string]respjson.Field
 		raw             string
 	} `json:"-"`
 }
 
 // Returns the unmodified JSON received from the API
-func (r AppResourceRoleProvisioningMethodBuiltinWorkflow) RawJSON() string { return r.JSON.raw }
-func (r *AppResourceRoleProvisioningMethodBuiltinWorkflow) UnmarshalJSON(data []byte) error {
+func (r AppResourceRoleProvisioningMethod) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceRoleProvisioningMethod) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// **Option: custom_workflow**
 type AppResourceRoleProvisioningMethodCustomWorkflow struct {
-	// Provisioning is handled by custom workflows for provision + deprovision.
-	CustomWorkflow AppResourceRoleProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		CustomWorkflow respjson.Field
-		ExtraFields    map[string]respjson.Field
-		raw            string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AppResourceRoleProvisioningMethodCustomWorkflow) RawJSON() string { return r.JSON.raw }
-func (r *AppResourceRoleProvisioningMethodCustomWorkflow) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Provisioning is handled by custom workflows for provision + deprovision.
-type AppResourceRoleProvisioningMethodCustomWorkflowCustomWorkflow struct {
 	// The workflow ID to deprovision access.
 	DeprovisionWorkflowID string `json:"deprovisionWorkflowId"`
 	// The workflow ID to provision access.
@@ -249,32 +189,13 @@ type AppResourceRoleProvisioningMethodCustomWorkflowCustomWorkflow struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r AppResourceRoleProvisioningMethodCustomWorkflowCustomWorkflow) RawJSON() string {
-	return r.JSON.raw
-}
-func (r *AppResourceRoleProvisioningMethodCustomWorkflowCustomWorkflow) UnmarshalJSON(data []byte) error {
+func (r AppResourceRoleProvisioningMethodCustomWorkflow) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceRoleProvisioningMethodCustomWorkflow) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// **Option: linked_roles**
 type AppResourceRoleProvisioningMethodLinkedRoles struct {
-	// Provisioning depends on prerequisite roles being provisioned first.
-	LinkedRoles AppResourceRoleProvisioningMethodLinkedRolesLinkedRoles `json:"linkedRoles,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		LinkedRoles respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AppResourceRoleProvisioningMethodLinkedRoles) RawJSON() string { return r.JSON.raw }
-func (r *AppResourceRoleProvisioningMethodLinkedRoles) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Provisioning depends on prerequisite roles being provisioned first.
-type AppResourceRoleProvisioningMethodLinkedRolesLinkedRoles struct {
 	// The IDs of prerequisite roles.
 	LinkedRoleIDs []string `json:"linkedRoleIds"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -286,17 +207,18 @@ type AppResourceRoleProvisioningMethodLinkedRolesLinkedRoles struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r AppResourceRoleProvisioningMethodLinkedRolesLinkedRoles) RawJSON() string { return r.JSON.raw }
-func (r *AppResourceRoleProvisioningMethodLinkedRolesLinkedRoles) UnmarshalJSON(data []byte) error {
+func (r AppResourceRoleProvisioningMethodLinkedRoles) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceRoleProvisioningMethodLinkedRoles) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// **Option: manual**
 type AppResourceRoleProvisioningMethodManual struct {
-	// Provisioning is handled manually by assigned users/groups.
-	Manual AppResourceRoleProvisioningMethodManualManual `json:"manual,required"`
+	// Users and groups that should be assigned/notified for manual provisioning.
+	Assignees []AppResourceRoleProvisioningMethodManualAssignee `json:"assignees"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Manual      respjson.Field
+		Assignees   respjson.Field
 		ExtraFields map[string]respjson.Field
 		raw         string
 	} `json:"-"`
@@ -308,25 +230,7 @@ func (r *AppResourceRoleProvisioningMethodManual) UnmarshalJSON(data []byte) err
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning is handled manually by assigned users/groups.
-type AppResourceRoleProvisioningMethodManualManual struct {
-	// Users and groups that should be assigned/notified for manual provisioning.
-	Assignees []AppResourceRoleProvisioningMethodManualManualAssignee `json:"assignees"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Assignees   respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AppResourceRoleProvisioningMethodManualManual) RawJSON() string { return r.JSON.raw }
-func (r *AppResourceRoleProvisioningMethodManualManual) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AppResourceRoleProvisioningMethodManualManualAssignee struct {
+type AppResourceRoleProvisioningMethodManualAssignee struct {
 	// The ID of the user or group.
 	AssigneeID string `json:"assigneeId"`
 	// The type of assignee.
@@ -345,8 +249,8 @@ type AppResourceRoleProvisioningMethodManualManualAssignee struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r AppResourceRoleProvisioningMethodManualManualAssignee) RawJSON() string { return r.JSON.raw }
-func (r *AppResourceRoleProvisioningMethodManualManualAssignee) UnmarshalJSON(data []byte) error {
+func (r AppResourceRoleProvisioningMethodManualAssignee) RawJSON() string { return r.JSON.raw }
+func (r *AppResourceRoleProvisioningMethodManualAssignee) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -388,7 +292,7 @@ type AppResourceRoleNewParams struct {
 	// The ID of the resource.
 	ResourceID param.Opt[string] `json:"resourceId,omitzero"`
 	// Provisioning configuration. Exactly one method should be set.
-	ProvisioningMethod AppResourceRoleNewParamsProvisioningMethodUnion `json:"provisioningMethod,omitzero"`
+	ProvisioningMethod AppResourceRoleNewParamsProvisioningMethod `json:"provisioningMethod,omitzero"`
 	paramObj
 }
 
@@ -400,56 +304,33 @@ func (r *AppResourceRoleNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Only one field can be non-zero.
-//
-// Use [param.IsOmitted] to confirm if a field is set.
-type AppResourceRoleNewParamsProvisioningMethodUnion struct {
-	OfBuiltinWorkflow *AppResourceRoleNewParamsProvisioningMethodBuiltinWorkflow `json:",omitzero,inline"`
-	OfCustomWorkflow  *AppResourceRoleNewParamsProvisioningMethodCustomWorkflow  `json:",omitzero,inline"`
-	OfLinkedRoles     *AppResourceRoleNewParamsProvisioningMethodLinkedRoles     `json:",omitzero,inline"`
-	OfManual          *AppResourceRoleNewParamsProvisioningMethodManual          `json:",omitzero,inline"`
-	paramUnion
-}
-
-func (u AppResourceRoleNewParamsProvisioningMethodUnion) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfBuiltinWorkflow, u.OfCustomWorkflow, u.OfLinkedRoles, u.OfManual)
-}
-func (u *AppResourceRoleNewParamsProvisioningMethodUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, u)
-}
-
-func (u *AppResourceRoleNewParamsProvisioningMethodUnion) asAny() any {
-	if !param.IsOmitted(u.OfBuiltinWorkflow) {
-		return u.OfBuiltinWorkflow
-	} else if !param.IsOmitted(u.OfCustomWorkflow) {
-		return u.OfCustomWorkflow
-	} else if !param.IsOmitted(u.OfLinkedRoles) {
-		return u.OfLinkedRoles
-	} else if !param.IsOmitted(u.OfManual) {
-		return u.OfManual
-	}
-	return nil
-}
-
-// The property BuiltinWorkflow is required.
-type AppResourceRoleNewParamsProvisioningMethodBuiltinWorkflow struct {
-	// Provisioning is handled by the service's builtin workflow integration.
-	BuiltinWorkflow any `json:"builtinWorkflow,omitzero,required"`
+// Provisioning configuration. Exactly one method should be set.
+type AppResourceRoleNewParamsProvisioningMethod struct {
+	// **Option: builtin_workflow**
+	BuiltinWorkflow any `json:"builtinWorkflow,omitzero"`
+	// **Option: custom_workflow**
+	CustomWorkflow AppResourceRoleNewParamsProvisioningMethodCustomWorkflow `json:"customWorkflow,omitzero"`
+	// **Option: linked_roles**
+	LinkedRoles AppResourceRoleNewParamsProvisioningMethodLinkedRoles `json:"linkedRoles,omitzero"`
+	// **Option: manual**
+	Manual AppResourceRoleNewParamsProvisioningMethodManual `json:"manual,omitzero"`
 	paramObj
 }
 
-func (r AppResourceRoleNewParamsProvisioningMethodBuiltinWorkflow) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceRoleNewParamsProvisioningMethodBuiltinWorkflow
+func (r AppResourceRoleNewParamsProvisioningMethod) MarshalJSON() (data []byte, err error) {
+	type shadow AppResourceRoleNewParamsProvisioningMethod
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *AppResourceRoleNewParamsProvisioningMethodBuiltinWorkflow) UnmarshalJSON(data []byte) error {
+func (r *AppResourceRoleNewParamsProvisioningMethod) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The property CustomWorkflow is required.
+// **Option: custom_workflow**
 type AppResourceRoleNewParamsProvisioningMethodCustomWorkflow struct {
-	// Provisioning is handled by custom workflows for provision + deprovision.
-	CustomWorkflow AppResourceRoleNewParamsProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow,omitzero,required"`
+	// The workflow ID to deprovision access.
+	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
+	// The workflow ID to provision access.
+	ProvisionWorkflowID param.Opt[string] `json:"provisionWorkflowId,omitzero"`
 	paramObj
 }
 
@@ -461,27 +342,10 @@ func (r *AppResourceRoleNewParamsProvisioningMethodCustomWorkflow) UnmarshalJSON
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning is handled by custom workflows for provision + deprovision.
-type AppResourceRoleNewParamsProvisioningMethodCustomWorkflowCustomWorkflow struct {
-	// The workflow ID to deprovision access.
-	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
-	// The workflow ID to provision access.
-	ProvisionWorkflowID param.Opt[string] `json:"provisionWorkflowId,omitzero"`
-	paramObj
-}
-
-func (r AppResourceRoleNewParamsProvisioningMethodCustomWorkflowCustomWorkflow) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceRoleNewParamsProvisioningMethodCustomWorkflowCustomWorkflow
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceRoleNewParamsProvisioningMethodCustomWorkflowCustomWorkflow) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property LinkedRoles is required.
+// **Option: linked_roles**
 type AppResourceRoleNewParamsProvisioningMethodLinkedRoles struct {
-	// Provisioning depends on prerequisite roles being provisioned first.
-	LinkedRoles AppResourceRoleNewParamsProvisioningMethodLinkedRolesLinkedRoles `json:"linkedRoles,omitzero,required"`
+	// The IDs of prerequisite roles.
+	LinkedRoleIDs []string `json:"linkedRoleIds,omitzero"`
 	paramObj
 }
 
@@ -493,25 +357,10 @@ func (r *AppResourceRoleNewParamsProvisioningMethodLinkedRoles) UnmarshalJSON(da
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning depends on prerequisite roles being provisioned first.
-type AppResourceRoleNewParamsProvisioningMethodLinkedRolesLinkedRoles struct {
-	// The IDs of prerequisite roles.
-	LinkedRoleIDs []string `json:"linkedRoleIds,omitzero"`
-	paramObj
-}
-
-func (r AppResourceRoleNewParamsProvisioningMethodLinkedRolesLinkedRoles) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceRoleNewParamsProvisioningMethodLinkedRolesLinkedRoles
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceRoleNewParamsProvisioningMethodLinkedRolesLinkedRoles) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property Manual is required.
+// **Option: manual**
 type AppResourceRoleNewParamsProvisioningMethodManual struct {
-	// Provisioning is handled manually by assigned users/groups.
-	Manual AppResourceRoleNewParamsProvisioningMethodManualManual `json:"manual,omitzero,required"`
+	// Users and groups that should be assigned/notified for manual provisioning.
+	Assignees []AppResourceRoleNewParamsProvisioningMethodManualAssignee `json:"assignees,omitzero"`
 	paramObj
 }
 
@@ -523,22 +372,7 @@ func (r *AppResourceRoleNewParamsProvisioningMethodManual) UnmarshalJSON(data []
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning is handled manually by assigned users/groups.
-type AppResourceRoleNewParamsProvisioningMethodManualManual struct {
-	// Users and groups that should be assigned/notified for manual provisioning.
-	Assignees []AppResourceRoleNewParamsProvisioningMethodManualManualAssignee `json:"assignees,omitzero"`
-	paramObj
-}
-
-func (r AppResourceRoleNewParamsProvisioningMethodManualManual) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceRoleNewParamsProvisioningMethodManualManual
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceRoleNewParamsProvisioningMethodManualManual) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AppResourceRoleNewParamsProvisioningMethodManualManualAssignee struct {
+type AppResourceRoleNewParamsProvisioningMethodManualAssignee struct {
 	// The ID of the user or group.
 	AssigneeID param.Opt[string] `json:"assigneeId,omitzero"`
 	// The type of assignee.
@@ -550,16 +384,16 @@ type AppResourceRoleNewParamsProvisioningMethodManualManualAssignee struct {
 	paramObj
 }
 
-func (r AppResourceRoleNewParamsProvisioningMethodManualManualAssignee) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceRoleNewParamsProvisioningMethodManualManualAssignee
+func (r AppResourceRoleNewParamsProvisioningMethodManualAssignee) MarshalJSON() (data []byte, err error) {
+	type shadow AppResourceRoleNewParamsProvisioningMethodManualAssignee
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *AppResourceRoleNewParamsProvisioningMethodManualManualAssignee) UnmarshalJSON(data []byte) error {
+func (r *AppResourceRoleNewParamsProvisioningMethodManualAssignee) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 func init() {
-	apijson.RegisterFieldValidator[AppResourceRoleNewParamsProvisioningMethodManualManualAssignee](
+	apijson.RegisterFieldValidator[AppResourceRoleNewParamsProvisioningMethodManualAssignee](
 		"assigneeType", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_USER", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_GROUP",
 	)
 }
@@ -612,7 +446,7 @@ type AppResourceRoleUpdateParams struct {
 	// Whether requests are enabled for the role.
 	RequestsEnabled param.Opt[bool] `json:"requestsEnabled,omitzero"`
 	// Provisioning configuration. Exactly one method should be set.
-	ProvisioningMethod AppResourceRoleUpdateParamsProvisioningMethodUnion `json:"provisioningMethod,omitzero"`
+	ProvisioningMethod AppResourceRoleUpdateParamsProvisioningMethod `json:"provisioningMethod,omitzero"`
 	paramObj
 }
 
@@ -624,56 +458,33 @@ func (r *AppResourceRoleUpdateParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Only one field can be non-zero.
-//
-// Use [param.IsOmitted] to confirm if a field is set.
-type AppResourceRoleUpdateParamsProvisioningMethodUnion struct {
-	OfBuiltinWorkflow *AppResourceRoleUpdateParamsProvisioningMethodBuiltinWorkflow `json:",omitzero,inline"`
-	OfCustomWorkflow  *AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflow  `json:",omitzero,inline"`
-	OfLinkedRoles     *AppResourceRoleUpdateParamsProvisioningMethodLinkedRoles     `json:",omitzero,inline"`
-	OfManual          *AppResourceRoleUpdateParamsProvisioningMethodManual          `json:",omitzero,inline"`
-	paramUnion
-}
-
-func (u AppResourceRoleUpdateParamsProvisioningMethodUnion) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfBuiltinWorkflow, u.OfCustomWorkflow, u.OfLinkedRoles, u.OfManual)
-}
-func (u *AppResourceRoleUpdateParamsProvisioningMethodUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, u)
-}
-
-func (u *AppResourceRoleUpdateParamsProvisioningMethodUnion) asAny() any {
-	if !param.IsOmitted(u.OfBuiltinWorkflow) {
-		return u.OfBuiltinWorkflow
-	} else if !param.IsOmitted(u.OfCustomWorkflow) {
-		return u.OfCustomWorkflow
-	} else if !param.IsOmitted(u.OfLinkedRoles) {
-		return u.OfLinkedRoles
-	} else if !param.IsOmitted(u.OfManual) {
-		return u.OfManual
-	}
-	return nil
-}
-
-// The property BuiltinWorkflow is required.
-type AppResourceRoleUpdateParamsProvisioningMethodBuiltinWorkflow struct {
-	// Provisioning is handled by the service's builtin workflow integration.
-	BuiltinWorkflow any `json:"builtinWorkflow,omitzero,required"`
+// Provisioning configuration. Exactly one method should be set.
+type AppResourceRoleUpdateParamsProvisioningMethod struct {
+	// **Option: builtin_workflow**
+	BuiltinWorkflow any `json:"builtinWorkflow,omitzero"`
+	// **Option: custom_workflow**
+	CustomWorkflow AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflow `json:"customWorkflow,omitzero"`
+	// **Option: linked_roles**
+	LinkedRoles AppResourceRoleUpdateParamsProvisioningMethodLinkedRoles `json:"linkedRoles,omitzero"`
+	// **Option: manual**
+	Manual AppResourceRoleUpdateParamsProvisioningMethodManual `json:"manual,omitzero"`
 	paramObj
 }
 
-func (r AppResourceRoleUpdateParamsProvisioningMethodBuiltinWorkflow) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceRoleUpdateParamsProvisioningMethodBuiltinWorkflow
+func (r AppResourceRoleUpdateParamsProvisioningMethod) MarshalJSON() (data []byte, err error) {
+	type shadow AppResourceRoleUpdateParamsProvisioningMethod
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *AppResourceRoleUpdateParamsProvisioningMethodBuiltinWorkflow) UnmarshalJSON(data []byte) error {
+func (r *AppResourceRoleUpdateParamsProvisioningMethod) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The property CustomWorkflow is required.
+// **Option: custom_workflow**
 type AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflow struct {
-	// Provisioning is handled by custom workflows for provision + deprovision.
-	CustomWorkflow AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow,omitzero,required"`
+	// The workflow ID to deprovision access.
+	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
+	// The workflow ID to provision access.
+	ProvisionWorkflowID param.Opt[string] `json:"provisionWorkflowId,omitzero"`
 	paramObj
 }
 
@@ -685,27 +496,10 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflow) UnmarshalJ
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning is handled by custom workflows for provision + deprovision.
-type AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow struct {
-	// The workflow ID to deprovision access.
-	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
-	// The workflow ID to provision access.
-	ProvisionWorkflowID param.Opt[string] `json:"provisionWorkflowId,omitzero"`
-	paramObj
-}
-
-func (r AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property LinkedRoles is required.
+// **Option: linked_roles**
 type AppResourceRoleUpdateParamsProvisioningMethodLinkedRoles struct {
-	// Provisioning depends on prerequisite roles being provisioned first.
-	LinkedRoles AppResourceRoleUpdateParamsProvisioningMethodLinkedRolesLinkedRoles `json:"linkedRoles,omitzero,required"`
+	// The IDs of prerequisite roles.
+	LinkedRoleIDs []string `json:"linkedRoleIds,omitzero"`
 	paramObj
 }
 
@@ -717,25 +511,10 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodLinkedRoles) UnmarshalJSON
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning depends on prerequisite roles being provisioned first.
-type AppResourceRoleUpdateParamsProvisioningMethodLinkedRolesLinkedRoles struct {
-	// The IDs of prerequisite roles.
-	LinkedRoleIDs []string `json:"linkedRoleIds,omitzero"`
-	paramObj
-}
-
-func (r AppResourceRoleUpdateParamsProvisioningMethodLinkedRolesLinkedRoles) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceRoleUpdateParamsProvisioningMethodLinkedRolesLinkedRoles
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceRoleUpdateParamsProvisioningMethodLinkedRolesLinkedRoles) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property Manual is required.
+// **Option: manual**
 type AppResourceRoleUpdateParamsProvisioningMethodManual struct {
-	// Provisioning is handled manually by assigned users/groups.
-	Manual AppResourceRoleUpdateParamsProvisioningMethodManualManual `json:"manual,omitzero,required"`
+	// Users and groups that should be assigned/notified for manual provisioning.
+	Assignees []AppResourceRoleUpdateParamsProvisioningMethodManualAssignee `json:"assignees,omitzero"`
 	paramObj
 }
 
@@ -747,22 +526,7 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodManual) UnmarshalJSON(data
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Provisioning is handled manually by assigned users/groups.
-type AppResourceRoleUpdateParamsProvisioningMethodManualManual struct {
-	// Users and groups that should be assigned/notified for manual provisioning.
-	Assignees []AppResourceRoleUpdateParamsProvisioningMethodManualManualAssignee `json:"assignees,omitzero"`
-	paramObj
-}
-
-func (r AppResourceRoleUpdateParamsProvisioningMethodManualManual) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceRoleUpdateParamsProvisioningMethodManualManual
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppResourceRoleUpdateParamsProvisioningMethodManualManual) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AppResourceRoleUpdateParamsProvisioningMethodManualManualAssignee struct {
+type AppResourceRoleUpdateParamsProvisioningMethodManualAssignee struct {
 	// The ID of the user or group.
 	AssigneeID param.Opt[string] `json:"assigneeId,omitzero"`
 	// The type of assignee.
@@ -774,16 +538,16 @@ type AppResourceRoleUpdateParamsProvisioningMethodManualManualAssignee struct {
 	paramObj
 }
 
-func (r AppResourceRoleUpdateParamsProvisioningMethodManualManualAssignee) MarshalJSON() (data []byte, err error) {
-	type shadow AppResourceRoleUpdateParamsProvisioningMethodManualManualAssignee
+func (r AppResourceRoleUpdateParamsProvisioningMethodManualAssignee) MarshalJSON() (data []byte, err error) {
+	type shadow AppResourceRoleUpdateParamsProvisioningMethodManualAssignee
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *AppResourceRoleUpdateParamsProvisioningMethodManualManualAssignee) UnmarshalJSON(data []byte) error {
+func (r *AppResourceRoleUpdateParamsProvisioningMethodManualAssignee) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 func init() {
-	apijson.RegisterFieldValidator[AppResourceRoleUpdateParamsProvisioningMethodManualManualAssignee](
+	apijson.RegisterFieldValidator[AppResourceRoleUpdateParamsProvisioningMethodManualAssignee](
 		"assigneeType", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_USER", "MANUAL_PROVISIONING_ASSIGNEE_TYPE_GROUP",
 	)
 }
