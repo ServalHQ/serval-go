@@ -148,14 +148,10 @@ func (r *AppResourceRole) UnmarshalJSON(data []byte) error {
 
 // Provisioning configuration. **Exactly one method should be set.**
 type AppResourceRoleProvisioningMethod struct {
-	// **Option: builtin_workflow**
-	BuiltinWorkflow any `json:"builtinWorkflow"`
-	// **Option: custom_workflow**
-	CustomWorkflow AppResourceRoleProvisioningMethodCustomWorkflow `json:"customWorkflow"`
-	// **Option: linked_roles**
-	LinkedRoles AppResourceRoleProvisioningMethodLinkedRoles `json:"linkedRoles"`
-	// **Option: manual**
-	Manual AppResourceRoleProvisioningMethodManual `json:"manual"`
+	BuiltinWorkflow any                                             `json:"builtinWorkflow"`
+	CustomWorkflow  AppResourceRoleProvisioningMethodCustomWorkflow `json:"customWorkflow"`
+	LinkedRoles     AppResourceRoleProvisioningMethodLinkedRoles    `json:"linkedRoles"`
+	Manual          AppResourceRoleProvisioningMethodManual         `json:"manual"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		BuiltinWorkflow respjson.Field
@@ -173,7 +169,6 @@ func (r *AppResourceRoleProvisioningMethod) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// **Option: custom_workflow**
 type AppResourceRoleProvisioningMethodCustomWorkflow struct {
 	// The workflow ID to deprovision access.
 	DeprovisionWorkflowID string `json:"deprovisionWorkflowId"`
@@ -194,7 +189,6 @@ func (r *AppResourceRoleProvisioningMethodCustomWorkflow) UnmarshalJSON(data []b
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// **Option: linked_roles**
 type AppResourceRoleProvisioningMethodLinkedRoles struct {
 	// The IDs of prerequisite roles.
 	LinkedRoleIDs []string `json:"linkedRoleIds"`
@@ -212,7 +206,6 @@ func (r *AppResourceRoleProvisioningMethodLinkedRoles) UnmarshalJSON(data []byte
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// **Option: manual**
 type AppResourceRoleProvisioningMethodManual struct {
 	// Users and groups that should be assigned/notified for manual provisioning.
 	Assignees []AppResourceRoleProvisioningMethodManualAssignee `json:"assignees"`
@@ -306,14 +299,10 @@ func (r *AppResourceRoleNewParams) UnmarshalJSON(data []byte) error {
 
 // Provisioning configuration. Exactly one method should be set.
 type AppResourceRoleNewParamsProvisioningMethod struct {
-	// **Option: builtin_workflow**
-	BuiltinWorkflow any `json:"builtinWorkflow,omitzero"`
-	// **Option: custom_workflow**
-	CustomWorkflow AppResourceRoleNewParamsProvisioningMethodCustomWorkflow `json:"customWorkflow,omitzero"`
-	// **Option: linked_roles**
-	LinkedRoles AppResourceRoleNewParamsProvisioningMethodLinkedRoles `json:"linkedRoles,omitzero"`
-	// **Option: manual**
-	Manual AppResourceRoleNewParamsProvisioningMethodManual `json:"manual,omitzero"`
+	BuiltinWorkflow any                                                      `json:"builtinWorkflow,omitzero"`
+	CustomWorkflow  AppResourceRoleNewParamsProvisioningMethodCustomWorkflow `json:"customWorkflow,omitzero"`
+	LinkedRoles     AppResourceRoleNewParamsProvisioningMethodLinkedRoles    `json:"linkedRoles,omitzero"`
+	Manual          AppResourceRoleNewParamsProvisioningMethodManual         `json:"manual,omitzero"`
 	paramObj
 }
 
@@ -325,7 +314,6 @@ func (r *AppResourceRoleNewParamsProvisioningMethod) UnmarshalJSON(data []byte) 
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// **Option: custom_workflow**
 type AppResourceRoleNewParamsProvisioningMethodCustomWorkflow struct {
 	// The workflow ID to deprovision access.
 	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
@@ -342,7 +330,6 @@ func (r *AppResourceRoleNewParamsProvisioningMethodCustomWorkflow) UnmarshalJSON
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// **Option: linked_roles**
 type AppResourceRoleNewParamsProvisioningMethodLinkedRoles struct {
 	// The IDs of prerequisite roles.
 	LinkedRoleIDs []string `json:"linkedRoleIds,omitzero"`
@@ -357,7 +344,6 @@ func (r *AppResourceRoleNewParamsProvisioningMethodLinkedRoles) UnmarshalJSON(da
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// **Option: manual**
 type AppResourceRoleNewParamsProvisioningMethodManual struct {
 	// Users and groups that should be assigned/notified for manual provisioning.
 	Assignees []AppResourceRoleNewParamsProvisioningMethodManualAssignee `json:"assignees,omitzero"`
@@ -460,14 +446,10 @@ func (r *AppResourceRoleUpdateParams) UnmarshalJSON(data []byte) error {
 
 // Provisioning configuration. Exactly one method should be set.
 type AppResourceRoleUpdateParamsProvisioningMethod struct {
-	// **Option: builtin_workflow**
-	BuiltinWorkflow any `json:"builtinWorkflow,omitzero"`
-	// **Option: custom_workflow**
-	CustomWorkflow AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflow `json:"customWorkflow,omitzero"`
-	// **Option: linked_roles**
-	LinkedRoles AppResourceRoleUpdateParamsProvisioningMethodLinkedRoles `json:"linkedRoles,omitzero"`
-	// **Option: manual**
-	Manual AppResourceRoleUpdateParamsProvisioningMethodManual `json:"manual,omitzero"`
+	BuiltinWorkflow any                                                         `json:"builtinWorkflow,omitzero"`
+	CustomWorkflow  AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflow `json:"customWorkflow,omitzero"`
+	LinkedRoles     AppResourceRoleUpdateParamsProvisioningMethodLinkedRoles    `json:"linkedRoles,omitzero"`
+	Manual          AppResourceRoleUpdateParamsProvisioningMethodManual         `json:"manual,omitzero"`
 	paramObj
 }
 
@@ -479,7 +461,6 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethod) UnmarshalJSON(data []byt
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// **Option: custom_workflow**
 type AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflow struct {
 	// The workflow ID to deprovision access.
 	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
@@ -496,7 +477,6 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflow) UnmarshalJ
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// **Option: linked_roles**
 type AppResourceRoleUpdateParamsProvisioningMethodLinkedRoles struct {
 	// The IDs of prerequisite roles.
 	LinkedRoleIDs []string `json:"linkedRoleIds,omitzero"`
@@ -511,7 +491,6 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodLinkedRoles) UnmarshalJSON
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// **Option: manual**
 type AppResourceRoleUpdateParamsProvisioningMethodManual struct {
 	// Users and groups that should be assigned/notified for manual provisioning.
 	Assignees []AppResourceRoleUpdateParamsProvisioningMethodManualAssignee `json:"assignees,omitzero"`
