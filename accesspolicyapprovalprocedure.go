@@ -194,8 +194,6 @@ func (r *AccessPolicyApprovalProcedureNewParams) UnmarshalJSON(data []byte) erro
 }
 
 type AccessPolicyApprovalProcedureNewParamsStep struct {
-	// The ID of the approval step.
-	ID param.Opt[string] `json:"id,omitzero"`
 	// Whether the step can be approved by the requester themselves.
 	AllowSelfApproval param.Opt[bool] `json:"allowSelfApproval,omitzero"`
 	// A workflow ID to execute to determine the approvers for this step (or to
@@ -273,8 +271,6 @@ func (r *AccessPolicyApprovalProcedureUpdateParams) UnmarshalJSON(data []byte) e
 }
 
 type AccessPolicyApprovalProcedureUpdateParamsStep struct {
-	// The ID of the approval step.
-	ID param.Opt[string] `json:"id,omitzero"`
 	// Whether the step can be approved by the requester themselves.
 	AllowSelfApproval param.Opt[bool] `json:"allowSelfApproval,omitzero"`
 	// A workflow ID to execute to determine the approvers for this step (or to

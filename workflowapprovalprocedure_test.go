@@ -32,7 +32,6 @@ func TestWorkflowApprovalProcedureNewWithOptionalParams(t *testing.T) {
 		"workflow_id",
 		serval.WorkflowApprovalProcedureNewParams{
 			Steps: []serval.WorkflowApprovalProcedureNewParamsStep{{
-				ID:                serval.String("id"),
 				AllowSelfApproval: serval.Bool(true),
 				CustomWorkflowID:  serval.String("customWorkflowId"),
 				ServalGroupIDs:    []string{"string"},
@@ -99,7 +98,6 @@ func TestWorkflowApprovalProcedureUpdateWithOptionalParams(t *testing.T) {
 		serval.WorkflowApprovalProcedureUpdateParams{
 			WorkflowID: "workflow_id",
 			Steps: []serval.WorkflowApprovalProcedureUpdateParamsStep{{
-				ID:                serval.String("id"),
 				AllowSelfApproval: serval.Bool(true),
 				CustomWorkflowID:  serval.String("customWorkflowId"),
 				ServalGroupIDs:    []string{"string"},
