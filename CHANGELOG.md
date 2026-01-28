@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.10.0 (2026-01-28)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/ServalHQ/serval-go/compare/v0.9.0...v0.10.0)
+
+### Features
+
+* **api:** manual updates ([e6f580a](https://github.com/ServalHQ/serval-go/commit/e6f580a9471204b4129cf06bd101a3cbf3afb8c0))
+* **api:** manual updates ([efc5abb](https://github.com/ServalHQ/serval-go/commit/efc5abbce4d203cb55c53e3620217ec5251837b5))
+* **client:** add a convenient param.SetJSON helper ([5ff8274](https://github.com/ServalHQ/serval-go/commit/5ff8274d6f474e39910640c417ee71433fa1d20a))
+
+
+### Bug Fixes
+
+* Use /v2/auth/token endpoint for OAuth2 token caching ([#15](https://github.com/ServalHQ/serval-go/issues/15)) ([ff89000](https://github.com/ServalHQ/serval-go/commit/ff890005ad347995b917ad5ea5eae6e1551b93a0))
+
 ## 0.9.0 (2026-01-23)
 
 Full Changelog: [v0.8.0...v0.9.0](https://github.com/ServalHQ/serval-go/compare/v0.8.0...v0.9.0)
