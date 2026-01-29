@@ -111,6 +111,8 @@ type AppResourceRole struct {
 	Name string `json:"name,required"`
 	// Provisioning configuration. **Exactly one method should be set.**
 	ProvisioningMethod AppResourceRoleProvisioningMethodUnion `json:"provisioningMethod,required"`
+	// (IMMUTABLE) The ID of the resource that the role belongs to.
+	ResourceID string `json:"resourceId,required"`
 	// The ID of the role.
 	ID string `json:"id"`
 	// (OPTIONAL) The default access policy for the role.
@@ -123,19 +125,17 @@ type AppResourceRole struct {
 	ExternalID string `json:"externalId,nullable"`
 	// (OPTIONAL) Whether requests are enabled for the role.
 	RequestsEnabled bool `json:"requestsEnabled"`
-	// The ID of the resource that the role belongs to.
-	ResourceID string `json:"resourceId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Name               respjson.Field
 		ProvisioningMethod respjson.Field
+		ResourceID         respjson.Field
 		ID                 respjson.Field
 		AccessPolicyID     respjson.Field
 		Description        respjson.Field
 		ExternalData       respjson.Field
 		ExternalID         respjson.Field
 		RequestsEnabled    respjson.Field
-		ResourceID         respjson.Field
 		ExtraFields        map[string]respjson.Field
 		raw                string
 	} `json:"-"`
