@@ -30,6 +30,7 @@ func TestGuidanceNewWithOptionalParams(t *testing.T) {
 	_, err := client.Guidances.New(context.TODO(), serval.GuidanceNewParams{
 		Content:         serval.String("content"),
 		Description:     serval.String("description"),
+		IsPublished:     serval.Bool(true),
 		Name:            serval.String("name"),
 		ShouldAlwaysUse: serval.Bool(true),
 		TeamID:          serval.String("teamId"),
