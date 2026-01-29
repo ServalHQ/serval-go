@@ -116,7 +116,8 @@ type User struct {
 	FirstName     string    `json:"firstName"`
 	LastName      string    `json:"lastName"`
 	Name          string    `json:"name"`
-	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN".
+	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN",
+	// "USER_ROLE_ORG_GUEST".
 	Role UserRole `json:"role"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -146,6 +147,7 @@ const (
 	UserRoleUserRoleUnspecified UserRole = "USER_ROLE_UNSPECIFIED"
 	UserRoleUserRoleOrgMember   UserRole = "USER_ROLE_ORG_MEMBER"
 	UserRoleUserRoleOrgAdmin    UserRole = "USER_ROLE_ORG_ADMIN"
+	UserRoleUserRoleOrgGuest    UserRole = "USER_ROLE_ORG_GUEST"
 )
 
 type UserListResponse struct {
@@ -174,7 +176,8 @@ type UserNewParams struct {
 	Email     param.Opt[string] `json:"email,omitzero"`
 	FirstName param.Opt[string] `json:"firstName,omitzero"`
 	LastName  param.Opt[string] `json:"lastName,omitzero"`
-	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN".
+	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN",
+	// "USER_ROLE_ORG_GUEST".
 	Role UserNewParamsRole `json:"role,omitzero"`
 	paramObj
 }
@@ -193,6 +196,7 @@ const (
 	UserNewParamsRoleUserRoleUnspecified UserNewParamsRole = "USER_ROLE_UNSPECIFIED"
 	UserNewParamsRoleUserRoleOrgMember   UserNewParamsRole = "USER_ROLE_ORG_MEMBER"
 	UserNewParamsRoleUserRoleOrgAdmin    UserNewParamsRole = "USER_ROLE_ORG_ADMIN"
+	UserNewParamsRoleUserRoleOrgGuest    UserNewParamsRole = "USER_ROLE_ORG_GUEST"
 )
 
 type UserNewResponseEnvelope struct {
@@ -232,7 +236,8 @@ type UserUpdateParams struct {
 	Email     param.Opt[string] `json:"email,omitzero"`
 	FirstName param.Opt[string] `json:"firstName,omitzero"`
 	LastName  param.Opt[string] `json:"lastName,omitzero"`
-	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN".
+	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN",
+	// "USER_ROLE_ORG_GUEST".
 	Role UserUpdateParamsRole `json:"role,omitzero"`
 	paramObj
 }
@@ -251,6 +256,7 @@ const (
 	UserUpdateParamsRoleUserRoleUnspecified UserUpdateParamsRole = "USER_ROLE_UNSPECIFIED"
 	UserUpdateParamsRoleUserRoleOrgMember   UserUpdateParamsRole = "USER_ROLE_ORG_MEMBER"
 	UserUpdateParamsRoleUserRoleOrgAdmin    UserUpdateParamsRole = "USER_ROLE_ORG_ADMIN"
+	UserUpdateParamsRoleUserRoleOrgGuest    UserUpdateParamsRole = "USER_ROLE_ORG_GUEST"
 )
 
 type UserUpdateResponseEnvelope struct {
