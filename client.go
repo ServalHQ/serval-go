@@ -26,6 +26,8 @@ type Client struct {
 	Users            UserService
 	Groups           GroupService
 	Teams            TeamService
+	Tags             TagService
+	CustomServices   CustomServiceService
 }
 
 // DefaultClientOptions read from the environment (SERVAL_CLIENT_ID,
@@ -63,6 +65,8 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r.Users = NewUserService(opts...)
 	r.Groups = NewGroupService(opts...)
 	r.Teams = NewTeamService(opts...)
+	r.Tags = NewTagService(opts...)
+	r.CustomServices = NewCustomServiceService(opts...)
 
 	return
 }
