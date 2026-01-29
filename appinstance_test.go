@@ -28,13 +28,13 @@ func TestAppInstanceNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppInstances.New(context.TODO(), serval.AppInstanceNewParams{
+		InstanceID:            "instanceId",
+		Name:                  "name",
+		TeamID:                "teamId",
 		AccessRequestsEnabled: serval.Bool(true),
 		CustomServiceID:       serval.String("customServiceId"),
 		DefaultAccessPolicyID: serval.String("defaultAccessPolicyId"),
-		InstanceID:            serval.String("instanceId"),
-		Name:                  serval.String("name"),
 		Service:               serval.String("service"),
-		TeamID:                serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
