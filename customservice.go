@@ -107,20 +107,20 @@ func (r *CustomServiceService) Delete(ctx context.Context, id string, opts ...op
 }
 
 type CustomService struct {
-	// The name of the custom service (e.g., "Internal HR System").
-	Name string `json:"name,required"`
-	// (IMMUTABLE) The ID of the team that the custom service belongs to.
-	TeamID string `json:"teamId,required"`
 	// The ID of the custom service.
 	ID string `json:"id"`
-	// (OPTIONAL) The domain for branding/logo lookup (e.g., "hr.company.com").
+	// The domain for branding/logo lookup (e.g., "hr.company.com").
 	Domain string `json:"domain"`
+	// The name of the custom service (e.g., "Internal HR System").
+	Name string `json:"name"`
+	// The ID of the team that the custom service belongs to.
+	TeamID string `json:"teamId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Name        respjson.Field
-		TeamID      respjson.Field
 		ID          respjson.Field
 		Domain      respjson.Field
+		Name        respjson.Field
+		TeamID      respjson.Field
 		ExtraFields map[string]respjson.Field
 		raw         string
 	} `json:"-"`
@@ -155,12 +155,12 @@ func (r *CustomServiceListResponse) UnmarshalJSON(data []byte) error {
 type CustomServiceDeleteResponse = any
 
 type CustomServiceNewParams struct {
+	// The name of the custom service (e.g., "Internal HR System").
+	Name string `json:"name,required"`
+	// The ID of the team.
+	TeamID string `json:"teamId,required"`
 	// The domain for branding/logo lookup (e.g., "hr.company.com").
 	Domain param.Opt[string] `json:"domain,omitzero"`
-	// The name of the custom service (e.g., "Internal HR System").
-	Name param.Opt[string] `json:"name,omitzero"`
-	// The ID of the team.
-	TeamID param.Opt[string] `json:"teamId,omitzero"`
 	paramObj
 }
 

@@ -28,12 +28,12 @@ func TestAccessPolicyNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
+		Name:                         "name",
+		TeamID:                       "teamId",
 		Description:                  serval.String("description"),
 		MaxAccessMinutes:             serval.Int(0),
-		Name:                         serval.String("name"),
 		RecommendedAccessMinutes:     serval.Int(0),
 		RequireBusinessJustification: serval.Bool(true),
-		TeamID:                       serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error

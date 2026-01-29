@@ -28,16 +28,16 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Workflows.New(context.TODO(), serval.WorkflowNewParams{
-		Content:                 serval.String("content"),
+		Content:                 "content",
+		Name:                    "name",
+		TeamID:                  "teamId",
+		Type:                    serval.WorkflowNewParamsTypeWorkflowTypeUnspecified,
 		Description:             serval.String("description"),
 		ExecutionScope:          serval.WorkflowNewParamsExecutionScopeWorkflowExecutionScopeUnspecified,
 		IsPublished:             serval.Bool(true),
 		IsTemporary:             serval.Bool(true),
-		Name:                    serval.String("name"),
 		Parameters:              serval.String("parameters"),
 		RequireFormConfirmation: serval.Bool(true),
-		TeamID:                  serval.String("teamId"),
-		Type:                    serval.WorkflowNewParamsTypeWorkflowTypeUnspecified,
 	})
 	if err != nil {
 		var apierr *serval.Error

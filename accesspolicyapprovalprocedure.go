@@ -128,16 +128,16 @@ func (r *AccessPolicyApprovalProcedureService) Delete(ctx context.Context, id st
 }
 
 type AccessPolicyApprovalProcedure struct {
-	// (IMMUTABLE) The ID of the access policy this approval procedure belongs to.
-	AccessPolicyID string `json:"accessPolicyId,required"`
 	// The ID of the access policy approval procedure.
 	ID string `json:"id"`
-	// (OPTIONAL) The steps in the approval procedure.
+	// The ID of the access policy this approval procedure belongs to.
+	AccessPolicyID string `json:"accessPolicyId"`
+	// The steps in the approval procedure.
 	Steps []AccessPolicyApprovalProcedureStep `json:"steps"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		AccessPolicyID respjson.Field
 		ID             respjson.Field
+		AccessPolicyID respjson.Field
 		Steps          respjson.Field
 		ExtraFields    map[string]respjson.Field
 		raw            string
@@ -153,14 +153,14 @@ func (r *AccessPolicyApprovalProcedure) UnmarshalJSON(data []byte) error {
 type AccessPolicyApprovalProcedureStep struct {
 	// The ID of the approval step.
 	ID string `json:"id"`
-	// (OPTIONAL) Whether the step can be approved by the requester themselves.
+	// Whether the step can be approved by the requester themselves.
 	AllowSelfApproval bool `json:"allowSelfApproval"`
-	// (OPTIONAL) A workflow ID to execute to determine the approvers for this step (or
-	// to auto-approve the step).
+	// A workflow ID to execute to determine the approvers for this step (or to
+	// auto-approve the step).
 	CustomWorkflowID string `json:"customWorkflowId"`
-	// (OPTIONAL) The IDs of the Serval groups that can approve the step.
+	// The IDs of the Serval groups that can approve the step.
 	ServalGroupIDs []string `json:"servalGroupIds"`
-	// (OPTIONAL) The IDs of the specific users that can approve the step.
+	// The IDs of the specific users that can approve the step.
 	SpecificUserIDs []string `json:"specificUserIds"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -197,14 +197,14 @@ func (r *AccessPolicyApprovalProcedureNewParams) UnmarshalJSON(data []byte) erro
 }
 
 type AccessPolicyApprovalProcedureNewParamsStep struct {
-	// (OPTIONAL) Whether the step can be approved by the requester themselves.
+	// Whether the step can be approved by the requester themselves.
 	AllowSelfApproval param.Opt[bool] `json:"allowSelfApproval,omitzero"`
-	// (OPTIONAL) A workflow ID to execute to determine the approvers for this step (or
-	// to auto-approve the step).
+	// A workflow ID to execute to determine the approvers for this step (or to
+	// auto-approve the step).
 	CustomWorkflowID param.Opt[string] `json:"customWorkflowId,omitzero"`
-	// (OPTIONAL) The IDs of the Serval groups that can approve the step.
+	// The IDs of the Serval groups that can approve the step.
 	ServalGroupIDs []string `json:"servalGroupIds,omitzero"`
-	// (OPTIONAL) The IDs of the specific users that can approve the step.
+	// The IDs of the specific users that can approve the step.
 	SpecificUserIDs []string `json:"specificUserIds,omitzero"`
 	paramObj
 }
@@ -274,14 +274,14 @@ func (r *AccessPolicyApprovalProcedureUpdateParams) UnmarshalJSON(data []byte) e
 }
 
 type AccessPolicyApprovalProcedureUpdateParamsStep struct {
-	// (OPTIONAL) Whether the step can be approved by the requester themselves.
+	// Whether the step can be approved by the requester themselves.
 	AllowSelfApproval param.Opt[bool] `json:"allowSelfApproval,omitzero"`
-	// (OPTIONAL) A workflow ID to execute to determine the approvers for this step (or
-	// to auto-approve the step).
+	// A workflow ID to execute to determine the approvers for this step (or to
+	// auto-approve the step).
 	CustomWorkflowID param.Opt[string] `json:"customWorkflowId,omitzero"`
-	// (OPTIONAL) The IDs of the Serval groups that can approve the step.
+	// The IDs of the Serval groups that can approve the step.
 	ServalGroupIDs []string `json:"servalGroupIds,omitzero"`
-	// (OPTIONAL) The IDs of the specific users that can approve the step.
+	// The IDs of the specific users that can approve the step.
 	SpecificUserIDs []string `json:"specificUserIds,omitzero"`
 	paramObj
 }

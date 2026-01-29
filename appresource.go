@@ -105,26 +105,26 @@ func (r *AppResourceService) Delete(ctx context.Context, id string, opts ...opti
 }
 
 type AppResource struct {
-	// (IMMUTABLE) The ID of the app instance that the resource belongs to.
-	AppInstanceID string `json:"appInstanceId,required"`
-	// The name of the resource.
-	Name string `json:"name,required"`
-	// The type of the resource.
-	ResourceType string `json:"resourceType,required"`
 	// The ID of the resource.
 	ID string `json:"id"`
-	// (OPTIONAL) A description of the resource.
+	// The ID of the app instance that the resource belongs to.
+	AppInstanceID string `json:"appInstanceId"`
+	// A description of the resource.
 	Description string `json:"description"`
-	// (OPTIONAL) The external ID of the resource.
+	// The external ID of the resource.
 	ExternalID string `json:"externalId,nullable"`
+	// The name of the resource.
+	Name string `json:"name"`
+	// The type of the resource.
+	ResourceType string `json:"resourceType"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		AppInstanceID respjson.Field
-		Name          respjson.Field
-		ResourceType  respjson.Field
 		ID            respjson.Field
+		AppInstanceID respjson.Field
 		Description   respjson.Field
 		ExternalID    respjson.Field
+		Name          respjson.Field
+		ResourceType  respjson.Field
 		ExtraFields   map[string]respjson.Field
 		raw           string
 	} `json:"-"`
@@ -159,16 +159,16 @@ func (r *AppResourceListResponse) UnmarshalJSON(data []byte) error {
 type AppResourceDeleteResponse = any
 
 type AppResourceNewParams struct {
+	// The ID of the app instance.
+	AppInstanceID string `json:"appInstanceId,required"`
+	// The name of the resource.
+	Name string `json:"name,required"`
+	// The type of the resource.
+	ResourceType string `json:"resourceType,required"`
 	// The external ID of the resource (optional).
 	ExternalID param.Opt[string] `json:"externalId,omitzero"`
-	// The ID of the app instance.
-	AppInstanceID param.Opt[string] `json:"appInstanceId,omitzero"`
 	// A description of the resource.
 	Description param.Opt[string] `json:"description,omitzero"`
-	// The name of the resource.
-	Name param.Opt[string] `json:"name,omitzero"`
-	// The type of the resource.
-	ResourceType param.Opt[string] `json:"resourceType,omitzero"`
 	paramObj
 }
 
