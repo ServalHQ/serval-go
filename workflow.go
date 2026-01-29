@@ -205,6 +205,8 @@ func (r *WorkflowListResponse) UnmarshalJSON(data []byte) error {
 type WorkflowDeleteResponse = any
 
 type WorkflowNewParams struct {
+	// Whether to publish the workflow after creation (optional).
+	IsPublished param.Opt[bool] `json:"isPublished,omitzero"`
 	// Whether the workflow is temporary (optional).
 	IsTemporary param.Opt[bool] `json:"isTemporary,omitzero"`
 	// The parameters schema of the workflow (JSON, optional).

@@ -31,6 +31,7 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 		Content:                 serval.String("content"),
 		Description:             serval.String("description"),
 		ExecutionScope:          serval.WorkflowNewParamsExecutionScopeWorkflowExecutionScopeUnspecified,
+		IsPublished:             serval.Bool(true),
 		IsTemporary:             serval.Bool(true),
 		Name:                    serval.String("name"),
 		Parameters:              serval.String("parameters"),

@@ -13,7 +13,7 @@ import (
 	"github.com/ServalHQ/serval-go/option"
 )
 
-func TestGuidanceNewWithOptionalParams(t *testing.T) {
+func TestCustomServiceNewWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -27,13 +27,10 @@ func TestGuidanceNewWithOptionalParams(t *testing.T) {
 		option.WithClientID("My Client ID"),
 		option.WithClientSecret("My Client Secret"),
 	)
-	_, err := client.Guidances.New(context.TODO(), serval.GuidanceNewParams{
-		Content:         serval.String("content"),
-		Description:     serval.String("description"),
-		IsPublished:     serval.Bool(true),
-		Name:            serval.String("name"),
-		ShouldAlwaysUse: serval.Bool(true),
-		TeamID:          serval.String("teamId"),
+	_, err := client.CustomServices.New(context.TODO(), serval.CustomServiceNewParams{
+		Domain: serval.String("domain"),
+		Name:   serval.String("name"),
+		TeamID: serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -44,7 +41,7 @@ func TestGuidanceNewWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestGuidanceGet(t *testing.T) {
+func TestCustomServiceGet(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -58,7 +55,7 @@ func TestGuidanceGet(t *testing.T) {
 		option.WithClientID("My Client ID"),
 		option.WithClientSecret("My Client Secret"),
 	)
-	_, err := client.Guidances.Get(context.TODO(), "id")
+	_, err := client.CustomServices.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
@@ -68,7 +65,7 @@ func TestGuidanceGet(t *testing.T) {
 	}
 }
 
-func TestGuidanceUpdateWithOptionalParams(t *testing.T) {
+func TestCustomServiceUpdateWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -82,15 +79,12 @@ func TestGuidanceUpdateWithOptionalParams(t *testing.T) {
 		option.WithClientID("My Client ID"),
 		option.WithClientSecret("My Client Secret"),
 	)
-	_, err := client.Guidances.Update(
+	_, err := client.CustomServices.Update(
 		context.TODO(),
 		"id",
-		serval.GuidanceUpdateParams{
-			Content:         serval.String("content"),
-			Description:     serval.String("description"),
-			IsPublished:     serval.Bool(true),
-			Name:            serval.String("name"),
-			ShouldAlwaysUse: serval.Bool(true),
+		serval.CustomServiceUpdateParams{
+			Domain: serval.String("domain"),
+			Name:   serval.String("name"),
 		},
 	)
 	if err != nil {
@@ -102,7 +96,7 @@ func TestGuidanceUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestGuidanceListWithOptionalParams(t *testing.T) {
+func TestCustomServiceListWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -116,7 +110,7 @@ func TestGuidanceListWithOptionalParams(t *testing.T) {
 		option.WithClientID("My Client ID"),
 		option.WithClientSecret("My Client Secret"),
 	)
-	_, err := client.Guidances.List(context.TODO(), serval.GuidanceListParams{
+	_, err := client.CustomServices.List(context.TODO(), serval.CustomServiceListParams{
 		PageSize:  serval.Int(0),
 		PageToken: serval.String("pageToken"),
 		TeamID:    serval.String("teamId"),
@@ -130,7 +124,7 @@ func TestGuidanceListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestGuidanceDelete(t *testing.T) {
+func TestCustomServiceDelete(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -144,7 +138,7 @@ func TestGuidanceDelete(t *testing.T) {
 		option.WithClientID("My Client ID"),
 		option.WithClientSecret("My Client Secret"),
 	)
-	_, err := client.Guidances.Delete(context.TODO(), "id")
+	_, err := client.CustomServices.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
