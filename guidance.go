@@ -105,32 +105,33 @@ func (r *GuidanceService) Delete(ctx context.Context, id string, opts ...option.
 }
 
 type Guidance struct {
+	// The content of the guidance.
+	Content string `json:"content,required"`
+	// The name of the guidance.
+	Name string `json:"name,required"`
+	// (IMMUTABLE) The ID of the team that the guidance belongs to.
+	TeamID string `json:"teamId,required"`
 	// The ID of the guidance.
 	ID string `json:"id"`
-	// The content of the guidance.
-	Content string `json:"content"`
-	// A description of the guidance.
+	// (OPTIONAL) A description of the guidance.
 	Description string `json:"description"`
-	// Whether there are unpublished changes to the guidance.
+	// Whether there are unpublished changes to the guidance (computed by server).
 	HasUnpublishedChanges bool `json:"hasUnpublishedChanges"`
-	// Whether the guidance has been published at least once.
+	// (OPTIONAL) Whether the guidance is published. Set to true to publish the
+	// guidance.
 	IsPublished bool `json:"isPublished"`
-	// The name of the guidance.
-	Name string `json:"name"`
-	// Whether this guidance should always be used (skipping LLM selection).
+	// (OPTIONAL) Whether this guidance should always be used (skipping LLM selection).
 	ShouldAlwaysUse bool `json:"shouldAlwaysUse"`
-	// The ID of the team that the guidance belongs to.
-	TeamID string `json:"teamId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		ID                    respjson.Field
 		Content               respjson.Field
+		Name                  respjson.Field
+		TeamID                respjson.Field
+		ID                    respjson.Field
 		Description           respjson.Field
 		HasUnpublishedChanges respjson.Field
 		IsPublished           respjson.Field
-		Name                  respjson.Field
 		ShouldAlwaysUse       respjson.Field
-		TeamID                respjson.Field
 		ExtraFields           map[string]respjson.Field
 		raw                   string
 	} `json:"-"`
@@ -165,10 +166,10 @@ func (r *GuidanceListResponse) UnmarshalJSON(data []byte) error {
 type GuidanceDeleteResponse = any
 
 type GuidanceNewParams struct {
-	// The content of the guidance (optional).
-	Content param.Opt[string] `json:"content,omitzero"`
 	// Whether this guidance should always be used (optional, defaults to false).
 	ShouldAlwaysUse param.Opt[bool] `json:"shouldAlwaysUse,omitzero"`
+	// The content of the guidance.
+	Content param.Opt[string] `json:"content,omitzero"`
 	// A description of the guidance.
 	Description param.Opt[string] `json:"description,omitzero"`
 	// The name of the guidance.
@@ -221,6 +222,8 @@ func (r *GuidanceGetResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type GuidanceUpdateParams struct {
+	// Whether the guidance is published. Set to true to publish the guidance.
+	IsPublished param.Opt[bool] `json:"isPublished,omitzero"`
 	// Whether this guidance should always be used (optional).
 	ShouldAlwaysUse param.Opt[bool] `json:"shouldAlwaysUse,omitzero"`
 	// The content of the guidance.
