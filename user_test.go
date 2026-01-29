@@ -28,7 +28,7 @@ func TestUserNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Users.New(context.TODO(), serval.UserNewParams{
-		Email:     serval.String("email"),
+		Email:     "email",
 		FirstName: serval.String("firstName"),
 		LastName:  serval.String("lastName"),
 		Role:      serval.UserNewParamsRoleUserRoleUnspecified,

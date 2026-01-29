@@ -28,11 +28,11 @@ func TestAppResourceNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppResources.New(context.TODO(), serval.AppResourceNewParams{
-		AppInstanceID: serval.String("appInstanceId"),
+		AppInstanceID: "appInstanceId",
+		Name:          "name",
+		ResourceType:  "resourceType",
 		Description:   serval.String("description"),
 		ExternalID:    serval.String("externalId"),
-		Name:          serval.String("name"),
-		ResourceType:  serval.String("resourceType"),
 	})
 	if err != nil {
 		var apierr *serval.Error

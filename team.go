@@ -157,9 +157,9 @@ func (r *TeamListResponse) UnmarshalJSON(data []byte) error {
 type TeamDeleteResponse = any
 
 type TeamNewParams struct {
+	Name        string            `json:"name,required"`
 	Description param.Opt[string] `json:"description,omitzero"`
 	Prefix      param.Opt[string] `json:"prefix,omitzero"`
-	Name        param.Opt[string] `json:"name,omitzero"`
 	UserIDs     []string          `json:"userIds,omitzero"`
 	paramObj
 }

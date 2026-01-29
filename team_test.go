@@ -28,8 +28,8 @@ func TestTeamNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Teams.New(context.TODO(), serval.TeamNewParams{
+		Name:        "name",
 		Description: serval.String("description"),
-		Name:        serval.String("name"),
 		Prefix:      serval.String("prefix"),
 		UserIDs:     []string{"string"},
 	})

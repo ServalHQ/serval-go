@@ -173,7 +173,7 @@ func (r *UserListResponse) UnmarshalJSON(data []byte) error {
 type UserDeleteResponse = any
 
 type UserNewParams struct {
-	Email     param.Opt[string] `json:"email,omitzero"`
+	Email     string            `json:"email,required"`
 	FirstName param.Opt[string] `json:"firstName,omitzero"`
 	LastName  param.Opt[string] `json:"lastName,omitzero"`
 	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN",

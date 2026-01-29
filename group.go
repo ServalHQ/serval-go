@@ -156,8 +156,8 @@ func (r *GroupListResponse) UnmarshalJSON(data []byte) error {
 type GroupDeleteResponse = any
 
 type GroupNewParams struct {
-	Name    param.Opt[string] `json:"name,omitzero"`
-	UserIDs []string          `json:"userIds,omitzero"`
+	Name    string   `json:"name,required"`
+	UserIDs []string `json:"userIds,omitzero"`
 	paramObj
 }
 

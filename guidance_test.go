@@ -28,12 +28,12 @@ func TestGuidanceNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Guidances.New(context.TODO(), serval.GuidanceNewParams{
-		Content:         serval.String("content"),
+		Content:         "content",
+		Name:            "name",
+		TeamID:          "teamId",
 		Description:     serval.String("description"),
 		IsPublished:     serval.Bool(true),
-		Name:            serval.String("name"),
 		ShouldAlwaysUse: serval.Bool(true),
-		TeamID:          serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error

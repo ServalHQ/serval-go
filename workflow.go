@@ -107,52 +107,51 @@ func (r *WorkflowService) Delete(ctx context.Context, id string, opts ...option.
 }
 
 type Workflow struct {
-	// The content/code of the workflow.
-	Content string `json:"content,required"`
-	// The name of the workflow.
-	Name string `json:"name,required"`
-	// (IMMUTABLE) The ID of the team that the workflow belongs to.
-	TeamID string `json:"teamId,required"`
-	// The type of the workflow.
-	//
-	// Any of "WORKFLOW_TYPE_UNSPECIFIED", "EXECUTABLE", "GUIDANCE".
-	Type WorkflowType `json:"type,required"`
 	// The ID of the workflow.
 	ID string `json:"id"`
-	// (OPTIONAL) A description of the workflow.
+	// The content/code of the workflow.
+	Content string `json:"content"`
+	// A description of the workflow.
 	Description string `json:"description"`
-	// (OPTIONAL) The execution scope of the workflow.
+	// The execution scope of the workflow.
 	//
 	// Any of "WORKFLOW_EXECUTION_SCOPE_UNSPECIFIED", "TEAM_PRIVATE", "TEAM_PUBLIC".
 	ExecutionScope WorkflowExecutionScope `json:"executionScope"`
 	// Whether there are unpublished changes to the workflow (computed by server).
 	HasUnpublishedChanges bool `json:"hasUnpublishedChanges"`
-	// (OPTIONAL) Whether the workflow is published. Set to true to publish the
-	// workflow.
+	// Whether the workflow is published. Set to true to publish the workflow.
 	IsPublished bool `json:"isPublished"`
-	// (OPTIONAL) Whether the workflow is temporary.
+	// Whether the workflow is temporary.
 	IsTemporary bool `json:"isTemporary"`
-	// (OPTIONAL) The parameters schema of the workflow (JSON).
+	// The name of the workflow.
+	Name string `json:"name"`
+	// The parameters schema of the workflow (JSON).
 	Parameters string `json:"parameters"`
-	// (OPTIONAL) Whether the workflow requires form confirmation.
+	// Whether the workflow requires form confirmation.
 	RequireFormConfirmation bool `json:"requireFormConfirmation"`
-	// (OPTIONAL) IDs of tags associated with this workflow.
+	// IDs of tags associated with this workflow.
 	TagIDs []string `json:"tagIds"`
+	// The ID of the team that the workflow belongs to.
+	TeamID string `json:"teamId"`
+	// The type of the workflow.
+	//
+	// Any of "WORKFLOW_TYPE_UNSPECIFIED", "EXECUTABLE", "GUIDANCE".
+	Type WorkflowType `json:"type"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Content                 respjson.Field
-		Name                    respjson.Field
-		TeamID                  respjson.Field
-		Type                    respjson.Field
 		ID                      respjson.Field
+		Content                 respjson.Field
 		Description             respjson.Field
 		ExecutionScope          respjson.Field
 		HasUnpublishedChanges   respjson.Field
 		IsPublished             respjson.Field
 		IsTemporary             respjson.Field
+		Name                    respjson.Field
 		Parameters              respjson.Field
 		RequireFormConfirmation respjson.Field
 		TagIDs                  respjson.Field
+		TeamID                  respjson.Field
+		Type                    respjson.Field
 		ExtraFields             map[string]respjson.Field
 		raw                     string
 	} `json:"-"`
@@ -164,6 +163,15 @@ func (r *Workflow) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The execution scope of the workflow.
+type WorkflowExecutionScope string
+
+const (
+	WorkflowExecutionScopeWorkflowExecutionScopeUnspecified WorkflowExecutionScope = "WORKFLOW_EXECUTION_SCOPE_UNSPECIFIED"
+	WorkflowExecutionScopeTeamPrivate                       WorkflowExecutionScope = "TEAM_PRIVATE"
+	WorkflowExecutionScopeTeamPublic                        WorkflowExecutionScope = "TEAM_PUBLIC"
+)
+
 // The type of the workflow.
 type WorkflowType string
 
@@ -171,15 +179,6 @@ const (
 	WorkflowTypeWorkflowTypeUnspecified WorkflowType = "WORKFLOW_TYPE_UNSPECIFIED"
 	WorkflowTypeExecutable              WorkflowType = "EXECUTABLE"
 	WorkflowTypeGuidance                WorkflowType = "GUIDANCE"
-)
-
-// (OPTIONAL) The execution scope of the workflow.
-type WorkflowExecutionScope string
-
-const (
-	WorkflowExecutionScopeWorkflowExecutionScopeUnspecified WorkflowExecutionScope = "WORKFLOW_EXECUTION_SCOPE_UNSPECIFIED"
-	WorkflowExecutionScopeTeamPrivate                       WorkflowExecutionScope = "TEAM_PRIVATE"
-	WorkflowExecutionScopeTeamPublic                        WorkflowExecutionScope = "TEAM_PUBLIC"
 )
 
 type WorkflowListResponse struct {
@@ -205,6 +204,16 @@ func (r *WorkflowListResponse) UnmarshalJSON(data []byte) error {
 type WorkflowDeleteResponse = any
 
 type WorkflowNewParams struct {
+	// The content/code of the workflow.
+	Content string `json:"content,required"`
+	// The name of the workflow.
+	Name string `json:"name,required"`
+	// The ID of the team.
+	TeamID string `json:"teamId,required"`
+	// The type of the workflow.
+	//
+	// Any of "WORKFLOW_TYPE_UNSPECIFIED", "EXECUTABLE", "GUIDANCE".
+	Type WorkflowNewParamsType `json:"type,omitzero,required"`
 	// Whether to publish the workflow after creation (optional).
 	IsPublished param.Opt[bool] `json:"isPublished,omitzero"`
 	// Whether the workflow is temporary (optional).
@@ -213,22 +222,12 @@ type WorkflowNewParams struct {
 	Parameters param.Opt[string] `json:"parameters,omitzero"`
 	// Whether the workflow requires form confirmation (optional).
 	RequireFormConfirmation param.Opt[bool] `json:"requireFormConfirmation,omitzero"`
-	// The content/code of the workflow.
-	Content param.Opt[string] `json:"content,omitzero"`
 	// A description of the workflow.
 	Description param.Opt[string] `json:"description,omitzero"`
-	// The name of the workflow.
-	Name param.Opt[string] `json:"name,omitzero"`
-	// The ID of the team.
-	TeamID param.Opt[string] `json:"teamId,omitzero"`
 	// The execution scope of the workflow.
 	//
 	// Any of "WORKFLOW_EXECUTION_SCOPE_UNSPECIFIED", "TEAM_PRIVATE", "TEAM_PUBLIC".
 	ExecutionScope WorkflowNewParamsExecutionScope `json:"executionScope,omitzero"`
-	// The type of the workflow.
-	//
-	// Any of "WORKFLOW_TYPE_UNSPECIFIED", "EXECUTABLE", "GUIDANCE".
-	Type WorkflowNewParamsType `json:"type,omitzero"`
 	paramObj
 }
 
@@ -240,15 +239,6 @@ func (r *WorkflowNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The execution scope of the workflow.
-type WorkflowNewParamsExecutionScope string
-
-const (
-	WorkflowNewParamsExecutionScopeWorkflowExecutionScopeUnspecified WorkflowNewParamsExecutionScope = "WORKFLOW_EXECUTION_SCOPE_UNSPECIFIED"
-	WorkflowNewParamsExecutionScopeTeamPrivate                       WorkflowNewParamsExecutionScope = "TEAM_PRIVATE"
-	WorkflowNewParamsExecutionScopeTeamPublic                        WorkflowNewParamsExecutionScope = "TEAM_PUBLIC"
-)
-
 // The type of the workflow.
 type WorkflowNewParamsType string
 
@@ -256,6 +246,15 @@ const (
 	WorkflowNewParamsTypeWorkflowTypeUnspecified WorkflowNewParamsType = "WORKFLOW_TYPE_UNSPECIFIED"
 	WorkflowNewParamsTypeExecutable              WorkflowNewParamsType = "EXECUTABLE"
 	WorkflowNewParamsTypeGuidance                WorkflowNewParamsType = "GUIDANCE"
+)
+
+// The execution scope of the workflow.
+type WorkflowNewParamsExecutionScope string
+
+const (
+	WorkflowNewParamsExecutionScopeWorkflowExecutionScopeUnspecified WorkflowNewParamsExecutionScope = "WORKFLOW_EXECUTION_SCOPE_UNSPECIFIED"
+	WorkflowNewParamsExecutionScopeTeamPrivate                       WorkflowNewParamsExecutionScope = "TEAM_PRIVATE"
+	WorkflowNewParamsExecutionScopeTeamPublic                        WorkflowNewParamsExecutionScope = "TEAM_PUBLIC"
 )
 
 type WorkflowNewResponseEnvelope struct {

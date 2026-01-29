@@ -52,7 +52,8 @@ import (
 func main() {
 	client := serval.NewClient()
 	accessPolicy, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
-		Name: serval.String("Example Access Policy"),
+		Name:   "Example Access Policy",
+		TeamID: "teamId",
 	})
 	if err != nil {
 		panic(err.Error())
