@@ -166,6 +166,8 @@ func (r *GuidanceListResponse) UnmarshalJSON(data []byte) error {
 type GuidanceDeleteResponse = any
 
 type GuidanceNewParams struct {
+	// Whether to publish the guidance after creation (optional).
+	IsPublished param.Opt[bool] `json:"isPublished,omitzero"`
 	// Whether this guidance should always be used (optional, defaults to false).
 	ShouldAlwaysUse param.Opt[bool] `json:"shouldAlwaysUse,omitzero"`
 	// The content of the guidance.
