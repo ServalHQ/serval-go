@@ -172,18 +172,6 @@ Methods:
 - <code title="get /v2/teams">client.Teams.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamListParams">TeamListParams</a>) (\*<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamListResponse">TeamListResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="delete /v2/teams/{id}">client.Teams.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (\*<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamDeleteResponse">TeamDeleteResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
-# Tags
-
-Response Types:
-
-- <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Tag">Tag</a>
-- <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TagListResponse">TagListResponse</a>
-
-Methods:
-
-- <code title="get /v2/tags/{id}">client.Tags.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TagService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (\*<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#Tag">Tag</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="get /v2/tags">client.Tags.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TagService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TagListParams">TagListParams</a>) (\*<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TagListResponse">TagListResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-
 # CustomServices
 
 Response Types:
