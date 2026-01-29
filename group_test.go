@@ -28,7 +28,7 @@ func TestGroupNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.Groups.New(context.TODO(), serval.GroupNewParams{
-		Name:    serval.String("name"),
+		Name:    "name",
 		UserIDs: []string{"string"},
 	})
 	if err != nil {

@@ -110,21 +110,20 @@ func (r *AppInstanceService) Delete(ctx context.Context, id string, opts ...opti
 type AppInstance struct {
 	// The ID of the app instance.
 	ID string `json:"id"`
-	// (OPTIONAL) Whether access requests are enabled for the app instance.
+	// Whether access requests are enabled for the app instance.
 	AccessRequestsEnabled bool `json:"accessRequestsEnabled"`
-	// **Option: custom_service_id** — (IMMUTABLE) The ID of the custom service (for
-	// custom apps).
+	// **Option: custom_service_id** — The ID of the custom service (for custom apps).
 	CustomServiceID string `json:"customServiceId"`
-	// (OPTIONAL) The default access policy for the app instance.
+	// The default access policy for the app instance.
 	DefaultAccessPolicyID string `json:"defaultAccessPolicyId,nullable"`
 	// The instance ID of the app instance.
 	InstanceID string `json:"instanceId"`
 	// The name of the app instance.
 	Name string `json:"name"`
-	// **Option: service** — (IMMUTABLE) The service identifier (for built-in services
-	// like "github", "okta", "aws").
+	// **Option: service** — The service identifier (for built-in services like
+	// "github", "okta", "aws").
 	Service string `json:"service"`
-	// (IMMUTABLE) The ID of the Serval team that the app instance belongs to.
+	// The ID of the Serval team that the app instance belongs to.
 	TeamID string `json:"teamId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -170,6 +169,12 @@ func (r *AppInstanceListResponse) UnmarshalJSON(data []byte) error {
 type AppInstanceDeleteResponse = any
 
 type AppInstanceNewParams struct {
+	// The instance ID of the app instance.
+	InstanceID string `json:"instanceId,required"`
+	// The name of the app instance.
+	Name string `json:"name,required"`
+	// The ID of the team.
+	TeamID string `json:"teamId,required"`
 	// The default access policy for the app instance (optional).
 	DefaultAccessPolicyID param.Opt[string] `json:"defaultAccessPolicyId,omitzero"`
 	// Whether access requests are enabled for the app instance.
@@ -177,15 +182,9 @@ type AppInstanceNewParams struct {
 	// **Option: custom_service_id** — The ID of a custom service to create the app
 	// instance for.
 	CustomServiceID param.Opt[string] `json:"customServiceId,omitzero"`
-	// The instance ID of the app instance.
-	InstanceID param.Opt[string] `json:"instanceId,omitzero"`
-	// The name of the app instance.
-	Name param.Opt[string] `json:"name,omitzero"`
 	// **Option: service** — The service identifier (for built-in services like
 	// "github", "okta", "aws").
 	Service param.Opt[string] `json:"service,omitzero"`
-	// The ID of the team.
-	TeamID param.Opt[string] `json:"teamId,omitzero"`
 	paramObj
 }
 

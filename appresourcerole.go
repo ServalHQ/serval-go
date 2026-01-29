@@ -107,35 +107,35 @@ func (r *AppResourceRoleService) Delete(ctx context.Context, id string, opts ...
 
 // Role represents a requestable role on an app resource.
 type AppResourceRole struct {
-	// The name of the role.
-	Name string `json:"name,required"`
-	// Provisioning configuration. **Exactly one method should be set.**
-	ProvisioningMethod AppResourceRoleProvisioningMethodUnion `json:"provisioningMethod,required"`
-	// (IMMUTABLE) The ID of the resource that the role belongs to.
-	ResourceID string `json:"resourceId,required"`
 	// The ID of the role.
 	ID string `json:"id"`
-	// (OPTIONAL) The default access policy for the role.
+	// The default access policy for the role.
 	AccessPolicyID string `json:"accessPolicyId,nullable"`
-	// (OPTIONAL) A description of the role.
+	// A description of the role.
 	Description string `json:"description"`
-	// Data from the external system as a JSON string (optional).
+	// Data from the external system as a JSON string (computed by server).
 	ExternalData string `json:"externalData,nullable"`
-	// (OPTIONAL) The external ID of the role in the external system (optional).
+	// The external ID of the role in the external system (optional).
 	ExternalID string `json:"externalId,nullable"`
-	// (OPTIONAL) Whether requests are enabled for the role.
+	// The name of the role.
+	Name string `json:"name"`
+	// Provisioning configuration. **Exactly one method should be set.**
+	ProvisioningMethod AppResourceRoleProvisioningMethodUnion `json:"provisioningMethod"`
+	// Whether requests are enabled for the role.
 	RequestsEnabled bool `json:"requestsEnabled"`
+	// The ID of the resource that the role belongs to.
+	ResourceID string `json:"resourceId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Name               respjson.Field
-		ProvisioningMethod respjson.Field
-		ResourceID         respjson.Field
 		ID                 respjson.Field
 		AccessPolicyID     respjson.Field
 		Description        respjson.Field
 		ExternalData       respjson.Field
 		ExternalID         respjson.Field
+		Name               respjson.Field
+		ProvisioningMethod respjson.Field
 		RequestsEnabled    respjson.Field
+		ResourceID         respjson.Field
 		ExtraFields        map[string]respjson.Field
 		raw                string
 	} `json:"-"`
@@ -236,9 +236,9 @@ func (r *AppResourceRoleProvisioningMethodCustomWorkflow) UnmarshalJSON(data []b
 // Provisioning is handled by custom workflows for provision + deprovision.
 type AppResourceRoleProvisioningMethodCustomWorkflowCustomWorkflow struct {
 	// The workflow ID to deprovision access.
-	DeprovisionWorkflowID string `json:"deprovisionWorkflowId,required"`
+	DeprovisionWorkflowID string `json:"deprovisionWorkflowId"`
 	// The workflow ID to provision access.
-	ProvisionWorkflowID string `json:"provisionWorkflowId,required"`
+	ProvisionWorkflowID string `json:"provisionWorkflowId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		DeprovisionWorkflowID respjson.Field
@@ -275,7 +275,7 @@ func (r *AppResourceRoleProvisioningMethodLinkedRoles) UnmarshalJSON(data []byte
 
 // Provisioning depends on prerequisite roles being provisioned first.
 type AppResourceRoleProvisioningMethodLinkedRolesLinkedRoles struct {
-	// (OPTIONAL) The IDs of prerequisite roles.
+	// The IDs of prerequisite roles.
 	LinkedRoleIDs []string `json:"linkedRoleIds"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -310,8 +310,7 @@ func (r *AppResourceRoleProvisioningMethodManual) UnmarshalJSON(data []byte) err
 
 // Provisioning is handled manually by assigned users/groups.
 type AppResourceRoleProvisioningMethodManualManual struct {
-	// (OPTIONAL) Users and groups that should be assigned/notified for manual
-	// provisioning.
+	// Users and groups that should be assigned/notified for manual provisioning.
 	Assignees []AppResourceRoleProvisioningMethodManualManualAssignee `json:"assignees"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -329,13 +328,13 @@ func (r *AppResourceRoleProvisioningMethodManualManual) UnmarshalJSON(data []byt
 
 type AppResourceRoleProvisioningMethodManualManualAssignee struct {
 	// The ID of the user or group.
-	AssigneeID string `json:"assigneeId,required"`
+	AssigneeID string `json:"assigneeId"`
 	// The type of assignee.
 	//
 	// Any of "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
 	// "MANUAL_PROVISIONING_ASSIGNEE_TYPE_USER",
 	// "MANUAL_PROVISIONING_ASSIGNEE_TYPE_GROUP".
-	AssigneeType string `json:"assigneeType,required"`
+	AssigneeType string `json:"assigneeType"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		AssigneeID   respjson.Field
@@ -374,6 +373,12 @@ func (r *AppResourceRoleListResponse) UnmarshalJSON(data []byte) error {
 type AppResourceRoleDeleteResponse = any
 
 type AppResourceRoleNewParams struct {
+	// The name of the role.
+	Name string `json:"name,required"`
+	// Provisioning configuration. Exactly one method should be set.
+	ProvisioningMethod AppResourceRoleNewParamsProvisioningMethodUnion `json:"provisioningMethod,omitzero,required"`
+	// The ID of the resource.
+	ResourceID string `json:"resourceId,required"`
 	// The default access policy for the role (optional).
 	AccessPolicyID param.Opt[string] `json:"accessPolicyId,omitzero"`
 	// Data from the external system as a JSON string (optional).
@@ -382,14 +387,8 @@ type AppResourceRoleNewParams struct {
 	ExternalID param.Opt[string] `json:"externalId,omitzero"`
 	// A description of the role.
 	Description param.Opt[string] `json:"description,omitzero"`
-	// The name of the role.
-	Name param.Opt[string] `json:"name,omitzero"`
 	// Whether requests are enabled for the role.
 	RequestsEnabled param.Opt[bool] `json:"requestsEnabled,omitzero"`
-	// The ID of the resource.
-	ResourceID param.Opt[string] `json:"resourceId,omitzero"`
-	// Provisioning configuration. Exactly one method should be set.
-	ProvisioningMethod AppResourceRoleNewParamsProvisioningMethodUnion `json:"provisioningMethod,omitzero"`
 	paramObj
 }
 
@@ -463,13 +462,11 @@ func (r *AppResourceRoleNewParamsProvisioningMethodCustomWorkflow) UnmarshalJSON
 }
 
 // Provisioning is handled by custom workflows for provision + deprovision.
-//
-// The properties DeprovisionWorkflowID, ProvisionWorkflowID are required.
 type AppResourceRoleNewParamsProvisioningMethodCustomWorkflowCustomWorkflow struct {
 	// The workflow ID to deprovision access.
-	DeprovisionWorkflowID string `json:"deprovisionWorkflowId,required"`
+	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
 	// The workflow ID to provision access.
-	ProvisionWorkflowID string `json:"provisionWorkflowId,required"`
+	ProvisionWorkflowID param.Opt[string] `json:"provisionWorkflowId,omitzero"`
 	paramObj
 }
 
@@ -498,7 +495,7 @@ func (r *AppResourceRoleNewParamsProvisioningMethodLinkedRoles) UnmarshalJSON(da
 
 // Provisioning depends on prerequisite roles being provisioned first.
 type AppResourceRoleNewParamsProvisioningMethodLinkedRolesLinkedRoles struct {
-	// (OPTIONAL) The IDs of prerequisite roles.
+	// The IDs of prerequisite roles.
 	LinkedRoleIDs []string `json:"linkedRoleIds,omitzero"`
 	paramObj
 }
@@ -528,8 +525,7 @@ func (r *AppResourceRoleNewParamsProvisioningMethodManual) UnmarshalJSON(data []
 
 // Provisioning is handled manually by assigned users/groups.
 type AppResourceRoleNewParamsProvisioningMethodManualManual struct {
-	// (OPTIONAL) Users and groups that should be assigned/notified for manual
-	// provisioning.
+	// Users and groups that should be assigned/notified for manual provisioning.
 	Assignees []AppResourceRoleNewParamsProvisioningMethodManualManualAssignee `json:"assignees,omitzero"`
 	paramObj
 }
@@ -542,16 +538,15 @@ func (r *AppResourceRoleNewParamsProvisioningMethodManualManual) UnmarshalJSON(d
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The properties AssigneeID, AssigneeType are required.
 type AppResourceRoleNewParamsProvisioningMethodManualManualAssignee struct {
 	// The ID of the user or group.
-	AssigneeID string `json:"assigneeId,required"`
+	AssigneeID param.Opt[string] `json:"assigneeId,omitzero"`
 	// The type of assignee.
 	//
 	// Any of "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
 	// "MANUAL_PROVISIONING_ASSIGNEE_TYPE_USER",
 	// "MANUAL_PROVISIONING_ASSIGNEE_TYPE_GROUP".
-	AssigneeType string `json:"assigneeType,omitzero,required"`
+	AssigneeType string `json:"assigneeType,omitzero"`
 	paramObj
 }
 
@@ -691,13 +686,11 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflow) UnmarshalJ
 }
 
 // Provisioning is handled by custom workflows for provision + deprovision.
-//
-// The properties DeprovisionWorkflowID, ProvisionWorkflowID are required.
 type AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow struct {
 	// The workflow ID to deprovision access.
-	DeprovisionWorkflowID string `json:"deprovisionWorkflowId,required"`
+	DeprovisionWorkflowID param.Opt[string] `json:"deprovisionWorkflowId,omitzero"`
 	// The workflow ID to provision access.
-	ProvisionWorkflowID string `json:"provisionWorkflowId,required"`
+	ProvisionWorkflowID param.Opt[string] `json:"provisionWorkflowId,omitzero"`
 	paramObj
 }
 
@@ -726,7 +719,7 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodLinkedRoles) UnmarshalJSON
 
 // Provisioning depends on prerequisite roles being provisioned first.
 type AppResourceRoleUpdateParamsProvisioningMethodLinkedRolesLinkedRoles struct {
-	// (OPTIONAL) The IDs of prerequisite roles.
+	// The IDs of prerequisite roles.
 	LinkedRoleIDs []string `json:"linkedRoleIds,omitzero"`
 	paramObj
 }
@@ -756,8 +749,7 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodManual) UnmarshalJSON(data
 
 // Provisioning is handled manually by assigned users/groups.
 type AppResourceRoleUpdateParamsProvisioningMethodManualManual struct {
-	// (OPTIONAL) Users and groups that should be assigned/notified for manual
-	// provisioning.
+	// Users and groups that should be assigned/notified for manual provisioning.
 	Assignees []AppResourceRoleUpdateParamsProvisioningMethodManualManualAssignee `json:"assignees,omitzero"`
 	paramObj
 }
@@ -770,16 +762,15 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodManualManual) UnmarshalJSO
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The properties AssigneeID, AssigneeType are required.
 type AppResourceRoleUpdateParamsProvisioningMethodManualManualAssignee struct {
 	// The ID of the user or group.
-	AssigneeID string `json:"assigneeId,required"`
+	AssigneeID param.Opt[string] `json:"assigneeId,omitzero"`
 	// The type of assignee.
 	//
 	// Any of "MANUAL_PROVISIONING_ASSIGNEE_TYPE_UNSPECIFIED",
 	// "MANUAL_PROVISIONING_ASSIGNEE_TYPE_USER",
 	// "MANUAL_PROVISIONING_ASSIGNEE_TYPE_GROUP".
-	AssigneeType string `json:"assigneeType,omitzero,required"`
+	AssigneeType string `json:"assigneeType,omitzero"`
 	paramObj
 }
 

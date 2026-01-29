@@ -107,29 +107,29 @@ func (r *AccessPolicyService) Delete(ctx context.Context, id string, opts ...opt
 }
 
 type AccessPolicy struct {
-	// The name of the access policy.
-	Name string `json:"name,required"`
-	// (IMMUTABLE) The ID of the team that the access policy belongs to.
-	TeamID string `json:"teamId,required"`
 	// The ID of the access policy.
 	ID string `json:"id"`
-	// (OPTIONAL) A description of the access policy.
+	// A description of the access policy.
 	Description string `json:"description"`
-	// (OPTIONAL) The maximum number of minutes that access can be granted for.
+	// The maximum number of minutes that access can be granted for.
 	MaxAccessMinutes int64 `json:"maxAccessMinutes"`
-	// (OPTIONAL) The recommended duration in minutes for access requests (optional).
+	// The name of the access policy.
+	Name string `json:"name"`
+	// The recommended duration in minutes for access requests (optional).
 	RecommendedAccessMinutes int64 `json:"recommendedAccessMinutes,nullable"`
-	// (OPTIONAL) Whether a business justification is required when requesting access.
+	// Whether a business justification is required when requesting access.
 	RequireBusinessJustification bool `json:"requireBusinessJustification"`
+	// The ID of the team that the access policy belongs to.
+	TeamID string `json:"teamId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Name                         respjson.Field
-		TeamID                       respjson.Field
 		ID                           respjson.Field
 		Description                  respjson.Field
 		MaxAccessMinutes             respjson.Field
+		Name                         respjson.Field
 		RecommendedAccessMinutes     respjson.Field
 		RequireBusinessJustification respjson.Field
+		TeamID                       respjson.Field
 		ExtraFields                  map[string]respjson.Field
 		raw                          string
 	} `json:"-"`
@@ -164,6 +164,10 @@ func (r *AccessPolicyListResponse) UnmarshalJSON(data []byte) error {
 type AccessPolicyDeleteResponse = any
 
 type AccessPolicyNewParams struct {
+	// The name of the access policy.
+	Name string `json:"name,required"`
+	// The ID of the team.
+	TeamID string `json:"teamId,required"`
 	// The maximum number of minutes that access can be granted for (optional).
 	MaxAccessMinutes param.Opt[int64] `json:"maxAccessMinutes,omitzero"`
 	// The recommended duration in minutes for access requests (optional).
@@ -172,10 +176,6 @@ type AccessPolicyNewParams struct {
 	RequireBusinessJustification param.Opt[bool] `json:"requireBusinessJustification,omitzero"`
 	// A description of the access policy.
 	Description param.Opt[string] `json:"description,omitzero"`
-	// The name of the access policy.
-	Name param.Opt[string] `json:"name,omitzero"`
-	// The ID of the team.
-	TeamID param.Opt[string] `json:"teamId,omitzero"`
 	paramObj
 }
 

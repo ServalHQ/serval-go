@@ -26,7 +26,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/ServalHQ/serval-go@v0.13.0'
+go get -u 'github.com/ServalHQ/serval-go@v0.14.0'
 ```
 
 <!-- x-release-please-end -->
@@ -52,7 +52,8 @@ import (
 func main() {
 	client := serval.NewClient()
 	accessPolicy, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
-		Name: serval.String("Example Access Policy"),
+		Name:   "Example Access Policy",
+		TeamID: "teamId",
 	})
 	if err != nil {
 		panic(err.Error())

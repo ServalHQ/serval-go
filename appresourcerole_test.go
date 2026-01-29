@@ -28,18 +28,18 @@ func TestAppResourceRoleNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.AppResourceRoles.New(context.TODO(), serval.AppResourceRoleNewParams{
-		AccessPolicyID: serval.String("accessPolicyId"),
-		Description:    serval.String("description"),
-		ExternalData:   serval.String("externalData"),
-		ExternalID:     serval.String("externalId"),
-		Name:           serval.String("name"),
+		Name: "name",
 		ProvisioningMethod: serval.AppResourceRoleNewParamsProvisioningMethodUnion{
 			OfBuiltinWorkflow: &serval.AppResourceRoleNewParamsProvisioningMethodBuiltinWorkflow{
 				BuiltinWorkflow: map[string]any{},
 			},
 		},
+		ResourceID:      "resourceId",
+		AccessPolicyID:  serval.String("accessPolicyId"),
+		Description:     serval.String("description"),
+		ExternalData:    serval.String("externalData"),
+		ExternalID:      serval.String("externalId"),
 		RequestsEnabled: serval.Bool(true),
-		ResourceID:      serval.String("resourceId"),
 	})
 	if err != nil {
 		var apierr *serval.Error

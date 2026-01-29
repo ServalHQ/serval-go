@@ -28,9 +28,9 @@ func TestCustomServiceNewWithOptionalParams(t *testing.T) {
 		option.WithClientSecret("My Client Secret"),
 	)
 	_, err := client.CustomServices.New(context.TODO(), serval.CustomServiceNewParams{
+		Name:   "name",
+		TeamID: "teamId",
 		Domain: serval.String("domain"),
-		Name:   serval.String("name"),
-		TeamID: serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
