@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.0 (2026-01-29)
+
+Full Changelog: [v0.10.0...v0.11.0](https://github.com/ServalHQ/serval-go/compare/v0.10.0...v0.11.0)
+
+### Features
+
+* **api:** manual updates ([7a85712](https://github.com/ServalHQ/serval-go/commit/7a857128f372bb6c17b16de5d51435803e0f9031))
+
 ## 0.10.0 (2026-01-28)
 
 Full Changelog: [v0.9.0...v0.10.0](https://github.com/ServalHQ/serval-go/compare/v0.9.0...v0.10.0)
