@@ -105,26 +105,26 @@ func (r *AppResourceService) Delete(ctx context.Context, id string, opts ...opti
 }
 
 type AppResource struct {
+	// The name of the resource.
+	Name string `json:"name,required"`
+	// The type of the resource.
+	ResourceType string `json:"resourceType,required"`
 	// The ID of the resource.
 	ID string `json:"id"`
 	// The ID of the app instance that the resource belongs to.
 	AppInstanceID string `json:"appInstanceId"`
-	// A description of the resource.
+	// (OPTIONAL) A description of the resource.
 	Description string `json:"description"`
-	// The external ID of the resource.
+	// (OPTIONAL) The external ID of the resource.
 	ExternalID string `json:"externalId,nullable"`
-	// The name of the resource.
-	Name string `json:"name"`
-	// The type of the resource.
-	ResourceType string `json:"resourceType"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
+		Name          respjson.Field
+		ResourceType  respjson.Field
 		ID            respjson.Field
 		AppInstanceID respjson.Field
 		Description   respjson.Field
 		ExternalID    respjson.Field
-		Name          respjson.Field
-		ResourceType  respjson.Field
 		ExtraFields   map[string]respjson.Field
 		raw           string
 	} `json:"-"`

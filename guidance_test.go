@@ -87,6 +87,7 @@ func TestGuidanceUpdateWithOptionalParams(t *testing.T) {
 		serval.GuidanceUpdateParams{
 			Content:         serval.String("content"),
 			Description:     serval.String("description"),
+			IsPublished:     serval.Bool(true),
 			Name:            serval.String("name"),
 			ShouldAlwaysUse: serval.Bool(true),
 		},
