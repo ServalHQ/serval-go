@@ -26,12 +26,13 @@ type Client struct {
 	Users            UserService
 	Groups           GroupService
 	Teams            TeamService
+	Tags             TagService
 	CustomServices   CustomServiceService
 }
 
 // DefaultClientOptions read from the environment (SERVAL_CLIENT_ID,
-// SERVAL_CLIENT_SECRET, SERVAL_BASE_URL). This should be used to initialize new
-// clients.
+// SERVAL_CLIENT_SECRET, SERVAL_BEARER_TOKEN, SERVAL_BASE_URL). This should be used
+// to initialize new clients.
 func DefaultClientOptions() []option.RequestOption {
 	defaults := []option.RequestOption{option.WithEnvironmentProduction()}
 	if o, ok := os.LookupEnv("SERVAL_BASE_URL"); ok {
@@ -43,13 +44,17 @@ func DefaultClientOptions() []option.RequestOption {
 	if o, ok := os.LookupEnv("SERVAL_CLIENT_SECRET"); ok {
 		defaults = append(defaults, option.WithClientSecret(o))
 	}
+	if o, ok := os.LookupEnv("SERVAL_BEARER_TOKEN"); ok {
+		defaults = append(defaults, option.WithBearerToken(o))
+	}
 	return defaults
 }
 
 // NewClient generates a new client with the default option read from the
-// environment (SERVAL_CLIENT_ID, SERVAL_CLIENT_SECRET, SERVAL_BASE_URL). The
-// option passed in as arguments are applied after these default arguments, and all
-// option will be passed down to the services and requests that this client makes.
+// environment (SERVAL_CLIENT_ID, SERVAL_CLIENT_SECRET, SERVAL_BEARER_TOKEN,
+// SERVAL_BASE_URL). The option passed in as arguments are applied after these
+// default arguments, and all option will be passed down to the services and
+// requests that this client makes.
 func NewClient(opts ...option.RequestOption) (r Client) {
 	opts = append(DefaultClientOptions(), opts...)
 
@@ -64,6 +69,7 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r.Users = NewUserService(opts...)
 	r.Groups = NewGroupService(opts...)
 	r.Teams = NewTeamService(opts...)
+	r.Tags = NewTagService(opts...)
 	r.CustomServices = NewCustomServiceService(opts...)
 
 	return

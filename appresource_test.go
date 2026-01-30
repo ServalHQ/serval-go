@@ -24,8 +24,7 @@ func TestAppResourceNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppResources.New(context.TODO(), serval.AppResourceNewParams{
 		AppInstanceID: "appInstanceId",
@@ -54,8 +53,7 @@ func TestAppResourceGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppResources.Get(context.TODO(), "id")
 	if err != nil {
@@ -78,8 +76,7 @@ func TestAppResourceUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppResources.Update(
 		context.TODO(),
@@ -111,8 +108,7 @@ func TestAppResourceListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppResources.List(context.TODO(), serval.AppResourceListParams{
 		AppInstanceID: serval.String("appInstanceId"),
@@ -140,8 +136,7 @@ func TestAppResourceDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppResources.Delete(context.TODO(), "id")
 	if err != nil {

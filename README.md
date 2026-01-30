@@ -26,7 +26,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/ServalHQ/serval-go@v0.14.0'
+go get -u 'github.com/ServalHQ/serval-go@v0.15.0'
 ```
 
 <!-- x-release-please-end -->
@@ -47,10 +47,13 @@ import (
 	"fmt"
 
 	"github.com/ServalHQ/serval-go"
+	"github.com/ServalHQ/serval-go/option"
 )
 
 func main() {
-	client := serval.NewClient()
+	client := serval.NewClient(
+		option.WithBearerToken("My Bearer Token"), // defaults to os.LookupEnv("SERVAL_BEARER_TOKEN")
+	)
 	accessPolicy, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
 		Name:   "Example Access Policy",
 		TeamID: "teamId",
