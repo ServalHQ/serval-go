@@ -24,17 +24,16 @@ func TestAppInstanceNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppInstances.New(context.TODO(), serval.AppInstanceNewParams{
-		InstanceID:            "instanceId",
-		Name:                  "name",
-		TeamID:                "teamId",
-		AccessRequestsEnabled: serval.Bool(true),
-		CustomServiceID:       serval.String("customServiceId"),
-		DefaultAccessPolicyID: serval.String("defaultAccessPolicyId"),
-		Service:               serval.String("service"),
+		ExternalServiceInstanceID: "externalServiceInstanceId",
+		Name:                      "name",
+		TeamID:                    "teamId",
+		AccessRequestsEnabled:     serval.Bool(true),
+		CustomServiceID:           serval.String("customServiceId"),
+		DefaultAccessPolicyID:     serval.String("defaultAccessPolicyId"),
+		Service:                   serval.String("service"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -56,8 +55,7 @@ func TestAppInstanceGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppInstances.Get(context.TODO(), "id")
 	if err != nil {
@@ -80,17 +78,16 @@ func TestAppInstanceUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppInstances.Update(
 		context.TODO(),
 		"id",
 		serval.AppInstanceUpdateParams{
-			AccessRequestsEnabled: serval.Bool(true),
-			DefaultAccessPolicyID: serval.String("defaultAccessPolicyId"),
-			InstanceID:            serval.String("instanceId"),
-			Name:                  serval.String("name"),
+			AccessRequestsEnabled:     serval.Bool(true),
+			DefaultAccessPolicyID:     serval.String("defaultAccessPolicyId"),
+			ExternalServiceInstanceID: serval.String("externalServiceInstanceId"),
+			Name:                      serval.String("name"),
 		},
 	)
 	if err != nil {
@@ -113,8 +110,7 @@ func TestAppInstanceListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppInstances.List(context.TODO(), serval.AppInstanceListParams{
 		PageSize:  serval.Int(0),
@@ -141,8 +137,7 @@ func TestAppInstanceDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppInstances.Delete(context.TODO(), "id")
 	if err != nil {

@@ -24,8 +24,7 @@ func TestUserNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Users.New(context.TODO(), serval.UserNewParams{
 		Email:     "email",
@@ -53,8 +52,7 @@ func TestUserGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Users.Get(context.TODO(), "id")
 	if err != nil {
@@ -77,8 +75,7 @@ func TestUserUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Users.Update(
 		context.TODO(),
@@ -111,8 +108,7 @@ func TestUserListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Users.List(context.TODO(), serval.UserListParams{
 		IncludeDeactivated: serval.Bool(true),
@@ -139,8 +135,7 @@ func TestUserDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Users.Delete(context.TODO(), "id")
 	if err != nil {

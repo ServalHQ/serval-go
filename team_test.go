@@ -24,8 +24,7 @@ func TestTeamNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Teams.New(context.TODO(), serval.TeamNewParams{
 		Name:        "name",
@@ -53,8 +52,7 @@ func TestTeamGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Teams.Get(context.TODO(), "id")
 	if err != nil {
@@ -77,8 +75,7 @@ func TestTeamUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Teams.Update(
 		context.TODO(),
@@ -110,8 +107,7 @@ func TestTeamListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Teams.List(context.TODO(), serval.TeamListParams{
 		PageSize:  serval.Int(0),
@@ -137,8 +133,7 @@ func TestTeamDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Teams.Delete(context.TODO(), "id")
 	if err != nil {

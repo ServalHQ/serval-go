@@ -24,8 +24,7 @@ func TestAccessPolicyNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AccessPolicies.New(context.TODO(), serval.AccessPolicyNewParams{
 		Name:                         "name",
@@ -55,8 +54,7 @@ func TestAccessPolicyGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AccessPolicies.Get(context.TODO(), "id")
 	if err != nil {
@@ -79,8 +77,7 @@ func TestAccessPolicyUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AccessPolicies.Update(
 		context.TODO(),
@@ -113,8 +110,7 @@ func TestAccessPolicyListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AccessPolicies.List(context.TODO(), serval.AccessPolicyListParams{
 		PageSize:  serval.Int(0),
@@ -141,8 +137,7 @@ func TestAccessPolicyDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AccessPolicies.Delete(context.TODO(), "id")
 	if err != nil {

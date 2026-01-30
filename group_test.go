@@ -24,8 +24,7 @@ func TestGroupNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Groups.New(context.TODO(), serval.GroupNewParams{
 		Name:    "name",
@@ -51,8 +50,7 @@ func TestGroupGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Groups.Get(context.TODO(), "id")
 	if err != nil {
@@ -75,8 +73,7 @@ func TestGroupUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Groups.Update(
 		context.TODO(),
@@ -106,8 +103,7 @@ func TestGroupListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Groups.List(context.TODO(), serval.GroupListParams{
 		PageSize:  serval.Int(0),
@@ -133,8 +129,7 @@ func TestGroupDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Groups.Delete(context.TODO(), "id")
 	if err != nil {
