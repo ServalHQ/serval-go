@@ -116,8 +116,9 @@ type AppInstance struct {
 	CustomServiceID string `json:"customServiceId"`
 	// The default access policy for the app instance.
 	DefaultAccessPolicyID string `json:"defaultAccessPolicyId,nullable"`
-	// The instance ID of the app instance.
-	InstanceID string `json:"instanceId"`
+	// The external service instance ID (e.g., GitHub org name, Okta domain, AWS
+	// account ID).
+	ExternalServiceInstanceID string `json:"externalServiceInstanceId"`
 	// The name of the app instance.
 	Name string `json:"name"`
 	// **Option: service** — The service identifier (for built-in services like
@@ -127,16 +128,16 @@ type AppInstance struct {
 	TeamID string `json:"teamId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		ID                    respjson.Field
-		AccessRequestsEnabled respjson.Field
-		CustomServiceID       respjson.Field
-		DefaultAccessPolicyID respjson.Field
-		InstanceID            respjson.Field
-		Name                  respjson.Field
-		Service               respjson.Field
-		TeamID                respjson.Field
-		ExtraFields           map[string]respjson.Field
-		raw                   string
+		ID                        respjson.Field
+		AccessRequestsEnabled     respjson.Field
+		CustomServiceID           respjson.Field
+		DefaultAccessPolicyID     respjson.Field
+		ExternalServiceInstanceID respjson.Field
+		Name                      respjson.Field
+		Service                   respjson.Field
+		TeamID                    respjson.Field
+		ExtraFields               map[string]respjson.Field
+		raw                       string
 	} `json:"-"`
 }
 
@@ -169,8 +170,9 @@ func (r *AppInstanceListResponse) UnmarshalJSON(data []byte) error {
 type AppInstanceDeleteResponse = any
 
 type AppInstanceNewParams struct {
-	// The instance ID of the app instance.
-	InstanceID string `json:"instanceId,required"`
+	// The external service instance ID (e.g., GitHub org name, Okta domain, AWS
+	// account ID).
+	ExternalServiceInstanceID string `json:"externalServiceInstanceId,required"`
 	// The name of the app instance.
 	Name string `json:"name,required"`
 	// The ID of the team.
@@ -235,8 +237,9 @@ type AppInstanceUpdateParams struct {
 	DefaultAccessPolicyID param.Opt[string] `json:"defaultAccessPolicyId,omitzero"`
 	// Whether access requests are enabled for the app instance.
 	AccessRequestsEnabled param.Opt[bool] `json:"accessRequestsEnabled,omitzero"`
-	// The instance ID of the app instance.
-	InstanceID param.Opt[string] `json:"instanceId,omitzero"`
+	// The external service instance ID (e.g., GitHub org name, Okta domain, AWS
+	// account ID).
+	ExternalServiceInstanceID param.Opt[string] `json:"externalServiceInstanceId,omitzero"`
 	// The name of the app instance.
 	Name param.Opt[string] `json:"name,omitzero"`
 	paramObj

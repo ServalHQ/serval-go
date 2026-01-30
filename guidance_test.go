@@ -24,8 +24,7 @@ func TestGuidanceNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Guidances.New(context.TODO(), serval.GuidanceNewParams{
 		Content:         "content",
@@ -55,8 +54,7 @@ func TestGuidanceGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Guidances.Get(context.TODO(), "id")
 	if err != nil {
@@ -79,8 +77,7 @@ func TestGuidanceUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Guidances.Update(
 		context.TODO(),
@@ -113,8 +110,7 @@ func TestGuidanceListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Guidances.List(context.TODO(), serval.GuidanceListParams{
 		PageSize:  serval.Int(0),
@@ -141,8 +137,7 @@ func TestGuidanceDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Guidances.Delete(context.TODO(), "id")
 	if err != nil {

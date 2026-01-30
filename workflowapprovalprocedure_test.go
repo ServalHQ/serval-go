@@ -24,8 +24,7 @@ func TestWorkflowApprovalProcedureNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Workflows.ApprovalProcedures.New(
 		context.TODO(),
@@ -59,8 +58,7 @@ func TestWorkflowApprovalProcedureGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Workflows.ApprovalProcedures.Get(
 		context.TODO(),
@@ -89,8 +87,7 @@ func TestWorkflowApprovalProcedureUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Workflows.ApprovalProcedures.Update(
 		context.TODO(),
@@ -125,8 +122,7 @@ func TestWorkflowApprovalProcedureList(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Workflows.ApprovalProcedures.List(context.TODO(), "workflow_id")
 	if err != nil {
@@ -149,8 +145,7 @@ func TestWorkflowApprovalProcedureDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Workflows.ApprovalProcedures.Delete(
 		context.TODO(),

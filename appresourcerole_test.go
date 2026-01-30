@@ -24,8 +24,7 @@ func TestAppResourceRoleNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppResourceRoles.New(context.TODO(), serval.AppResourceRoleNewParams{
 		Name: "name",
@@ -61,8 +60,7 @@ func TestAppResourceRoleGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppResourceRoles.Get(context.TODO(), "id")
 	if err != nil {
@@ -85,8 +83,7 @@ func TestAppResourceRoleUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppResourceRoles.Update(
 		context.TODO(),
@@ -125,8 +122,7 @@ func TestAppResourceRoleListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppResourceRoles.List(context.TODO(), serval.AppResourceRoleListParams{
 		AppInstanceID: serval.String("appInstanceId"),
@@ -155,8 +151,7 @@ func TestAppResourceRoleDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.AppResourceRoles.Delete(context.TODO(), "id")
 	if err != nil {

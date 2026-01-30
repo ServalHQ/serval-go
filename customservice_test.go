@@ -24,8 +24,7 @@ func TestCustomServiceNewWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.CustomServices.New(context.TODO(), serval.CustomServiceNewParams{
 		Name:   "name",
@@ -52,8 +51,7 @@ func TestCustomServiceGet(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.CustomServices.Get(context.TODO(), "id")
 	if err != nil {
@@ -76,8 +74,7 @@ func TestCustomServiceUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.CustomServices.Update(
 		context.TODO(),
@@ -107,8 +104,7 @@ func TestCustomServiceListWithOptionalParams(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.CustomServices.List(context.TODO(), serval.CustomServiceListParams{
 		PageSize:  serval.Int(0),
@@ -135,8 +131,7 @@ func TestCustomServiceDelete(t *testing.T) {
 	}
 	client := serval.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
-		option.WithClientSecret("My Client Secret"),
+		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.CustomServices.Delete(context.TODO(), "id")
 	if err != nil {
