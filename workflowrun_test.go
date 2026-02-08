@@ -13,7 +13,7 @@ import (
 	"github.com/ServalHQ/serval-go/option"
 )
 
-func TestTeamNewWithOptionalParams(t *testing.T) {
+func TestWorkflowRunGet(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -26,11 +26,7 @@ func TestTeamNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Teams.New(context.TODO(), serval.TeamNewParams{
-		Name:        "name",
-		Description: serval.String("description"),
-		Prefix:      serval.String("prefix"),
-	})
+	_, err := client.WorkflowRuns.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
@@ -40,7 +36,7 @@ func TestTeamNewWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestTeamGet(t *testing.T) {
+func TestWorkflowRunListWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -53,63 +49,10 @@ func TestTeamGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Teams.Get(context.TODO(), "id")
-	if err != nil {
-		var apierr *serval.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestTeamUpdateWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := serval.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithBearerToken("My Bearer Token"),
-	)
-	_, err := client.Teams.Update(
-		context.TODO(),
-		"id",
-		serval.TeamUpdateParams{
-			Description: serval.String("description"),
-			Name:        serval.String("name"),
-			Prefix:      serval.String("prefix"),
-		},
-	)
-	if err != nil {
-		var apierr *serval.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestTeamListWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := serval.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithBearerToken("My Bearer Token"),
-	)
-	_, err := client.Teams.List(context.TODO(), serval.TeamListParams{
+	_, err := client.WorkflowRuns.List(context.TODO(), serval.WorkflowRunListParams{
 		PageSize:  serval.Int(0),
 		PageToken: serval.String("pageToken"),
+		TeamID:    serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -120,7 +63,7 @@ func TestTeamListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestTeamDelete(t *testing.T) {
+func TestWorkflowRunSearchWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -133,7 +76,18 @@ func TestTeamDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Teams.Delete(context.TODO(), "id")
+	_, err := client.WorkflowRuns.Search(context.TODO(), serval.WorkflowRunSearchParams{
+		CreatedAfter:      serval.String("createdAfter"),
+		CreatedBefore:     serval.String("createdBefore"),
+		InitiatedByUserID: serval.String("initiatedByUserId"),
+		LinkedTicketID:    serval.String("linkedTicketId"),
+		PageSize:          serval.Int(0),
+		PageToken:         serval.String("pageToken"),
+		Statuses:          []string{"WORKFLOW_RUN_STATUS_UNSPECIFIED"},
+		TargetUserID:      serval.String("targetUserId"),
+		TeamID:            serval.String("teamId"),
+		WorkflowID:        serval.String("workflowId"),
+	})
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
