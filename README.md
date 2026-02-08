@@ -285,8 +285,33 @@ This library provides some conveniences for working with paginated list endpoint
 
 You can use `.ListAutoPaging()` methods to iterate through items across all pages:
 
+```go
+iter := client.AccessPolicies.ListAutoPaging(context.TODO(), serval.AccessPolicyListParams{})
+// Automatically fetches more pages as needed.
+for iter.Next() {
+	accessPolicy := iter.Current()
+	fmt.Printf("%+v\n", accessPolicy)
+}
+if err := iter.Err(); err != nil {
+	panic(err.Error())
+}
+```
+
 Or you can use simple `.List()` methods to fetch a single page and receive a standard response object
 with additional helper methods like `.GetNextPage()`, e.g.:
+
+```go
+page, err := client.AccessPolicies.List(context.TODO(), serval.AccessPolicyListParams{})
+for page != nil {
+	for _, accessPolicy := range page.Data {
+		fmt.Printf("%+v\n", accessPolicy)
+	}
+	page, err = page.GetNextPage()
+}
+if err != nil {
+	panic(err.Error())
+}
+```
 
 ### Errors
 
@@ -374,7 +399,7 @@ you need to examine response headers, status codes, or other details.
 ```go
 // Create a variable to store the HTTP response
 var response *http.Response
-accessPolicies, err := client.AccessPolicies.List(
+page, err := client.AccessPolicies.List(
 	context.TODO(),
 	serval.AccessPolicyListParams{},
 	option.WithResponseInto(&response),
@@ -382,7 +407,7 @@ accessPolicies, err := client.AccessPolicies.List(
 if err != nil {
 	// handle error
 }
-fmt.Printf("%+v\n", accessPolicies)
+fmt.Printf("%+v\n", page)
 
 fmt.Printf("Status Code: %d\n", response.StatusCode)
 fmt.Printf("Headers: %+#v\n", response.Header)

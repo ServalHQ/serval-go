@@ -14,6 +14,7 @@ import (
 	"github.com/ServalHQ/serval-go/internal/apiquery"
 	"github.com/ServalHQ/serval-go/internal/requestconfig"
 	"github.com/ServalHQ/serval-go/option"
+	"github.com/ServalHQ/serval-go/packages/pagination"
 	"github.com/ServalHQ/serval-go/packages/param"
 	"github.com/ServalHQ/serval-go/packages/respjson"
 )
@@ -85,11 +86,26 @@ func (r *GuidanceService) Update(ctx context.Context, id string, body GuidanceUp
 }
 
 // List all guidances for a team.
-func (r *GuidanceService) List(ctx context.Context, query GuidanceListParams, opts ...option.RequestOption) (res *GuidanceListResponse, err error) {
+func (r *GuidanceService) List(ctx context.Context, query GuidanceListParams, opts ...option.RequestOption) (res *pagination.CursorPage[Guidance], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "v2/guidances"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// List all guidances for a team.
+func (r *GuidanceService) ListAutoPaging(ctx context.Context, query GuidanceListParams, opts ...option.RequestOption) *pagination.CursorPageAutoPager[Guidance] {
+	return pagination.NewCursorPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Delete a guidance.
@@ -139,26 +155,6 @@ type Guidance struct {
 // Returns the unmodified JSON received from the API
 func (r Guidance) RawJSON() string { return r.JSON.raw }
 func (r *Guidance) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type GuidanceListResponse struct {
-	// The list of guidances.
-	Data []Guidance `json:"data"`
-	// Token for retrieving the next page of results. Empty if no more results.
-	NextPageToken string `json:"nextPageToken,nullable"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data          respjson.Field
-		NextPageToken respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r GuidanceListResponse) RawJSON() string { return r.JSON.raw }
-func (r *GuidanceListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
