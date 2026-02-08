@@ -1,4 +1,4 @@
-configured_endpoints: 60
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/serval--inc-dash%2Fserval-a8bc3b2f0bc3fc8342952af6c01df402a174a5f0560ef60b8bedbce1de628a3f.yml
-openapi_spec_hash: 7d93dca0d6a78b76e14c130ce8efc83f
-config_hash: 912f20c7ff1d56cbc13509a9a077f34e
+configured_endpoints: 71
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/serval--inc-dash%2Fserval-9662caafc7e8950b523e4ce719fe59375cbd198fbd667e715c1913015a272e51.yml
+openapi_spec_hash: 28053d0df07277fa53c7e720ae4d386f
+config_hash: eb12c5184fabea5a81b1eb0c5a37ec67

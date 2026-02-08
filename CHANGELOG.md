@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.17.0 (2026-02-08)
+
+Full Changelog: [v0.16.0...v0.17.0](https://github.com/ServalHQ/serval-go/compare/v0.16.0...v0.17.0)
+
+### Features
+
+* add team-scoped ListByTeam endpoints for approval procedures ([#23](https://github.com/ServalHQ/serval-go/issues/23)) ([6dfac9f](https://github.com/ServalHQ/serval-go/commit/6dfac9f404c599c5c3f72c096016cca66974d88d))
+* **api:** manual updates ([d6ce0ac](https://github.com/ServalHQ/serval-go/commit/d6ce0accd1abcf66015e2636af0d736b792a7f8a))
+
+
+### Bug Fixes
+
+* **client/oauth:** send grant_type in the right location ([509e8e0](https://github.com/ServalHQ/serval-go/commit/509e8e013371ac02bc577603138ea4b82938ab2a))
+
+
+### Chores
+
+* configure new SDK language ([910a30a](https://github.com/ServalHQ/serval-go/commit/910a30a0ce9be80863e5e298643c6f4956ca588b))
+
 ## 0.16.0 (2026-01-30)
 
 Full Changelog: [v0.15.0...v0.16.0](https://github.com/ServalHQ/serval-go/compare/v0.15.0...v0.16.0)
