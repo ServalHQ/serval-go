@@ -262,7 +262,7 @@ func (r *GuidanceUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type GuidanceListParams struct {
-	// Maximum number of results to return. Default is 1000, maximum is 1000.
+	// Maximum number of results to return. Default is 1000, maximum is 2000.
 	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
 	// Token for pagination. Leave empty for the first request.
 	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`

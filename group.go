@@ -232,7 +232,7 @@ func (r *GroupUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type GroupListParams struct {
-	// Maximum number of results to return. Default is 5000, maximum is 5000.
+	// Maximum number of results to return. Default is 10000, maximum is 10000.
 	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
 	// Token for pagination. Leave empty for the first request.
 	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
