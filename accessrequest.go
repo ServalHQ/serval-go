@@ -14,6 +14,7 @@ import (
 	"github.com/ServalHQ/serval-go/internal/apiquery"
 	"github.com/ServalHQ/serval-go/internal/requestconfig"
 	"github.com/ServalHQ/serval-go/option"
+	"github.com/ServalHQ/serval-go/packages/pagination"
 	"github.com/ServalHQ/serval-go/packages/param"
 	"github.com/ServalHQ/serval-go/packages/respjson"
 )
@@ -56,11 +57,27 @@ func (r *AccessRequestService) Get(ctx context.Context, id string, opts ...optio
 
 // List access requests for a team. Filter by user, entitlement, app instance,
 // status, or time range.
-func (r *AccessRequestService) List(ctx context.Context, query AccessRequestListParams, opts ...option.RequestOption) (res *AccessRequestListResponse, err error) {
+func (r *AccessRequestService) List(ctx context.Context, query AccessRequestListParams, opts ...option.RequestOption) (res *pagination.CursorPage[AccessRequest], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "v2/access-requests"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// List access requests for a team. Filter by user, entitlement, app instance,
+// status, or time range.
+func (r *AccessRequestService) ListAutoPaging(ctx context.Context, query AccessRequestListParams, opts ...option.RequestOption) *pagination.CursorPageAutoPager[AccessRequest] {
+	return pagination.NewCursorPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Search access requests with filters. Supports filtering by entitlement, app
@@ -138,26 +155,6 @@ const (
 	AccessRequestStatusAccessRequestStatusCanceled    AccessRequestStatus = "ACCESS_REQUEST_STATUS_CANCELED"
 	AccessRequestStatusAccessRequestStatusFailed      AccessRequestStatus = "ACCESS_REQUEST_STATUS_FAILED"
 )
-
-type AccessRequestListResponse struct {
-	// The list of access requests.
-	Data []AccessRequest `json:"data"`
-	// Token for retrieving the next page of results. Empty if no more results.
-	NextPageToken string `json:"nextPageToken,nullable"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data          respjson.Field
-		NextPageToken respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AccessRequestListResponse) RawJSON() string { return r.JSON.raw }
-func (r *AccessRequestListResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
 
 type AccessRequestSearchResponse struct {
 	// The list of access requests.

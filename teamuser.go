@@ -15,6 +15,7 @@ import (
 	"github.com/ServalHQ/serval-go/internal/apiquery"
 	"github.com/ServalHQ/serval-go/internal/requestconfig"
 	"github.com/ServalHQ/serval-go/option"
+	"github.com/ServalHQ/serval-go/packages/pagination"
 	"github.com/ServalHQ/serval-go/packages/param"
 	"github.com/ServalHQ/serval-go/packages/respjson"
 )
@@ -98,15 +99,30 @@ func (r *TeamUserService) Update(ctx context.Context, userID string, params Team
 }
 
 // List all users in a team.
-func (r *TeamUserService) List(ctx context.Context, teamID string, query TeamUserListParams, opts ...option.RequestOption) (res *TeamUserListResponse, err error) {
+func (r *TeamUserService) List(ctx context.Context, teamID string, query TeamUserListParams, opts ...option.RequestOption) (res *pagination.CursorPage[TeamUser], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if teamID == "" {
 		err = errors.New("missing required team_id parameter")
 		return
 	}
 	path := fmt.Sprintf("v2/teams/%s/users", teamID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// List all users in a team.
+func (r *TeamUserService) ListAutoPaging(ctx context.Context, teamID string, query TeamUserListParams, opts ...option.RequestOption) *pagination.CursorPageAutoPager[TeamUser] {
+	return pagination.NewCursorPageAutoPager(r.List(ctx, teamID, query, opts...))
 }
 
 // Remove a user from a team.
@@ -161,26 +177,6 @@ const (
 	TeamUserRoleTeamUserRoleViewer      TeamUserRole = "TEAM_USER_ROLE_VIEWER"
 	TeamUserRoleTeamUserRoleContributor TeamUserRole = "TEAM_USER_ROLE_CONTRIBUTOR"
 )
-
-type TeamUserListResponse struct {
-	// The list of team users.
-	Data []TeamUser `json:"data"`
-	// Token for retrieving the next page of results. Empty if no more results.
-	NextPageToken string `json:"nextPageToken,nullable"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data          respjson.Field
-		NextPageToken respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r TeamUserListResponse) RawJSON() string { return r.JSON.raw }
-func (r *TeamUserListResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
 
 type TeamUserDeleteResponse = any
 
