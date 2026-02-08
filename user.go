@@ -119,6 +119,8 @@ type User struct {
 	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN",
 	// "USER_ROLE_ORG_GUEST".
 	Role UserRole `json:"role"`
+	// IANA timezone, e.g., "America/New_York"
+	Timezone string `json:"timezone"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID            respjson.Field
@@ -130,6 +132,7 @@ type User struct {
 		LastName      respjson.Field
 		Name          respjson.Field
 		Role          respjson.Field
+		Timezone      respjson.Field
 		ExtraFields   map[string]respjson.Field
 		raw           string
 	} `json:"-"`

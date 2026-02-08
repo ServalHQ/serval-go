@@ -27,6 +27,7 @@ import (
 // the [NewTeamService] method instead.
 type TeamService struct {
 	Options []option.RequestOption
+	Users   TeamUserService
 }
 
 // NewTeamService generates a new service that applies the given options to each
@@ -35,6 +36,7 @@ type TeamService struct {
 func NewTeamService(opts ...option.RequestOption) (r TeamService) {
 	r = TeamService{}
 	r.Options = opts
+	r.Users = NewTeamUserService(opts...)
 	return
 }
 
@@ -113,7 +115,6 @@ type Team struct {
 	Name           string    `json:"name"`
 	OrganizationID string    `json:"organizationId"`
 	Prefix         string    `json:"prefix"`
-	UserIDs        []string  `json:"userIds"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID             respjson.Field
@@ -122,7 +123,6 @@ type Team struct {
 		Name           respjson.Field
 		OrganizationID respjson.Field
 		Prefix         respjson.Field
-		UserIDs        respjson.Field
 		ExtraFields    map[string]respjson.Field
 		raw            string
 	} `json:"-"`
@@ -160,7 +160,6 @@ type TeamNewParams struct {
 	Name        string            `json:"name,required"`
 	Description param.Opt[string] `json:"description,omitzero"`
 	Prefix      param.Opt[string] `json:"prefix,omitzero"`
-	UserIDs     []string          `json:"userIds,omitzero"`
 	paramObj
 }
 
@@ -208,7 +207,6 @@ type TeamUpdateParams struct {
 	Description param.Opt[string] `json:"description,omitzero"`
 	Name        param.Opt[string] `json:"name,omitzero"`
 	Prefix      param.Opt[string] `json:"prefix,omitzero"`
-	UserIDs     []string          `json:"userIds,omitzero"`
 	paramObj
 }
 
