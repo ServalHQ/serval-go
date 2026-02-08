@@ -196,7 +196,7 @@ func (r *WorkflowRunGetResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type WorkflowRunListParams struct {
-	// Maximum number of results to return. Default is 100, maximum is 1000.
+	// Maximum number of results to return. Default is 1000, maximum is 5000.
 	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
 	// Token for pagination. Leave empty for the first request.
 	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
@@ -222,7 +222,7 @@ type WorkflowRunSearchParams struct {
 	InitiatedByUserID param.Opt[string] `json:"initiatedByUserId,omitzero"`
 	// Filter by linked ticket ID.
 	LinkedTicketID param.Opt[string] `json:"linkedTicketId,omitzero"`
-	// Maximum number of results to return. Default is 100, maximum is 1000.
+	// Maximum number of results to return. Default is 1000, maximum is 5000.
 	PageSize param.Opt[int64] `json:"pageSize,omitzero"`
 	// Token for pagination. Leave empty for the first request.
 	PageToken param.Opt[string] `json:"pageToken,omitzero"`
