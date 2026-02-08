@@ -14,6 +14,7 @@ import (
 	"github.com/ServalHQ/serval-go/internal/apiquery"
 	"github.com/ServalHQ/serval-go/internal/requestconfig"
 	"github.com/ServalHQ/serval-go/option"
+	"github.com/ServalHQ/serval-go/packages/pagination"
 	"github.com/ServalHQ/serval-go/packages/param"
 	"github.com/ServalHQ/serval-go/packages/respjson"
 )
@@ -87,11 +88,26 @@ func (r *AccessPolicyService) Update(ctx context.Context, id string, body Access
 }
 
 // List all access policies for a team.
-func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListParams, opts ...option.RequestOption) (res *AccessPolicyListResponse, err error) {
+func (r *AccessPolicyService) List(ctx context.Context, query AccessPolicyListParams, opts ...option.RequestOption) (res *pagination.CursorPage[AccessPolicy], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "v2/access-policies"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// List all access policies for a team.
+func (r *AccessPolicyService) ListAutoPaging(ctx context.Context, query AccessPolicyListParams, opts ...option.RequestOption) *pagination.CursorPageAutoPager[AccessPolicy] {
+	return pagination.NewCursorPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Delete an access policy.
@@ -138,26 +154,6 @@ type AccessPolicy struct {
 // Returns the unmodified JSON received from the API
 func (r AccessPolicy) RawJSON() string { return r.JSON.raw }
 func (r *AccessPolicy) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AccessPolicyListResponse struct {
-	// The list of access policies.
-	Data []AccessPolicy `json:"data"`
-	// Token for retrieving the next page of results. Empty if no more results.
-	NextPageToken string `json:"nextPageToken,nullable"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data          respjson.Field
-		NextPageToken respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r AccessPolicyListResponse) RawJSON() string { return r.JSON.raw }
-func (r *AccessPolicyListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 

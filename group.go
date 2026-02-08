@@ -15,6 +15,7 @@ import (
 	"github.com/ServalHQ/serval-go/internal/apiquery"
 	"github.com/ServalHQ/serval-go/internal/requestconfig"
 	"github.com/ServalHQ/serval-go/option"
+	"github.com/ServalHQ/serval-go/packages/pagination"
 	"github.com/ServalHQ/serval-go/packages/param"
 	"github.com/ServalHQ/serval-go/packages/respjson"
 )
@@ -86,11 +87,26 @@ func (r *GroupService) Update(ctx context.Context, id string, body GroupUpdatePa
 }
 
 // List all groups.
-func (r *GroupService) List(ctx context.Context, query GroupListParams, opts ...option.RequestOption) (res *GroupListResponse, err error) {
+func (r *GroupService) List(ctx context.Context, query GroupListParams, opts ...option.RequestOption) (res *pagination.CursorPage[Group], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "v2/groups"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// List all groups.
+func (r *GroupService) ListAutoPaging(ctx context.Context, query GroupListParams, opts ...option.RequestOption) *pagination.CursorPageAutoPager[Group] {
+	return pagination.NewCursorPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Delete a group.
@@ -130,26 +146,6 @@ type Group struct {
 // Returns the unmodified JSON received from the API
 func (r Group) RawJSON() string { return r.JSON.raw }
 func (r *Group) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type GroupListResponse struct {
-	// The list of groups.
-	Data []Group `json:"data"`
-	// Token for retrieving the next page of results. Empty if no more results.
-	NextPageToken string `json:"nextPageToken,nullable"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Data          respjson.Field
-		NextPageToken respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r GroupListResponse) RawJSON() string { return r.JSON.raw }
-func (r *GroupListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
