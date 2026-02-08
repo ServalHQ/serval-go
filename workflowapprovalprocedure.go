@@ -7,9 +7,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 
 	"github.com/ServalHQ/serval-go/internal/apijson"
+	"github.com/ServalHQ/serval-go/internal/apiquery"
 	"github.com/ServalHQ/serval-go/internal/requestconfig"
 	"github.com/ServalHQ/serval-go/option"
 	"github.com/ServalHQ/serval-go/packages/param"
@@ -325,6 +327,53 @@ type WorkflowApprovalProcedureListResponseEnvelope struct {
 // Returns the unmodified JSON received from the API
 func (r WorkflowApprovalProcedureListResponseEnvelope) RawJSON() string { return r.JSON.raw }
 func (r *WorkflowApprovalProcedureListResponseEnvelope) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// List all workflow approval procedures for a team.
+func (r *WorkflowApprovalProcedureService) ListByTeam(ctx context.Context, query WorkflowApprovalProcedureListByTeamParams, opts ...option.RequestOption) (res *WorkflowApprovalProcedureListByTeamResponse, err error) {
+	opts = slices.Concat(r.Options, opts)
+	path := "v2/workflow-approval-procedures"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	return
+}
+
+type WorkflowApprovalProcedureListByTeamParams struct {
+	// The ID of the team.
+	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
+	// Maximum number of results to return. Default is 1000, maximum is 1000.
+	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
+	// Token for pagination. Leave empty for the first request.
+	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [WorkflowApprovalProcedureListByTeamParams]'s query
+// parameters as `url.Values`.
+func (r WorkflowApprovalProcedureListByTeamParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type WorkflowApprovalProcedureListByTeamResponse struct {
+	// The list of workflow approval procedures for the team.
+	Data []WorkflowApprovalProcedure `json:"data"`
+	// Token for retrieving the next page of results. Empty if no more results.
+	NextPageToken string `json:"nextPageToken,nullable"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Data          respjson.Field
+		NextPageToken respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r WorkflowApprovalProcedureListByTeamResponse) RawJSON() string { return r.JSON.raw }
+func (r *WorkflowApprovalProcedureListByTeamResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
