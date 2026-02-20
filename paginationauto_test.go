@@ -25,7 +25,7 @@ func TestAutoPagination(t *testing.T) {
 		option.WithBearerToken("My Bearer Token"),
 	)
 	iter := client.AccessPolicies.ListAutoPaging(context.TODO(), serval.AccessPolicyListParams{})
-	// Prism mock isn't going to give us real pagination
+	// The mock server isn't going to give us real pagination
 	for i := 0; i < 3 && iter.Next(); i++ {
 		accessPolicy := iter.Current()
 		t.Logf("%+v\n", accessPolicy.ID)
