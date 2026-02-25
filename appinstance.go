@@ -131,7 +131,7 @@ type AppInstance struct {
 	// **Option: custom_service_id** — The ID of the custom service (for custom apps).
 	CustomServiceID string `json:"customServiceId"`
 	// The default access policy for the app instance.
-	DefaultAccessPolicyID string `json:"defaultAccessPolicyId,nullable"`
+	DefaultAccessPolicyID string `json:"defaultAccessPolicyId" api:"nullable"`
 	// The external service instance ID (e.g., GitHub org name, Okta domain, AWS
 	// account ID).
 	ExternalServiceInstanceID string `json:"externalServiceInstanceId"`
@@ -168,11 +168,11 @@ type AppInstanceDeleteResponse = any
 type AppInstanceNewParams struct {
 	// The external service instance ID (e.g., GitHub org name, Okta domain, AWS
 	// account ID).
-	ExternalServiceInstanceID string `json:"externalServiceInstanceId,required"`
+	ExternalServiceInstanceID string `json:"externalServiceInstanceId" api:"required"`
 	// The name of the app instance.
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The ID of the team.
-	TeamID string `json:"teamId,required"`
+	TeamID string `json:"teamId" api:"required"`
 	// The default access policy for the app instance (optional).
 	DefaultAccessPolicyID param.Opt[string] `json:"defaultAccessPolicyId,omitzero"`
 	// Whether access requests are enabled for the app instance.

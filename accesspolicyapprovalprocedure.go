@@ -236,7 +236,7 @@ func (r *AccessPolicyApprovalProcedureNewResponseEnvelope) UnmarshalJSON(data []
 
 type AccessPolicyApprovalProcedureGetParams struct {
 	// The ID of the access policy.
-	AccessPolicyID string `path:"access_policy_id,required" json:"-"`
+	AccessPolicyID string `path:"access_policy_id" api:"required" json:"-"`
 	paramObj
 }
 
@@ -259,7 +259,7 @@ func (r *AccessPolicyApprovalProcedureGetResponseEnvelope) UnmarshalJSON(data []
 
 type AccessPolicyApprovalProcedureUpdateParams struct {
 	// The ID of the access policy.
-	AccessPolicyID string `path:"access_policy_id,required" json:"-"`
+	AccessPolicyID string `path:"access_policy_id" api:"required" json:"-"`
 	// The approval steps for the procedure.
 	Steps []AccessPolicyApprovalProcedureUpdateParamsStep `json:"steps,omitzero"`
 	paramObj
@@ -330,6 +330,6 @@ func (r *AccessPolicyApprovalProcedureListResponseEnvelope) UnmarshalJSON(data [
 
 type AccessPolicyApprovalProcedureDeleteParams struct {
 	// The ID of the access policy.
-	AccessPolicyID string `path:"access_policy_id,required" json:"-"`
+	AccessPolicyID string `path:"access_policy_id" api:"required" json:"-"`
 	paramObj
 }

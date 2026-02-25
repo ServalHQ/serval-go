@@ -96,13 +96,13 @@ type AccessRequest struct {
 	// The number of minutes of access requested.
 	AccessMinutes int64 `json:"accessMinutes"`
 	// The business justification provided for the request.
-	BusinessJustification string `json:"businessJustification,nullable"`
+	BusinessJustification string `json:"businessJustification" api:"nullable"`
 	// The timestamp when the access request was created.
 	CreatedAt string `json:"createdAt"`
 	// The timestamp when the access expires (if approved and active).
-	ExpiresAt string `json:"expiresAt,nullable"`
+	ExpiresAt string `json:"expiresAt" api:"nullable"`
 	// The ID of the linked ticket, if any.
-	LinkedTicketID string `json:"linkedTicketId,nullable"`
+	LinkedTicketID string `json:"linkedTicketId" api:"nullable"`
 	// The ID of the user who requested access.
 	RequestedByUserID string `json:"requestedByUserId"`
 	// The ID of the requested role.
@@ -160,7 +160,7 @@ type AccessRequestSearchResponse struct {
 	// The list of access requests.
 	Data []AccessRequest `json:"data"`
 	// Token for retrieving the next page of results. Empty if no more results.
-	NextPageToken string `json:"nextPageToken,nullable"`
+	NextPageToken string `json:"nextPageToken" api:"nullable"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data          respjson.Field
