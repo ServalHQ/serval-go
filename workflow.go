@@ -201,15 +201,15 @@ type WorkflowDeleteResponse = any
 
 type WorkflowNewParams struct {
 	// The content/code of the workflow.
-	Content string `json:"content,required"`
+	Content string `json:"content" api:"required"`
 	// The name of the workflow.
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The ID of the team.
-	TeamID string `json:"teamId,required"`
+	TeamID string `json:"teamId" api:"required"`
 	// The type of the workflow.
 	//
 	// Any of "WORKFLOW_TYPE_UNSPECIFIED", "EXECUTABLE", "GUIDANCE".
-	Type WorkflowNewParamsType `json:"type,omitzero,required"`
+	Type WorkflowNewParamsType `json:"type,omitzero" api:"required"`
 	// Whether to publish the workflow after creation (optional).
 	IsPublished param.Opt[bool] `json:"isPublished,omitzero"`
 	// Whether the workflow is temporary (optional).

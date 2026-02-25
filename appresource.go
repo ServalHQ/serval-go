@@ -128,7 +128,7 @@ type AppResource struct {
 	// A description of the resource.
 	Description string `json:"description"`
 	// The external ID of the resource.
-	ExternalID string `json:"externalId,nullable"`
+	ExternalID string `json:"externalId" api:"nullable"`
 	// The name of the resource.
 	Name string `json:"name"`
 	// The type of the resource.
@@ -156,11 +156,11 @@ type AppResourceDeleteResponse = any
 
 type AppResourceNewParams struct {
 	// The ID of the app instance.
-	AppInstanceID string `json:"appInstanceId,required"`
+	AppInstanceID string `json:"appInstanceId" api:"required"`
 	// The name of the resource.
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The type of the resource.
-	ResourceType string `json:"resourceType,required"`
+	ResourceType string `json:"resourceType" api:"required"`
 	// The external ID of the resource (optional).
 	ExternalID param.Opt[string] `json:"externalId,omitzero"`
 	// A description of the resource.

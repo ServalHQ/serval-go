@@ -132,7 +132,7 @@ type AccessPolicy struct {
 	// The name of the access policy.
 	Name string `json:"name"`
 	// The recommended duration in minutes for access requests (optional).
-	RecommendedAccessMinutes int64 `json:"recommendedAccessMinutes,nullable"`
+	RecommendedAccessMinutes int64 `json:"recommendedAccessMinutes" api:"nullable"`
 	// Whether a business justification is required when requesting access.
 	RequireBusinessJustification bool `json:"requireBusinessJustification"`
 	// The ID of the team that the access policy belongs to.
@@ -161,9 +161,9 @@ type AccessPolicyDeleteResponse = any
 
 type AccessPolicyNewParams struct {
 	// The name of the access policy.
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The ID of the team.
-	TeamID string `json:"teamId,required"`
+	TeamID string `json:"teamId" api:"required"`
 	// The maximum number of minutes that access can be granted for (optional).
 	MaxAccessMinutes param.Opt[int64] `json:"maxAccessMinutes,omitzero"`
 	// The recommended duration in minutes for access requests (optional).

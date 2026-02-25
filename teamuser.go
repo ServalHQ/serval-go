@@ -184,8 +184,8 @@ type TeamUserNewParams struct {
 	// Any of "TEAM_USER_ROLE_UNSPECIFIED", "TEAM_USER_ROLE_AGENT",
 	// "TEAM_USER_ROLE_MANAGER", "TEAM_USER_ROLE_BUILDER", "TEAM_USER_ROLE_VIEWER",
 	// "TEAM_USER_ROLE_CONTRIBUTOR".
-	Role   TeamUserNewParamsRole `json:"role,omitzero,required"`
-	UserID string                `json:"userId,required"`
+	Role   TeamUserNewParamsRole `json:"role,omitzero" api:"required"`
+	UserID string                `json:"userId" api:"required"`
 	paramObj
 }
 
@@ -225,7 +225,7 @@ func (r *TeamUserNewResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type TeamUserGetParams struct {
-	TeamID string `path:"team_id,required" json:"-"`
+	TeamID string `path:"team_id" api:"required" json:"-"`
 	paramObj
 }
 
@@ -246,11 +246,11 @@ func (r *TeamUserGetResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type TeamUserUpdateParams struct {
-	TeamID string `path:"team_id,required" json:"-"`
+	TeamID string `path:"team_id" api:"required" json:"-"`
 	// Any of "TEAM_USER_ROLE_UNSPECIFIED", "TEAM_USER_ROLE_AGENT",
 	// "TEAM_USER_ROLE_MANAGER", "TEAM_USER_ROLE_BUILDER", "TEAM_USER_ROLE_VIEWER",
 	// "TEAM_USER_ROLE_CONTRIBUTOR".
-	Role TeamUserUpdateParamsRole `json:"role,omitzero,required"`
+	Role TeamUserUpdateParamsRole `json:"role,omitzero" api:"required"`
 	paramObj
 }
 
@@ -308,6 +308,6 @@ func (r TeamUserListParams) URLQuery() (v url.Values, err error) {
 }
 
 type TeamUserDeleteParams struct {
-	TeamID string `path:"team_id,required" json:"-"`
+	TeamID string `path:"team_id" api:"required" json:"-"`
 	paramObj
 }

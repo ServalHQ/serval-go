@@ -238,7 +238,7 @@ func (r *WorkflowApprovalProcedureNewResponseEnvelope) UnmarshalJSON(data []byte
 
 type WorkflowApprovalProcedureGetParams struct {
 	// The ID of the workflow.
-	WorkflowID string `path:"workflow_id,required" json:"-"`
+	WorkflowID string `path:"workflow_id" api:"required" json:"-"`
 	paramObj
 }
 
@@ -261,7 +261,7 @@ func (r *WorkflowApprovalProcedureGetResponseEnvelope) UnmarshalJSON(data []byte
 
 type WorkflowApprovalProcedureUpdateParams struct {
 	// The ID of the workflow.
-	WorkflowID string `path:"workflow_id,required" json:"-"`
+	WorkflowID string `path:"workflow_id" api:"required" json:"-"`
 	// The approval steps for the procedure.
 	Steps []WorkflowApprovalProcedureUpdateParamsStep `json:"steps,omitzero"`
 	paramObj
@@ -379,6 +379,6 @@ func (r *WorkflowApprovalProcedureListByTeamResponse) UnmarshalJSON(data []byte)
 
 type WorkflowApprovalProcedureDeleteParams struct {
 	// The ID of the workflow.
-	WorkflowID string `path:"workflow_id,required" json:"-"`
+	WorkflowID string `path:"workflow_id" api:"required" json:"-"`
 	paramObj
 }

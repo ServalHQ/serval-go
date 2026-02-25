@@ -162,11 +162,11 @@ type GuidanceDeleteResponse = any
 
 type GuidanceNewParams struct {
 	// The content of the guidance.
-	Content string `json:"content,required"`
+	Content string `json:"content" api:"required"`
 	// The name of the guidance.
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The ID of the team.
-	TeamID string `json:"teamId,required"`
+	TeamID string `json:"teamId" api:"required"`
 	// Whether to publish the guidance after creation (optional).
 	IsPublished param.Opt[bool] `json:"isPublished,omitzero"`
 	// Whether this guidance should always be used (optional, defaults to false).

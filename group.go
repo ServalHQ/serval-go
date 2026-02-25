@@ -126,7 +126,7 @@ type Group struct {
 	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
 	CreatedAt time.Time `json:"createdAt" format:"date-time"`
 	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
-	DeletedAt      time.Time `json:"deletedAt,nullable" format:"date-time"`
+	DeletedAt      time.Time `json:"deletedAt" api:"nullable" format:"date-time"`
 	Name           string    `json:"name"`
 	OrganizationID string    `json:"organizationId"`
 	UserIDs        []string  `json:"userIds"`
@@ -152,7 +152,7 @@ func (r *Group) UnmarshalJSON(data []byte) error {
 type GroupDeleteResponse = any
 
 type GroupNewParams struct {
-	Name    string   `json:"name,required"`
+	Name    string   `json:"name" api:"required"`
 	UserIDs []string `json:"userIds,omitzero"`
 	paramObj
 }

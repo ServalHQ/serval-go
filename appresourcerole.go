@@ -126,13 +126,13 @@ type AppResourceRole struct {
 	// The ID of the role.
 	ID string `json:"id"`
 	// The default access policy for the role.
-	AccessPolicyID string `json:"accessPolicyId,nullable"`
+	AccessPolicyID string `json:"accessPolicyId" api:"nullable"`
 	// A description of the role.
 	Description string `json:"description"`
 	// Data from the external system as a JSON string (computed by server).
-	ExternalData string `json:"externalData,nullable"`
+	ExternalData string `json:"externalData" api:"nullable"`
 	// The external ID of the role in the external system (optional).
-	ExternalID string `json:"externalId,nullable"`
+	ExternalID string `json:"externalId" api:"nullable"`
 	// The name of the role.
 	Name string `json:"name"`
 	// Provisioning configuration. **Exactly one method should be set.**
@@ -217,7 +217,7 @@ func (r *AppResourceRoleProvisioningMethodUnion) UnmarshalJSON(data []byte) erro
 
 type AppResourceRoleProvisioningMethodBuiltinWorkflow struct {
 	// Provisioning is handled by the service's builtin workflow integration.
-	BuiltinWorkflow any `json:"builtinWorkflow,required"`
+	BuiltinWorkflow any `json:"builtinWorkflow" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		BuiltinWorkflow respjson.Field
@@ -234,7 +234,7 @@ func (r *AppResourceRoleProvisioningMethodBuiltinWorkflow) UnmarshalJSON(data []
 
 type AppResourceRoleProvisioningMethodCustomWorkflow struct {
 	// Provisioning is handled by custom workflows for provision + deprovision.
-	CustomWorkflow AppResourceRoleProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow,required"`
+	CustomWorkflow AppResourceRoleProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		CustomWorkflow respjson.Field
@@ -274,7 +274,7 @@ func (r *AppResourceRoleProvisioningMethodCustomWorkflowCustomWorkflow) Unmarsha
 
 type AppResourceRoleProvisioningMethodLinkedRoles struct {
 	// Provisioning depends on prerequisite roles being provisioned first.
-	LinkedRoles AppResourceRoleProvisioningMethodLinkedRolesLinkedRoles `json:"linkedRoles,required"`
+	LinkedRoles AppResourceRoleProvisioningMethodLinkedRolesLinkedRoles `json:"linkedRoles" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		LinkedRoles respjson.Field
@@ -309,7 +309,7 @@ func (r *AppResourceRoleProvisioningMethodLinkedRolesLinkedRoles) UnmarshalJSON(
 
 type AppResourceRoleProvisioningMethodManual struct {
 	// Provisioning is handled manually by assigned users/groups.
-	Manual AppResourceRoleProvisioningMethodManualManual `json:"manual,required"`
+	Manual AppResourceRoleProvisioningMethodManualManual `json:"manual" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Manual      respjson.Field
@@ -370,11 +370,11 @@ type AppResourceRoleDeleteResponse = any
 
 type AppResourceRoleNewParams struct {
 	// The name of the role.
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// Provisioning configuration. Exactly one method should be set.
-	ProvisioningMethod AppResourceRoleNewParamsProvisioningMethodUnion `json:"provisioningMethod,omitzero,required"`
+	ProvisioningMethod AppResourceRoleNewParamsProvisioningMethodUnion `json:"provisioningMethod,omitzero" api:"required"`
 	// The ID of the resource.
-	ResourceID string `json:"resourceId,required"`
+	ResourceID string `json:"resourceId" api:"required"`
 	// The default access policy for the role (optional).
 	AccessPolicyID param.Opt[string] `json:"accessPolicyId,omitzero"`
 	// Data from the external system as a JSON string (optional).
@@ -430,7 +430,7 @@ func (u *AppResourceRoleNewParamsProvisioningMethodUnion) asAny() any {
 // The property BuiltinWorkflow is required.
 type AppResourceRoleNewParamsProvisioningMethodBuiltinWorkflow struct {
 	// Provisioning is handled by the service's builtin workflow integration.
-	BuiltinWorkflow any `json:"builtinWorkflow,omitzero,required"`
+	BuiltinWorkflow any `json:"builtinWorkflow,omitzero" api:"required"`
 	paramObj
 }
 
@@ -445,7 +445,7 @@ func (r *AppResourceRoleNewParamsProvisioningMethodBuiltinWorkflow) UnmarshalJSO
 // The property CustomWorkflow is required.
 type AppResourceRoleNewParamsProvisioningMethodCustomWorkflow struct {
 	// Provisioning is handled by custom workflows for provision + deprovision.
-	CustomWorkflow AppResourceRoleNewParamsProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow,omitzero,required"`
+	CustomWorkflow AppResourceRoleNewParamsProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow,omitzero" api:"required"`
 	paramObj
 }
 
@@ -477,7 +477,7 @@ func (r *AppResourceRoleNewParamsProvisioningMethodCustomWorkflowCustomWorkflow)
 // The property LinkedRoles is required.
 type AppResourceRoleNewParamsProvisioningMethodLinkedRoles struct {
 	// Provisioning depends on prerequisite roles being provisioned first.
-	LinkedRoles AppResourceRoleNewParamsProvisioningMethodLinkedRolesLinkedRoles `json:"linkedRoles,omitzero,required"`
+	LinkedRoles AppResourceRoleNewParamsProvisioningMethodLinkedRolesLinkedRoles `json:"linkedRoles,omitzero" api:"required"`
 	paramObj
 }
 
@@ -507,7 +507,7 @@ func (r *AppResourceRoleNewParamsProvisioningMethodLinkedRolesLinkedRoles) Unmar
 // The property Manual is required.
 type AppResourceRoleNewParamsProvisioningMethodManual struct {
 	// Provisioning is handled manually by assigned users/groups.
-	Manual AppResourceRoleNewParamsProvisioningMethodManualManual `json:"manual,omitzero,required"`
+	Manual AppResourceRoleNewParamsProvisioningMethodManualManual `json:"manual,omitzero" api:"required"`
 	paramObj
 }
 
@@ -654,7 +654,7 @@ func (u *AppResourceRoleUpdateParamsProvisioningMethodUnion) asAny() any {
 // The property BuiltinWorkflow is required.
 type AppResourceRoleUpdateParamsProvisioningMethodBuiltinWorkflow struct {
 	// Provisioning is handled by the service's builtin workflow integration.
-	BuiltinWorkflow any `json:"builtinWorkflow,omitzero,required"`
+	BuiltinWorkflow any `json:"builtinWorkflow,omitzero" api:"required"`
 	paramObj
 }
 
@@ -669,7 +669,7 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodBuiltinWorkflow) Unmarshal
 // The property CustomWorkflow is required.
 type AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflow struct {
 	// Provisioning is handled by custom workflows for provision + deprovision.
-	CustomWorkflow AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow,omitzero,required"`
+	CustomWorkflow AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflowCustomWorkflow `json:"customWorkflow,omitzero" api:"required"`
 	paramObj
 }
 
@@ -701,7 +701,7 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodCustomWorkflowCustomWorkfl
 // The property LinkedRoles is required.
 type AppResourceRoleUpdateParamsProvisioningMethodLinkedRoles struct {
 	// Provisioning depends on prerequisite roles being provisioned first.
-	LinkedRoles AppResourceRoleUpdateParamsProvisioningMethodLinkedRolesLinkedRoles `json:"linkedRoles,omitzero,required"`
+	LinkedRoles AppResourceRoleUpdateParamsProvisioningMethodLinkedRolesLinkedRoles `json:"linkedRoles,omitzero" api:"required"`
 	paramObj
 }
 
@@ -731,7 +731,7 @@ func (r *AppResourceRoleUpdateParamsProvisioningMethodLinkedRolesLinkedRoles) Un
 // The property Manual is required.
 type AppResourceRoleUpdateParamsProvisioningMethodManual struct {
 	// Provisioning is handled manually by assigned users/groups.
-	Manual AppResourceRoleUpdateParamsProvisioningMethodManualManual `json:"manual,omitzero,required"`
+	Manual AppResourceRoleUpdateParamsProvisioningMethodManualManual `json:"manual,omitzero" api:"required"`
 	paramObj
 }
 
