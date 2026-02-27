@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.20.0 (2026-02-27)
+
+Full Changelog: [v0.19.0...v0.20.0](https://github.com/ServalHQ/serval-go/compare/v0.19.0...v0.20.0)
+
+### Features
+
+* **api:** manual updates ([c957f34](https://github.com/ServalHQ/serval-go/commit/c957f34d5b71336fb50505d0d621c9c31fbabcdc))
+
+
+### Bug Fixes
+
+* allow canceling a request while it is waiting to retry ([8fe3f2d](https://github.com/ServalHQ/serval-go/commit/8fe3f2d1ec36defc95177ec7dca870b78c9b7ab1))
+* **encoder:** correctly serialize NullStruct ([bba87e5](https://github.com/ServalHQ/serval-go/commit/bba87e5bc7bda6e2c85d8caa358349939132021f))
+* **internal:** skip tests that depend on mock server ([54409cf](https://github.com/ServalHQ/serval-go/commit/54409cfe7b79e0e03fc72148cba2068459f3c3c7))
+
+
+### Chores
+
+* **internal:** move custom custom `json` tags to `api` ([953107c](https://github.com/ServalHQ/serval-go/commit/953107c6990d01b650f79ddbdf0d568ae73ec410))
+* **internal:** remove mock server code ([c907dbb](https://github.com/ServalHQ/serval-go/commit/c907dbb5e04e02a84c6a579fc682e22efb749c68))
+* update mock server docs ([03b8ba3](https://github.com/ServalHQ/serval-go/commit/03b8ba313013ebceb88f84126bb7ab04715f8afb))
+
 ## 0.19.0 (2026-02-08)
 
 Full Changelog: [v0.18.0...v0.19.0](https://github.com/ServalHQ/serval-go/compare/v0.18.0...v0.19.0)
