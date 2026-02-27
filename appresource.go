@@ -126,7 +126,7 @@ type AppResource struct {
 	// The ID of the app instance that the resource belongs to.
 	AppInstanceID string `json:"appInstanceId"`
 	// A description of the resource.
-	Description string `json:"description"`
+	Description string `json:"description" api:"nullable"`
 	// The external ID of the resource.
 	ExternalID string `json:"externalId" api:"nullable"`
 	// The name of the resource.

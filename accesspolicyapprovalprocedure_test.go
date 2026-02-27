@@ -32,9 +32,15 @@ func TestAccessPolicyApprovalProcedureNewWithOptionalParams(t *testing.T) {
 		serval.AccessPolicyApprovalProcedureNewParams{
 			Steps: []serval.AccessPolicyApprovalProcedureNewParamsStep{{
 				AllowSelfApproval: serval.Bool(true),
-				CustomWorkflowID:  serval.String("customWorkflowId"),
-				ServalGroupIDs:    []string{"string"},
-				SpecificUserIDs:   []string{"string"},
+				Approvers: []serval.AccessPolicyApprovalProcedureNewParamsStepApproverUnion{{
+					OfAppOwner: &serval.AccessPolicyApprovalProcedureNewParamsStepApproverAppOwner{
+						AppOwner: map[string]any{},
+						Notify:   serval.Bool(true),
+					},
+				}},
+				CustomWorkflow: serval.AccessPolicyApprovalProcedureNewParamsStepCustomWorkflow{
+					WorkflowID: serval.String("workflowId"),
+				},
 			}},
 		},
 	)
@@ -96,9 +102,15 @@ func TestAccessPolicyApprovalProcedureUpdateWithOptionalParams(t *testing.T) {
 			AccessPolicyID: "access_policy_id",
 			Steps: []serval.AccessPolicyApprovalProcedureUpdateParamsStep{{
 				AllowSelfApproval: serval.Bool(true),
-				CustomWorkflowID:  serval.String("customWorkflowId"),
-				ServalGroupIDs:    []string{"string"},
-				SpecificUserIDs:   []string{"string"},
+				Approvers: []serval.AccessPolicyApprovalProcedureUpdateParamsStepApproverUnion{{
+					OfAppOwner: &serval.AccessPolicyApprovalProcedureUpdateParamsStepApproverAppOwner{
+						AppOwner: map[string]any{},
+						Notify:   serval.Bool(true),
+					},
+				}},
+				CustomWorkflow: serval.AccessPolicyApprovalProcedureUpdateParamsStepCustomWorkflow{
+					WorkflowID: serval.String("workflowId"),
+				},
 			}},
 		},
 	)
