@@ -123,11 +123,11 @@ func (r *UserService) Delete(ctx context.Context, id string, opts ...option.Requ
 
 type User struct {
 	ID        string `json:"id"`
-	AvatarURL string `json:"avatarUrl"`
+	AvatarURL string `json:"avatarUrl" api:"nullable"`
 	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
 	CreatedAt time.Time `json:"createdAt" format:"date-time"`
 	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
-	DeactivatedAt time.Time `json:"deactivatedAt,nullable" format:"date-time"`
+	DeactivatedAt time.Time `json:"deactivatedAt" api:"nullable" format:"date-time"`
 	Email         string    `json:"email"`
 	FirstName     string    `json:"firstName"`
 	LastName      string    `json:"lastName"`
@@ -136,7 +136,7 @@ type User struct {
 	// "USER_ROLE_ORG_GUEST".
 	Role UserRole `json:"role"`
 	// IANA timezone, e.g., "America/New_York"
-	Timezone string `json:"timezone"`
+	Timezone string `json:"timezone" api:"nullable"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID            respjson.Field
@@ -172,7 +172,7 @@ const (
 type UserDeleteResponse = any
 
 type UserNewParams struct {
-	Email     string            `json:"email,required"`
+	Email     string            `json:"email" api:"required"`
 	FirstName param.Opt[string] `json:"firstName,omitzero"`
 	LastName  param.Opt[string] `json:"lastName,omitzero"`
 	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN",

@@ -127,7 +127,7 @@ type Team struct {
 	ID string `json:"id"`
 	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
 	CreatedAt      time.Time `json:"createdAt" format:"date-time"`
-	Description    string    `json:"description"`
+	Description    string    `json:"description" api:"nullable"`
 	Name           string    `json:"name"`
 	OrganizationID string    `json:"organizationId"`
 	Prefix         string    `json:"prefix"`
@@ -153,7 +153,7 @@ func (r *Team) UnmarshalJSON(data []byte) error {
 type TeamDeleteResponse = any
 
 type TeamNewParams struct {
-	Name        string            `json:"name,required"`
+	Name        string            `json:"name" api:"required"`
 	Description param.Opt[string] `json:"description,omitzero"`
 	Prefix      param.Opt[string] `json:"prefix,omitzero"`
 	paramObj

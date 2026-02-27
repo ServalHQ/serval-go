@@ -152,9 +152,9 @@ type CustomServiceDeleteResponse = any
 
 type CustomServiceNewParams struct {
 	// The name of the custom service (e.g., "Internal HR System").
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The ID of the team.
-	TeamID string `json:"teamId,required"`
+	TeamID string `json:"teamId" api:"required"`
 	// The domain for branding/logo lookup (e.g., "hr.company.com").
 	Domain param.Opt[string] `json:"domain,omitzero"`
 	paramObj

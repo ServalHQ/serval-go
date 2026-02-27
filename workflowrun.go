@@ -92,18 +92,18 @@ type WorkflowRun struct {
 	// The unique ID of the workflow run.
 	ID string `json:"id"`
 	// The timestamp when the workflow run completed (if applicable).
-	CompletedAt string `json:"completedAt,nullable"`
+	CompletedAt string `json:"completedAt" api:"nullable"`
 	// The timestamp when the workflow run was created.
 	CreatedAt string `json:"createdAt"`
 	// The ID of the user who initiated the workflow run.
 	InitiatedByUserID string `json:"initiatedByUserId"`
 	// The inputs provided to the workflow (JSON string).
-	Inputs string `json:"inputs,nullable"`
+	Inputs string `json:"inputs" api:"nullable"`
 	// The ID of the linked ticket, if any.
-	LinkedTicketID string `json:"linkedTicketId,nullable"`
+	LinkedTicketID string `json:"linkedTicketId" api:"nullable"`
 	// The output of the workflow run (JSON string, available when completed or
 	// failed).
-	Output string `json:"output,nullable"`
+	Output string `json:"output" api:"nullable"`
 	// The status of the workflow run.
 	//
 	// Any of "WORKFLOW_RUN_STATUS_UNSPECIFIED", "WORKFLOW_RUN_STATUS_PENDING",
@@ -112,7 +112,7 @@ type WorkflowRun struct {
 	// "WORKFLOW_RUN_STATUS_CANCELED".
 	Status WorkflowRunStatus `json:"status"`
 	// The ID of the target user for the workflow run (if different from initiator).
-	TargetUserID string `json:"targetUserId,nullable"`
+	TargetUserID string `json:"targetUserId" api:"nullable"`
 	// The ID of the team that the workflow belongs to.
 	TeamID string `json:"teamId"`
 	// The ID of the workflow that was run.
@@ -158,7 +158,7 @@ type WorkflowRunSearchResponse struct {
 	// The list of workflow runs.
 	Data []WorkflowRun `json:"data"`
 	// Token for retrieving the next page of results. Empty if no more results.
-	NextPageToken string `json:"nextPageToken,nullable"`
+	NextPageToken string `json:"nextPageToken" api:"nullable"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Data          respjson.Field

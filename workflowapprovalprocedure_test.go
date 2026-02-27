@@ -14,7 +14,7 @@ import (
 )
 
 func TestWorkflowApprovalProcedureNewWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -32,9 +32,15 @@ func TestWorkflowApprovalProcedureNewWithOptionalParams(t *testing.T) {
 		serval.WorkflowApprovalProcedureNewParams{
 			Steps: []serval.WorkflowApprovalProcedureNewParamsStep{{
 				AllowSelfApproval: serval.Bool(true),
-				CustomWorkflowID:  serval.String("customWorkflowId"),
-				ServalGroupIDs:    []string{"string"},
-				SpecificUserIDs:   []string{"string"},
+				Approvers: []serval.WorkflowApprovalProcedureNewParamsStepApproverUnion{{
+					OfAppOwner: &serval.WorkflowApprovalProcedureNewParamsStepApproverAppOwner{
+						AppOwner: map[string]any{},
+						Notify:   serval.Bool(true),
+					},
+				}},
+				CustomWorkflow: serval.WorkflowApprovalProcedureNewParamsStepCustomWorkflow{
+					WorkflowID: serval.String("workflowId"),
+				},
 			}},
 		},
 	)
@@ -48,7 +54,7 @@ func TestWorkflowApprovalProcedureNewWithOptionalParams(t *testing.T) {
 }
 
 func TestWorkflowApprovalProcedureGet(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -77,7 +83,7 @@ func TestWorkflowApprovalProcedureGet(t *testing.T) {
 }
 
 func TestWorkflowApprovalProcedureUpdateWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -96,9 +102,15 @@ func TestWorkflowApprovalProcedureUpdateWithOptionalParams(t *testing.T) {
 			WorkflowID: "workflow_id",
 			Steps: []serval.WorkflowApprovalProcedureUpdateParamsStep{{
 				AllowSelfApproval: serval.Bool(true),
-				CustomWorkflowID:  serval.String("customWorkflowId"),
-				ServalGroupIDs:    []string{"string"},
-				SpecificUserIDs:   []string{"string"},
+				Approvers: []serval.WorkflowApprovalProcedureUpdateParamsStepApproverUnion{{
+					OfAppOwner: &serval.WorkflowApprovalProcedureUpdateParamsStepApproverAppOwner{
+						AppOwner: map[string]any{},
+						Notify:   serval.Bool(true),
+					},
+				}},
+				CustomWorkflow: serval.WorkflowApprovalProcedureUpdateParamsStepCustomWorkflow{
+					WorkflowID: serval.String("workflowId"),
+				},
 			}},
 		},
 	)
@@ -112,7 +124,7 @@ func TestWorkflowApprovalProcedureUpdateWithOptionalParams(t *testing.T) {
 }
 
 func TestWorkflowApprovalProcedureList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -135,7 +147,7 @@ func TestWorkflowApprovalProcedureList(t *testing.T) {
 }
 
 func TestWorkflowApprovalProcedureDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
