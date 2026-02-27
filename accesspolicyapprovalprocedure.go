@@ -234,6 +234,7 @@ func (r *AccessPolicyApprovalProcedureStepApproverUnion) UnmarshalJSON(data []by
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// App owners as approvers. Only valid for access policy approval procedures.
 type AccessPolicyApprovalProcedureStepApproverAppOwner struct {
 	// App owners as approvers. Only valid for access policy approval procedures.
 	AppOwner any `json:"appOwner" api:"required"`
@@ -254,6 +255,7 @@ func (r *AccessPolicyApprovalProcedureStepApproverAppOwner) UnmarshalJSON(data [
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A Serval group as approvers.
 type AccessPolicyApprovalProcedureStepApproverGroup struct {
 	// A Serval group as approvers.
 	Group AccessPolicyApprovalProcedureStepApproverGroupGroup `json:"group" api:"required"`
@@ -292,6 +294,7 @@ func (r *AccessPolicyApprovalProcedureStepApproverGroupGroup) UnmarshalJSON(data
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The requester's manager as an approver.
 type AccessPolicyApprovalProcedureStepApproverManager struct {
 	// The requester's manager as an approver.
 	Manager any `json:"manager" api:"required"`
@@ -312,6 +315,7 @@ func (r *AccessPolicyApprovalProcedureStepApproverManager) UnmarshalJSON(data []
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A specific user as an approver.
 type AccessPolicyApprovalProcedureStepApproverUser struct {
 	// A specific user as an approver.
 	User AccessPolicyApprovalProcedureStepApproverUserUser `json:"user" api:"required"`
@@ -482,6 +486,8 @@ func (u AccessPolicyApprovalProcedureNewParamsStepApproverUnion) GetNotify() *bo
 	return nil
 }
 
+// App owners as approvers. Only valid for access policy approval procedures.
+//
 // The property AppOwner is required.
 type AccessPolicyApprovalProcedureNewParamsStepApproverAppOwner struct {
 	// App owners as approvers. Only valid for access policy approval procedures.
@@ -499,6 +505,8 @@ func (r *AccessPolicyApprovalProcedureNewParamsStepApproverAppOwner) UnmarshalJS
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A Serval group as approvers.
+//
 // The property Group is required.
 type AccessPolicyApprovalProcedureNewParamsStepApproverGroup struct {
 	// A Serval group as approvers.
@@ -531,6 +539,8 @@ func (r *AccessPolicyApprovalProcedureNewParamsStepApproverGroupGroup) Unmarshal
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The requester's manager as an approver.
+//
 // The property Manager is required.
 type AccessPolicyApprovalProcedureNewParamsStepApproverManager struct {
 	// The requester's manager as an approver.
@@ -548,6 +558,8 @@ func (r *AccessPolicyApprovalProcedureNewParamsStepApproverManager) UnmarshalJSO
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A specific user as an approver.
+//
 // The property User is required.
 type AccessPolicyApprovalProcedureNewParamsStepApproverUser struct {
 	// A specific user as an approver.
@@ -749,6 +761,8 @@ func (u AccessPolicyApprovalProcedureUpdateParamsStepApproverUnion) GetNotify() 
 	return nil
 }
 
+// App owners as approvers. Only valid for access policy approval procedures.
+//
 // The property AppOwner is required.
 type AccessPolicyApprovalProcedureUpdateParamsStepApproverAppOwner struct {
 	// App owners as approvers. Only valid for access policy approval procedures.
@@ -766,6 +780,8 @@ func (r *AccessPolicyApprovalProcedureUpdateParamsStepApproverAppOwner) Unmarsha
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A Serval group as approvers.
+//
 // The property Group is required.
 type AccessPolicyApprovalProcedureUpdateParamsStepApproverGroup struct {
 	// A Serval group as approvers.
@@ -798,6 +814,8 @@ func (r *AccessPolicyApprovalProcedureUpdateParamsStepApproverGroupGroup) Unmars
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The requester's manager as an approver.
+//
 // The property Manager is required.
 type AccessPolicyApprovalProcedureUpdateParamsStepApproverManager struct {
 	// The requester's manager as an approver.
@@ -815,6 +833,8 @@ func (r *AccessPolicyApprovalProcedureUpdateParamsStepApproverManager) Unmarshal
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A specific user as an approver.
+//
 // The property User is required.
 type AccessPolicyApprovalProcedureUpdateParamsStepApproverUser struct {
 	// A specific user as an approver.
