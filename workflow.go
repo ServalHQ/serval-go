@@ -137,22 +137,14 @@ type Workflow struct {
 	HasUnpublishedChanges bool `json:"hasUnpublishedChanges"`
 	// Whether the workflow is published. Set to true to publish the workflow.
 	IsPublished bool `json:"isPublished"`
-	// Whether the workflow is temporary.
-	IsTemporary bool `json:"isTemporary"`
 	// The name of the workflow.
 	Name string `json:"name"`
-	// The parameters schema of the workflow (JSON).
-	Parameters string `json:"parameters"`
 	// Whether the workflow requires form confirmation.
 	RequireFormConfirmation bool `json:"requireFormConfirmation"`
 	// IDs of tags associated with this workflow.
 	TagIDs []string `json:"tagIds"`
 	// The ID of the team that the workflow belongs to.
 	TeamID string `json:"teamId"`
-	// The type of the workflow.
-	//
-	// Any of "WORKFLOW_TYPE_UNSPECIFIED", "EXECUTABLE", "GUIDANCE".
-	Type WorkflowType `json:"type"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                      respjson.Field
@@ -161,13 +153,10 @@ type Workflow struct {
 		ExecutionScope          respjson.Field
 		HasUnpublishedChanges   respjson.Field
 		IsPublished             respjson.Field
-		IsTemporary             respjson.Field
 		Name                    respjson.Field
-		Parameters              respjson.Field
 		RequireFormConfirmation respjson.Field
 		TagIDs                  respjson.Field
 		TeamID                  respjson.Field
-		Type                    respjson.Field
 		ExtraFields             map[string]respjson.Field
 		raw                     string
 	} `json:"-"`
@@ -188,15 +177,6 @@ const (
 	WorkflowExecutionScopeTeamPublic                        WorkflowExecutionScope = "TEAM_PUBLIC"
 )
 
-// The type of the workflow.
-type WorkflowType string
-
-const (
-	WorkflowTypeWorkflowTypeUnspecified WorkflowType = "WORKFLOW_TYPE_UNSPECIFIED"
-	WorkflowTypeExecutable              WorkflowType = "EXECUTABLE"
-	WorkflowTypeGuidance                WorkflowType = "GUIDANCE"
-)
-
 type WorkflowDeleteResponse = any
 
 type WorkflowNewParams struct {
@@ -206,16 +186,8 @@ type WorkflowNewParams struct {
 	Name string `json:"name" api:"required"`
 	// The ID of the team.
 	TeamID string `json:"teamId" api:"required"`
-	// The type of the workflow.
-	//
-	// Any of "WORKFLOW_TYPE_UNSPECIFIED", "EXECUTABLE", "GUIDANCE".
-	Type WorkflowNewParamsType `json:"type,omitzero" api:"required"`
 	// Whether to publish the workflow after creation (optional).
 	IsPublished param.Opt[bool] `json:"isPublished,omitzero"`
-	// Whether the workflow is temporary (optional).
-	IsTemporary param.Opt[bool] `json:"isTemporary,omitzero"`
-	// The parameters schema of the workflow (JSON, optional).
-	Parameters param.Opt[string] `json:"parameters,omitzero"`
 	// Whether the workflow requires form confirmation (optional).
 	RequireFormConfirmation param.Opt[bool] `json:"requireFormConfirmation,omitzero"`
 	// A description of the workflow.
@@ -234,15 +206,6 @@ func (r WorkflowNewParams) MarshalJSON() (data []byte, err error) {
 func (r *WorkflowNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-// The type of the workflow.
-type WorkflowNewParamsType string
-
-const (
-	WorkflowNewParamsTypeWorkflowTypeUnspecified WorkflowNewParamsType = "WORKFLOW_TYPE_UNSPECIFIED"
-	WorkflowNewParamsTypeExecutable              WorkflowNewParamsType = "EXECUTABLE"
-	WorkflowNewParamsTypeGuidance                WorkflowNewParamsType = "GUIDANCE"
-)
 
 // The execution scope of the workflow.
 type WorkflowNewParamsExecutionScope string
@@ -294,22 +257,14 @@ type WorkflowUpdateParams struct {
 	Content param.Opt[string] `json:"content,omitzero"`
 	// A description of the workflow.
 	Description param.Opt[string] `json:"description,omitzero"`
-	// Whether the workflow is temporary.
-	IsTemporary param.Opt[bool] `json:"isTemporary,omitzero"`
 	// The name of the workflow.
 	Name param.Opt[string] `json:"name,omitzero"`
-	// The parameters schema of the workflow (JSON).
-	Parameters param.Opt[string] `json:"parameters,omitzero"`
 	// Whether the workflow requires form confirmation.
 	RequireFormConfirmation param.Opt[bool] `json:"requireFormConfirmation,omitzero"`
 	// The execution scope of the workflow.
 	//
 	// Any of "WORKFLOW_EXECUTION_SCOPE_UNSPECIFIED", "TEAM_PRIVATE", "TEAM_PUBLIC".
 	ExecutionScope WorkflowUpdateParamsExecutionScope `json:"executionScope,omitzero"`
-	// The type of the workflow.
-	//
-	// Any of "WORKFLOW_TYPE_UNSPECIFIED", "EXECUTABLE", "GUIDANCE".
-	Type WorkflowUpdateParamsType `json:"type,omitzero"`
 	paramObj
 }
 
@@ -330,15 +285,6 @@ const (
 	WorkflowUpdateParamsExecutionScopeTeamPublic                        WorkflowUpdateParamsExecutionScope = "TEAM_PUBLIC"
 )
 
-// The type of the workflow.
-type WorkflowUpdateParamsType string
-
-const (
-	WorkflowUpdateParamsTypeWorkflowTypeUnspecified WorkflowUpdateParamsType = "WORKFLOW_TYPE_UNSPECIFIED"
-	WorkflowUpdateParamsTypeExecutable              WorkflowUpdateParamsType = "EXECUTABLE"
-	WorkflowUpdateParamsTypeGuidance                WorkflowUpdateParamsType = "GUIDANCE"
-)
-
 type WorkflowUpdateResponseEnvelope struct {
 	// The updated workflow.
 	Data Workflow `json:"data"`
@@ -357,8 +303,6 @@ func (r *WorkflowUpdateResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type WorkflowListParams struct {
-	// Whether to include temporary workflows (optional, defaults to false).
-	IncludeTemporary param.Opt[bool] `query:"includeTemporary,omitzero" json:"-"`
 	// Maximum number of results to return. Default is 1000, maximum is 2000.
 	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
 	// Token for pagination. Leave empty for the first request.

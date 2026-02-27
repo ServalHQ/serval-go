@@ -32,9 +32,15 @@ func TestWorkflowApprovalProcedureNewWithOptionalParams(t *testing.T) {
 		serval.WorkflowApprovalProcedureNewParams{
 			Steps: []serval.WorkflowApprovalProcedureNewParamsStep{{
 				AllowSelfApproval: serval.Bool(true),
-				CustomWorkflowID:  serval.String("customWorkflowId"),
-				ServalGroupIDs:    []string{"string"},
-				SpecificUserIDs:   []string{"string"},
+				Approvers: []serval.WorkflowApprovalProcedureNewParamsStepApproverUnion{{
+					OfAppOwner: &serval.WorkflowApprovalProcedureNewParamsStepApproverAppOwner{
+						AppOwner: map[string]any{},
+						Notify:   serval.Bool(true),
+					},
+				}},
+				CustomWorkflow: serval.WorkflowApprovalProcedureNewParamsStepCustomWorkflow{
+					WorkflowID: serval.String("workflowId"),
+				},
 			}},
 		},
 	)
@@ -96,9 +102,15 @@ func TestWorkflowApprovalProcedureUpdateWithOptionalParams(t *testing.T) {
 			WorkflowID: "workflow_id",
 			Steps: []serval.WorkflowApprovalProcedureUpdateParamsStep{{
 				AllowSelfApproval: serval.Bool(true),
-				CustomWorkflowID:  serval.String("customWorkflowId"),
-				ServalGroupIDs:    []string{"string"},
-				SpecificUserIDs:   []string{"string"},
+				Approvers: []serval.WorkflowApprovalProcedureUpdateParamsStepApproverUnion{{
+					OfAppOwner: &serval.WorkflowApprovalProcedureUpdateParamsStepApproverAppOwner{
+						AppOwner: map[string]any{},
+						Notify:   serval.Bool(true),
+					},
+				}},
+				CustomWorkflow: serval.WorkflowApprovalProcedureUpdateParamsStepCustomWorkflow{
+					WorkflowID: serval.String("workflowId"),
+				},
 			}},
 		},
 	)

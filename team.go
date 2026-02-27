@@ -127,7 +127,7 @@ type Team struct {
 	ID string `json:"id"`
 	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
 	CreatedAt      time.Time `json:"createdAt" format:"date-time"`
-	Description    string    `json:"description"`
+	Description    string    `json:"description" api:"nullable"`
 	Name           string    `json:"name"`
 	OrganizationID string    `json:"organizationId"`
 	Prefix         string    `json:"prefix"`

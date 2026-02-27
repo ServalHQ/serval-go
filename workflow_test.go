@@ -30,12 +30,9 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 		Content:                 "content",
 		Name:                    "name",
 		TeamID:                  "teamId",
-		Type:                    serval.WorkflowNewParamsTypeWorkflowTypeUnspecified,
 		Description:             serval.String("description"),
 		ExecutionScope:          serval.WorkflowNewParamsExecutionScopeWorkflowExecutionScopeUnspecified,
 		IsPublished:             serval.Bool(true),
-		IsTemporary:             serval.Bool(true),
-		Parameters:              serval.String("parameters"),
 		RequireFormConfirmation: serval.Bool(true),
 	})
 	if err != nil {
@@ -91,11 +88,8 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 			Description:             serval.String("description"),
 			ExecutionScope:          serval.WorkflowUpdateParamsExecutionScopeWorkflowExecutionScopeUnspecified,
 			IsPublished:             serval.Bool(true),
-			IsTemporary:             serval.Bool(true),
 			Name:                    serval.String("name"),
-			Parameters:              serval.String("parameters"),
 			RequireFormConfirmation: serval.Bool(true),
-			Type:                    serval.WorkflowUpdateParamsTypeWorkflowTypeUnspecified,
 		},
 	)
 	if err != nil {
@@ -121,10 +115,9 @@ func TestWorkflowListWithOptionalParams(t *testing.T) {
 		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Workflows.List(context.TODO(), serval.WorkflowListParams{
-		IncludeTemporary: serval.Bool(true),
-		PageSize:         serval.Int(0),
-		PageToken:        serval.String("pageToken"),
-		TeamID:           serval.String("teamId"),
+		PageSize:  serval.Int(0),
+		PageToken: serval.String("pageToken"),
+		TeamID:    serval.String("teamId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
