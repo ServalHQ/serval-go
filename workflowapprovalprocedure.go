@@ -236,6 +236,7 @@ func (r *WorkflowApprovalProcedureStepApproverUnion) UnmarshalJSON(data []byte) 
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// App owners as approvers. Only valid for access policy approval procedures.
 type WorkflowApprovalProcedureStepApproverAppOwner struct {
 	// App owners as approvers. Only valid for access policy approval procedures.
 	AppOwner any `json:"appOwner" api:"required"`
@@ -256,6 +257,7 @@ func (r *WorkflowApprovalProcedureStepApproverAppOwner) UnmarshalJSON(data []byt
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A Serval group as approvers.
 type WorkflowApprovalProcedureStepApproverGroup struct {
 	// A Serval group as approvers.
 	Group WorkflowApprovalProcedureStepApproverGroupGroup `json:"group" api:"required"`
@@ -294,6 +296,7 @@ func (r *WorkflowApprovalProcedureStepApproverGroupGroup) UnmarshalJSON(data []b
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The requester's manager as an approver.
 type WorkflowApprovalProcedureStepApproverManager struct {
 	// The requester's manager as an approver.
 	Manager any `json:"manager" api:"required"`
@@ -314,6 +317,7 @@ func (r *WorkflowApprovalProcedureStepApproverManager) UnmarshalJSON(data []byte
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A specific user as an approver.
 type WorkflowApprovalProcedureStepApproverUser struct {
 	// A specific user as an approver.
 	User WorkflowApprovalProcedureStepApproverUserUser `json:"user" api:"required"`
@@ -484,6 +488,8 @@ func (u WorkflowApprovalProcedureNewParamsStepApproverUnion) GetNotify() *bool {
 	return nil
 }
 
+// App owners as approvers. Only valid for access policy approval procedures.
+//
 // The property AppOwner is required.
 type WorkflowApprovalProcedureNewParamsStepApproverAppOwner struct {
 	// App owners as approvers. Only valid for access policy approval procedures.
@@ -501,6 +507,8 @@ func (r *WorkflowApprovalProcedureNewParamsStepApproverAppOwner) UnmarshalJSON(d
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A Serval group as approvers.
+//
 // The property Group is required.
 type WorkflowApprovalProcedureNewParamsStepApproverGroup struct {
 	// A Serval group as approvers.
@@ -533,6 +541,8 @@ func (r *WorkflowApprovalProcedureNewParamsStepApproverGroupGroup) UnmarshalJSON
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The requester's manager as an approver.
+//
 // The property Manager is required.
 type WorkflowApprovalProcedureNewParamsStepApproverManager struct {
 	// The requester's manager as an approver.
@@ -550,6 +560,8 @@ func (r *WorkflowApprovalProcedureNewParamsStepApproverManager) UnmarshalJSON(da
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A specific user as an approver.
+//
 // The property User is required.
 type WorkflowApprovalProcedureNewParamsStepApproverUser struct {
 	// A specific user as an approver.
@@ -751,6 +763,8 @@ func (u WorkflowApprovalProcedureUpdateParamsStepApproverUnion) GetNotify() *boo
 	return nil
 }
 
+// App owners as approvers. Only valid for access policy approval procedures.
+//
 // The property AppOwner is required.
 type WorkflowApprovalProcedureUpdateParamsStepApproverAppOwner struct {
 	// App owners as approvers. Only valid for access policy approval procedures.
@@ -768,6 +782,8 @@ func (r *WorkflowApprovalProcedureUpdateParamsStepApproverAppOwner) UnmarshalJSO
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A Serval group as approvers.
+//
 // The property Group is required.
 type WorkflowApprovalProcedureUpdateParamsStepApproverGroup struct {
 	// A Serval group as approvers.
@@ -800,6 +816,8 @@ func (r *WorkflowApprovalProcedureUpdateParamsStepApproverGroupGroup) UnmarshalJ
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The requester's manager as an approver.
+//
 // The property Manager is required.
 type WorkflowApprovalProcedureUpdateParamsStepApproverManager struct {
 	// The requester's manager as an approver.
@@ -817,6 +835,8 @@ func (r *WorkflowApprovalProcedureUpdateParamsStepApproverManager) UnmarshalJSON
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// A specific user as an approver.
+//
 // The property User is required.
 type WorkflowApprovalProcedureUpdateParamsStepApproverUser struct {
 	// A specific user as an approver.
