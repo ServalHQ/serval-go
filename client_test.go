@@ -38,7 +38,7 @@ func TestUserAgentHeader(t *testing.T) {
 			},
 		}),
 	)
-	client.AccessPolicies.List(context.Background(), serval.AccessPolicyListParams{})
+	_, _ = client.AccessPolicies.List(context.Background(), serval.AccessPolicyListParams{})
 	if userAgent != fmt.Sprintf("Serval/Go %s", internal.PackageVersion) {
 		t.Errorf("Expected User-Agent to be correct, but got: %#v", userAgent)
 	}
