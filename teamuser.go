@@ -45,15 +45,15 @@ func (r *TeamUserService) New(ctx context.Context, teamID string, body TeamUserN
 	opts = slices.Concat(r.Options, opts)
 	if teamID == "" {
 		err = errors.New("missing required team_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/teams/%s/users", teamID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // Get a specific team user by team ID and user ID.
@@ -62,19 +62,19 @@ func (r *TeamUserService) Get(ctx context.Context, userID string, query TeamUser
 	opts = slices.Concat(r.Options, opts)
 	if query.TeamID == "" {
 		err = errors.New("missing required team_id parameter")
-		return
+		return nil, err
 	}
 	if userID == "" {
 		err = errors.New("missing required user_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/teams/%s/users/%s", query.TeamID, userID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // Update a team user's role.
@@ -83,19 +83,19 @@ func (r *TeamUserService) Update(ctx context.Context, userID string, params Team
 	opts = slices.Concat(r.Options, opts)
 	if params.TeamID == "" {
 		err = errors.New("missing required team_id parameter")
-		return
+		return nil, err
 	}
 	if userID == "" {
 		err = errors.New("missing required user_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/teams/%s/users/%s", params.TeamID, userID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, params, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // List all users in a team.
@@ -105,7 +105,7 @@ func (r *TeamUserService) List(ctx context.Context, teamID string, query TeamUse
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if teamID == "" {
 		err = errors.New("missing required team_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/teams/%s/users", teamID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -130,15 +130,15 @@ func (r *TeamUserService) Delete(ctx context.Context, userID string, body TeamUs
 	opts = slices.Concat(r.Options, opts)
 	if body.TeamID == "" {
 		err = errors.New("missing required team_id parameter")
-		return
+		return nil, err
 	}
 	if userID == "" {
 		err = errors.New("missing required user_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/teams/%s/users/%s", body.TeamID, userID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 type TeamUser struct {

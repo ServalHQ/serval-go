@@ -44,15 +44,15 @@ func (r *WorkflowRunService) Get(ctx context.Context, id string, opts ...option.
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/workflow-runs/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // List workflow runs for a team. Filter by workflow ID, status, or time range.
@@ -84,7 +84,7 @@ func (r *WorkflowRunService) Search(ctx context.Context, body WorkflowRunSearchP
 	opts = slices.Concat(r.Options, opts)
 	path := "v2/workflow-runs/search"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // WorkflowRun represents a single execution of a workflow.
