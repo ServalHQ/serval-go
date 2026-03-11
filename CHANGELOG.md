@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.21.1 (2026-03-11)
+
+Full Changelog: [v0.21.0...v0.21.1](https://github.com/ServalHQ/serval-go/compare/v0.21.0...v0.21.1)
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([48b39f1](https://github.com/ServalHQ/serval-go/commit/48b39f1c59e8cb1a921d48865bf36c209dbd315a))
+* **internal:** codegen related update ([6c570ea](https://github.com/ServalHQ/serval-go/commit/6c570ea221e038557a29afedc22547148c10f024))
+* **internal:** codegen related update ([83b7257](https://github.com/ServalHQ/serval-go/commit/83b72574dcaad990adc9ab34dd39ffd30a90cc68))
+* **internal:** minor cleanup ([1114e74](https://github.com/ServalHQ/serval-go/commit/1114e748abebe1ac079f8449f4b6687441fbe7af))
+* **internal:** use explicit returns ([0409360](https://github.com/ServalHQ/serval-go/commit/04093609a6fc45d0b2602b924a5752bd893eb78f))
+* **internal:** use explicit returns in more places ([fc596ce](https://github.com/ServalHQ/serval-go/commit/fc596ceb00225b01f72505b5f626fcb886ae933b))
+
 ## 0.21.0 (2026-02-27)
 
 Full Changelog: [v0.20.0...v0.21.0](https://github.com/ServalHQ/serval-go/compare/v0.20.0...v0.21.0)

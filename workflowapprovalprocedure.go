@@ -44,15 +44,15 @@ func (r *WorkflowApprovalProcedureService) New(ctx context.Context, workflowID s
 	opts = slices.Concat(r.Options, opts)
 	if workflowID == "" {
 		err = errors.New("missing required workflow_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/workflows/%s/approval-procedures", workflowID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // Get a specific approval procedure by ID for a workflow.
@@ -61,19 +61,19 @@ func (r *WorkflowApprovalProcedureService) Get(ctx context.Context, id string, q
 	opts = slices.Concat(r.Options, opts)
 	if query.WorkflowID == "" {
 		err = errors.New("missing required workflow_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/workflows/%s/approval-procedures/%s", query.WorkflowID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // Update an existing approval procedure for a workflow.
@@ -82,19 +82,19 @@ func (r *WorkflowApprovalProcedureService) Update(ctx context.Context, id string
 	opts = slices.Concat(r.Options, opts)
 	if params.WorkflowID == "" {
 		err = errors.New("missing required workflow_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/workflows/%s/approval-procedures/%s", params.WorkflowID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, params, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // List all approval procedures for a workflow.
@@ -103,15 +103,15 @@ func (r *WorkflowApprovalProcedureService) List(ctx context.Context, workflowID 
 	opts = slices.Concat(r.Options, opts)
 	if workflowID == "" {
 		err = errors.New("missing required workflow_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/workflows/%s/approval-procedures", workflowID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // Delete an approval procedure for a workflow.
@@ -119,15 +119,15 @@ func (r *WorkflowApprovalProcedureService) Delete(ctx context.Context, id string
 	opts = slices.Concat(r.Options, opts)
 	if body.WorkflowID == "" {
 		err = errors.New("missing required workflow_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/workflows/%s/approval-procedures/%s", body.WorkflowID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 type WorkflowApprovalProcedure struct {
