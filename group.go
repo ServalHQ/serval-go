@@ -123,9 +123,9 @@ func (r *GroupService) Delete(ctx context.Context, id string, opts ...option.Req
 
 type Group struct {
 	ID string `json:"id"`
-	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
+	// A timestamp in RFC 3339 format (e.g., "2025-01-15T01:30:15Z").
 	CreatedAt time.Time `json:"createdAt" format:"date-time"`
-	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
+	// A timestamp in RFC 3339 format (e.g., "2025-01-15T01:30:15Z").
 	DeletedAt      time.Time `json:"deletedAt" api:"nullable" format:"date-time"`
 	Name           string    `json:"name"`
 	OrganizationID string    `json:"organizationId"`

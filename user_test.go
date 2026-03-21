@@ -27,10 +27,11 @@ func TestUserNewWithOptionalParams(t *testing.T) {
 		option.WithBearerToken("My Bearer Token"),
 	)
 	_, err := client.Users.New(context.TODO(), serval.UserNewParams{
-		Email:     "email",
-		FirstName: serval.String("firstName"),
-		LastName:  serval.String("lastName"),
-		Role:      serval.UserNewParamsRoleUserRoleUnspecified,
+		Email:      "email",
+		AuthMethod: serval.UserNewParamsAuthMethodUserAuthMethodUnspecified,
+		FirstName:  serval.String("firstName"),
+		LastName:   serval.String("lastName"),
+		Role:       serval.UserNewParamsRoleUserRoleUnspecified,
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -81,11 +82,12 @@ func TestUserUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		serval.UserUpdateParams{
-			AvatarURL: serval.String("avatarUrl"),
-			Email:     serval.String("email"),
-			FirstName: serval.String("firstName"),
-			LastName:  serval.String("lastName"),
-			Role:      serval.UserUpdateParamsRoleUserRoleUnspecified,
+			AuthMethod: serval.UserUpdateParamsAuthMethodUserAuthMethodUnspecified,
+			AvatarURL:  serval.String("avatarUrl"),
+			Email:      serval.String("email"),
+			FirstName:  serval.String("firstName"),
+			LastName:   serval.String("lastName"),
+			Role:       serval.UserUpdateParamsRoleUserRoleUnspecified,
 		},
 	)
 	if err != nil {

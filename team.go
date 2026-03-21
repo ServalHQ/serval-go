@@ -125,7 +125,7 @@ func (r *TeamService) Delete(ctx context.Context, id string, opts ...option.Requ
 
 type Team struct {
 	ID string `json:"id"`
-	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
+	// A timestamp in RFC 3339 format (e.g., "2025-01-15T01:30:15Z").
 	CreatedAt      time.Time `json:"createdAt" format:"date-time"`
 	Description    string    `json:"description" api:"nullable"`
 	Name           string    `json:"name"`

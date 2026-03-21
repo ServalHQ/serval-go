@@ -142,7 +142,7 @@ func (r *TeamUserService) Delete(ctx context.Context, userID string, body TeamUs
 }
 
 type TeamUser struct {
-	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
+	// A timestamp in RFC 3339 format (e.g., "2025-01-15T01:30:15Z").
 	CreatedAt time.Time `json:"createdAt" format:"date-time"`
 	// Any of "TEAM_USER_ROLE_UNSPECIFIED", "TEAM_USER_ROLE_AGENT",
 	// "TEAM_USER_ROLE_MANAGER", "TEAM_USER_ROLE_BUILDER", "TEAM_USER_ROLE_VIEWER",

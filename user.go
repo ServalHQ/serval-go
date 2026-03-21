@@ -122,11 +122,17 @@ func (r *UserService) Delete(ctx context.Context, id string, opts ...option.Requ
 }
 
 type User struct {
-	ID        string `json:"id"`
-	AvatarURL string `json:"avatarUrl" api:"nullable"`
-	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
+	ID string `json:"id"`
+	// Specifies the authentication method for a user. If unset, the org default
+	// applies. Set to MAGIC_LINK to allow the user to bypass SSO (e.g. guest or
+	// break-glass accounts).
+	//
+	// Any of "USER_AUTH_METHOD_UNSPECIFIED", "USER_AUTH_METHOD_MAGIC_LINK".
+	AuthMethod UserAuthMethod `json:"authMethod" api:"nullable"`
+	AvatarURL  string         `json:"avatarUrl" api:"nullable"`
+	// A timestamp in RFC 3339 format (e.g., "2025-01-15T01:30:15Z").
 	CreatedAt time.Time `json:"createdAt" format:"date-time"`
-	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
+	// A timestamp in RFC 3339 format (e.g., "2025-01-15T01:30:15Z").
 	DeactivatedAt time.Time `json:"deactivatedAt" api:"nullable" format:"date-time"`
 	Email         string    `json:"email"`
 	FirstName     string    `json:"firstName"`
@@ -140,6 +146,7 @@ type User struct {
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID            respjson.Field
+		AuthMethod    respjson.Field
 		AvatarURL     respjson.Field
 		CreatedAt     respjson.Field
 		DeactivatedAt respjson.Field
@@ -160,6 +167,16 @@ func (r *User) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Specifies the authentication method for a user. If unset, the org default
+// applies. Set to MAGIC_LINK to allow the user to bypass SSO (e.g. guest or
+// break-glass accounts).
+type UserAuthMethod string
+
+const (
+	UserAuthMethodUserAuthMethodUnspecified UserAuthMethod = "USER_AUTH_METHOD_UNSPECIFIED"
+	UserAuthMethodUserAuthMethodMagicLink   UserAuthMethod = "USER_AUTH_METHOD_MAGIC_LINK"
+)
+
 type UserRole string
 
 const (
@@ -175,6 +192,12 @@ type UserNewParams struct {
 	Email     string            `json:"email" api:"required"`
 	FirstName param.Opt[string] `json:"firstName,omitzero"`
 	LastName  param.Opt[string] `json:"lastName,omitzero"`
+	// Specifies the authentication method for a user. If unset, the org default
+	// applies. Set to MAGIC_LINK to allow the user to bypass SSO (e.g. guest or
+	// break-glass accounts).
+	//
+	// Any of "USER_AUTH_METHOD_UNSPECIFIED", "USER_AUTH_METHOD_MAGIC_LINK".
+	AuthMethod UserNewParamsAuthMethod `json:"authMethod,omitzero"`
 	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN",
 	// "USER_ROLE_ORG_GUEST".
 	Role UserNewParamsRole `json:"role,omitzero"`
@@ -188,6 +211,16 @@ func (r UserNewParams) MarshalJSON() (data []byte, err error) {
 func (r *UserNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+// Specifies the authentication method for a user. If unset, the org default
+// applies. Set to MAGIC_LINK to allow the user to bypass SSO (e.g. guest or
+// break-glass accounts).
+type UserNewParamsAuthMethod string
+
+const (
+	UserNewParamsAuthMethodUserAuthMethodUnspecified UserNewParamsAuthMethod = "USER_AUTH_METHOD_UNSPECIFIED"
+	UserNewParamsAuthMethodUserAuthMethodMagicLink   UserNewParamsAuthMethod = "USER_AUTH_METHOD_MAGIC_LINK"
+)
 
 type UserNewParamsRole string
 
@@ -235,6 +268,12 @@ type UserUpdateParams struct {
 	Email     param.Opt[string] `json:"email,omitzero"`
 	FirstName param.Opt[string] `json:"firstName,omitzero"`
 	LastName  param.Opt[string] `json:"lastName,omitzero"`
+	// Specifies the authentication method for a user. If unset, the org default
+	// applies. Set to MAGIC_LINK to allow the user to bypass SSO (e.g. guest or
+	// break-glass accounts).
+	//
+	// Any of "USER_AUTH_METHOD_UNSPECIFIED", "USER_AUTH_METHOD_MAGIC_LINK".
+	AuthMethod UserUpdateParamsAuthMethod `json:"authMethod,omitzero"`
 	// Any of "USER_ROLE_UNSPECIFIED", "USER_ROLE_ORG_MEMBER", "USER_ROLE_ORG_ADMIN",
 	// "USER_ROLE_ORG_GUEST".
 	Role UserUpdateParamsRole `json:"role,omitzero"`
@@ -248,6 +287,16 @@ func (r UserUpdateParams) MarshalJSON() (data []byte, err error) {
 func (r *UserUpdateParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+// Specifies the authentication method for a user. If unset, the org default
+// applies. Set to MAGIC_LINK to allow the user to bypass SSO (e.g. guest or
+// break-glass accounts).
+type UserUpdateParamsAuthMethod string
+
+const (
+	UserUpdateParamsAuthMethodUserAuthMethodUnspecified UserUpdateParamsAuthMethod = "USER_AUTH_METHOD_UNSPECIFIED"
+	UserUpdateParamsAuthMethodUserAuthMethodMagicLink   UserUpdateParamsAuthMethod = "USER_AUTH_METHOD_MAGIC_LINK"
+)
 
 type UserUpdateParamsRole string
 
