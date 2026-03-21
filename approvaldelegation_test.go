@@ -13,7 +13,7 @@ import (
 	"github.com/ServalHQ/serval-go/option"
 )
 
-func TestWorkflowNewWithOptionalParams(t *testing.T) {
+func TestApprovalDelegationNewWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -26,15 +26,14 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Workflows.New(context.TODO(), serval.WorkflowNewParams{
-		Content:                 "content",
-		Name:                    "name",
-		TeamID:                  "teamId",
-		Description:             serval.String("description"),
-		ExecutionScope:          serval.WorkflowNewParamsExecutionScopeWorkflowExecutionScopeUnspecified,
-		IsPublished:             serval.Bool(true),
-		RequireFormConfirmation: serval.Bool(true),
-		TagIDs:                  []string{"string"},
+	_, err := client.ApprovalDelegations.New(context.TODO(), serval.ApprovalDelegationNewParams{
+		Delegates: []serval.ApprovalDelegationNewParamsDelegate{{
+			ID:   serval.String("id"),
+			Type: "APPROVAL_DELEGATE_TYPE_UNSPECIFIED",
+		}},
+		DelegatorUserID: serval.String("delegatorUserId"),
+		Description:     serval.String("description"),
+		Priority:        serval.Int(0),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -45,7 +44,7 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestWorkflowGet(t *testing.T) {
+func TestApprovalDelegationGet(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -58,7 +57,7 @@ func TestWorkflowGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Workflows.Get(context.TODO(), "id")
+	_, err := client.ApprovalDelegations.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
@@ -68,7 +67,7 @@ func TestWorkflowGet(t *testing.T) {
 	}
 }
 
-func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
+func TestApprovalDelegationUpdateWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -81,19 +80,16 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Workflows.Update(
+	_, err := client.ApprovalDelegations.Update(
 		context.TODO(),
 		"id",
-		serval.WorkflowUpdateParams{
-			Content:                 serval.String("content"),
-			Description:             serval.String("description"),
-			ExecutionScope:          serval.WorkflowUpdateParamsExecutionScopeWorkflowExecutionScopeUnspecified,
-			IsPublished:             serval.Bool(true),
-			Name:                    serval.String("name"),
-			RequireFormConfirmation: serval.Bool(true),
-			TagIDs: serval.WorkflowUpdateParamsTagIDs{
-				IDs: []string{"string"},
-			},
+		serval.ApprovalDelegationUpdateParams{
+			Delegates: []serval.ApprovalDelegationUpdateParamsDelegate{{
+				ID:   serval.String("id"),
+				Type: "APPROVAL_DELEGATE_TYPE_UNSPECIFIED",
+			}},
+			Description: serval.String("description"),
+			Priority:    serval.Int(0),
 		},
 	)
 	if err != nil {
@@ -105,7 +101,7 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestWorkflowListWithOptionalParams(t *testing.T) {
+func TestApprovalDelegationListWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -118,10 +114,10 @@ func TestWorkflowListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Workflows.List(context.TODO(), serval.WorkflowListParams{
-		PageSize:  serval.Int(0),
-		PageToken: serval.String("pageToken"),
-		TeamID:    serval.String("teamId"),
+	_, err := client.ApprovalDelegations.List(context.TODO(), serval.ApprovalDelegationListParams{
+		DelegatorUserID: serval.String("delegatorUserId"),
+		PageSize:        serval.Int(0),
+		PageToken:       serval.String("pageToken"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -132,7 +128,7 @@ func TestWorkflowListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestWorkflowDelete(t *testing.T) {
+func TestApprovalDelegationDelete(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -145,7 +141,7 @@ func TestWorkflowDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Workflows.Delete(context.TODO(), "id")
+	_, err := client.ApprovalDelegations.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
