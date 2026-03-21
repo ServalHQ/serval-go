@@ -204,6 +204,8 @@ Methods:
 - <code title="get /v2/teams/{team_id}/users">client.Teams.Users.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamUserService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, teamID <a href="https://pkg.go.dev/builtin#string">string</a>, query <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamUserListParams">TeamUserListParams</a>) (\*<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go/packages/pagination#CursorPage">CursorPage</a>[<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamUser">TeamUser</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="delete /v2/teams/{team_id}/users/{user_id}">client.Teams.Users.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamUserService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, userID <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamUserDeleteParams">TeamUserDeleteParams</a>) (\*<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go">serval</a>.<a href="https://pkg.go.dev/github.com/ServalHQ/serval-go#TeamUserDeleteResponse">TeamUserDeleteResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
+# ApprovalDelegations
+
 # CustomServices
 
 Response Types:
