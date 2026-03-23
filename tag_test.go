@@ -13,7 +13,7 @@ import (
 	"github.com/ServalHQ/serval-go/option"
 )
 
-func TestWorkflowNewWithOptionalParams(t *testing.T) {
+func TestTagNewWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -26,15 +26,11 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Workflows.New(context.TODO(), serval.WorkflowNewParams{
-		Content:                 "content",
-		Name:                    "name",
-		TeamID:                  "teamId",
-		Description:             serval.String("description"),
-		ExecutionScope:          serval.WorkflowNewParamsExecutionScopeWorkflowExecutionScopeUnspecified,
-		IsPublished:             serval.Bool(true),
-		RequireFormConfirmation: serval.Bool(true),
-		TagIDs:                  []string{"string"},
+	_, err := client.Tags.New(context.TODO(), serval.TagNewParams{
+		Name:     "name",
+		TeamID:   "teamId",
+		Color:    serval.String("color"),
+		IconSlug: serval.String("iconSlug"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -45,7 +41,7 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestWorkflowGet(t *testing.T) {
+func TestTagGet(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -58,7 +54,7 @@ func TestWorkflowGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Workflows.Get(context.TODO(), "id")
+	_, err := client.Tags.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
@@ -68,7 +64,7 @@ func TestWorkflowGet(t *testing.T) {
 	}
 }
 
-func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
+func TestTagUpdateWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -81,19 +77,13 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Workflows.Update(
+	_, err := client.Tags.Update(
 		context.TODO(),
 		"id",
-		serval.WorkflowUpdateParams{
-			Content:                 serval.String("content"),
-			Description:             serval.String("description"),
-			ExecutionScope:          serval.WorkflowUpdateParamsExecutionScopeWorkflowExecutionScopeUnspecified,
-			IsPublished:             serval.Bool(true),
-			Name:                    serval.String("name"),
-			RequireFormConfirmation: serval.Bool(true),
-			TagIDs: serval.WorkflowUpdateParamsTagIDs{
-				IDs: []string{"string"},
-			},
+		serval.TagUpdateParams{
+			Color:    serval.String("color"),
+			IconSlug: serval.String("iconSlug"),
+			Name:     serval.String("name"),
 		},
 	)
 	if err != nil {
@@ -105,7 +95,7 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestWorkflowListWithOptionalParams(t *testing.T) {
+func TestTagListWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -118,7 +108,7 @@ func TestWorkflowListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Workflows.List(context.TODO(), serval.WorkflowListParams{
+	_, err := client.Tags.List(context.TODO(), serval.TagListParams{
 		PageSize:  serval.Int(0),
 		PageToken: serval.String("pageToken"),
 		TeamID:    serval.String("teamId"),
@@ -132,7 +122,7 @@ func TestWorkflowListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestWorkflowDelete(t *testing.T) {
+func TestTagDelete(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -145,7 +135,7 @@ func TestWorkflowDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Workflows.Delete(context.TODO(), "id")
+	_, err := client.Tags.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {

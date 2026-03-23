@@ -44,15 +44,15 @@ func (r *AccessRequestService) Get(ctx context.Context, id string, opts ...optio
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/access-requests/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // List access requests for a team. Filter by user, entitlement, app instance,
@@ -86,25 +86,24 @@ func (r *AccessRequestService) Search(ctx context.Context, body AccessRequestSea
 	opts = slices.Concat(r.Options, opts)
 	path := "v2/access-requests/search"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // AccessRequest represents a request for access to an entitlement.
 type AccessRequest struct {
 	// The unique ID of the access request.
 	ID string `json:"id"`
-	// The number of minutes of access requested.
-	AccessMinutes int64 `json:"accessMinutes"`
-	// The business justification provided for the request.
-	BusinessJustification string `json:"businessJustification" api:"nullable"`
 	// The timestamp when the access request was created.
 	CreatedAt string `json:"createdAt"`
-	// The timestamp when the access expires (if approved and active).
+	// The timestamp when the currently active time allocation expires. This is only
+	// set when the access request has been provisioned and is not yet concluded. If
+	// the request has been extended, this reflects the expiry of the latest (current)
+	// time allocation, not the original one.
 	ExpiresAt string `json:"expiresAt" api:"nullable"`
-	// The ID of the linked ticket, if any.
+	// The ID of the ticket that originated this access request. This always matches
+	// the linked_ticket_id of the first time allocation. Extensions may be created
+	// from a different ticket — see each time allocation's linked_ticket_id for that.
 	LinkedTicketID string `json:"linkedTicketId" api:"nullable"`
-	// The ID of the user who requested access.
-	RequestedByUserID string `json:"requestedByUserId"`
 	// The ID of the requested role.
 	RequestedRoleID string `json:"requestedRoleId"`
 	// The status of the access request.
@@ -118,21 +117,29 @@ type AccessRequest struct {
 	TargetUserID string `json:"targetUserId"`
 	// The ID of the team that the access request belongs to.
 	TeamID string `json:"teamId"`
+	// Every access request contains one or more time allocations. A time allocation
+	// represents a discrete grant (or pending grant) of access for a specific
+	// duration. The first time allocation is created with the initial request. When a
+	// user extends an existing access request, a new time allocation is appended — the
+	// previous one is invalidated (superseded) and the new one becomes the active or
+	// pending allocation. At most one time allocation is active and at most one is
+	// pending at any given time.
+	//
+	// Ordered by creation time ascending.
+	TimeAllocations []AccessRequestTimeAllocation `json:"timeAllocations"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		ID                    respjson.Field
-		AccessMinutes         respjson.Field
-		BusinessJustification respjson.Field
-		CreatedAt             respjson.Field
-		ExpiresAt             respjson.Field
-		LinkedTicketID        respjson.Field
-		RequestedByUserID     respjson.Field
-		RequestedRoleID       respjson.Field
-		Status                respjson.Field
-		TargetUserID          respjson.Field
-		TeamID                respjson.Field
-		ExtraFields           map[string]respjson.Field
-		raw                   string
+		ID              respjson.Field
+		CreatedAt       respjson.Field
+		ExpiresAt       respjson.Field
+		LinkedTicketID  respjson.Field
+		RequestedRoleID respjson.Field
+		Status          respjson.Field
+		TargetUserID    respjson.Field
+		TeamID          respjson.Field
+		TimeAllocations respjson.Field
+		ExtraFields     map[string]respjson.Field
+		raw             string
 	} `json:"-"`
 }
 
@@ -155,6 +162,70 @@ const (
 	AccessRequestStatusAccessRequestStatusCanceled    AccessRequestStatus = "ACCESS_REQUEST_STATUS_CANCELED"
 	AccessRequestStatusAccessRequestStatusFailed      AccessRequestStatus = "ACCESS_REQUEST_STATUS_FAILED"
 )
+
+// A time allocation represents a single grant (or pending grant) of access time
+// within an access request. When an access request is first created, one time
+// allocation is created alongside it with the initially requested duration. If the
+// user later extends the request, the current time allocation is invalidated
+// (reason = SUPERSEDED) and a brand-new time allocation is created with the
+// updated duration. This means an access request accumulates a history of time
+// allocations over its lifetime, but at most one is active and at most one is
+// pending at any given moment.
+type AccessRequestTimeAllocation struct {
+	// The unique ID of the time allocation.
+	ID string `json:"id"`
+	// The number of minutes actually approved. Null while the time allocation is
+	// pending.
+	ApprovedMinutes int64 `json:"approvedMinutes" api:"nullable"`
+	// The business justification provided for this time allocation.
+	BusinessJustification string `json:"businessJustification" api:"nullable"`
+	// The timestamp when the time allocation was created.
+	CreatedAt string `json:"createdAt"`
+	// Why the time allocation was invalidated. Only set when status is INVALIDATED.
+	//
+	// Any of "ACCESS_REQUEST_TIME_ALLOCATION_INVALIDATION_REASON_UNSPECIFIED",
+	// "ACCESS_REQUEST_TIME_ALLOCATION_INVALIDATION_REASON_SUPERSEDED",
+	// "ACCESS_REQUEST_TIME_ALLOCATION_INVALIDATION_REASON_CANCELED",
+	// "ACCESS_REQUEST_TIME_ALLOCATION_INVALIDATION_REASON_REJECTED",
+	// "ACCESS_REQUEST_TIME_ALLOCATION_INVALIDATION_REASON_CONCLUDED".
+	InvalidationReason string `json:"invalidationReason" api:"nullable"`
+	// The ID of the ticket this time allocation was created from, if any. For the
+	// initial allocation this is the ticket that originated the access request. For
+	// extensions this may be a different ticket.
+	LinkedTicketID string `json:"linkedTicketId" api:"nullable"`
+	// The ID of the user who requested this time allocation (may differ from the
+	// original requester for extensions).
+	RequestedByUserID string `json:"requestedByUserId"`
+	// The number of minutes of access requested in this time allocation.
+	RequestedMinutes int64 `json:"requestedMinutes"`
+	// The status of this time allocation.
+	//
+	// Any of "ACCESS_REQUEST_TIME_ALLOCATION_STATUS_UNSPECIFIED",
+	// "ACCESS_REQUEST_TIME_ALLOCATION_STATUS_PENDING",
+	// "ACCESS_REQUEST_TIME_ALLOCATION_STATUS_ACTIVE",
+	// "ACCESS_REQUEST_TIME_ALLOCATION_STATUS_INVALIDATED".
+	Status string `json:"status"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID                    respjson.Field
+		ApprovedMinutes       respjson.Field
+		BusinessJustification respjson.Field
+		CreatedAt             respjson.Field
+		InvalidationReason    respjson.Field
+		LinkedTicketID        respjson.Field
+		RequestedByUserID     respjson.Field
+		RequestedMinutes      respjson.Field
+		Status                respjson.Field
+		ExtraFields           map[string]respjson.Field
+		raw                   string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessRequestTimeAllocation) RawJSON() string { return r.JSON.raw }
+func (r *AccessRequestTimeAllocation) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
 
 type AccessRequestSearchResponse struct {
 	// The list of access requests.

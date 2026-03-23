@@ -26,14 +26,11 @@ func TestTeamUserNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Teams.Users.New(
-		context.TODO(),
-		"team_id",
-		serval.TeamUserNewParams{
-			Role:   serval.TeamUserNewParamsRoleTeamUserRoleUnspecified,
-			UserID: "userId",
-		},
-	)
+	_, err := client.TeamUsers.New(context.TODO(), serval.TeamUserNewParams{
+		Role:   serval.TeamUserNewParamsRoleTeamUserRoleUnspecified,
+		TeamID: "teamId",
+		UserID: "userId",
+	})
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
@@ -43,7 +40,7 @@ func TestTeamUserNew(t *testing.T) {
 	}
 }
 
-func TestTeamUserGet(t *testing.T) {
+func TestTeamUserGetWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -56,11 +53,12 @@ func TestTeamUserGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Teams.Users.Get(
+	_, err := client.TeamUsers.Get(
 		context.TODO(),
-		"user_id",
+		"id",
 		serval.TeamUserGetParams{
-			TeamID: "team_id",
+			TeamID: serval.String("teamId"),
+			UserID: serval.String("userId"),
 		},
 	)
 	if err != nil {
@@ -72,7 +70,7 @@ func TestTeamUserGet(t *testing.T) {
 	}
 }
 
-func TestTeamUserUpdate(t *testing.T) {
+func TestTeamUserUpdateWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -85,12 +83,13 @@ func TestTeamUserUpdate(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Teams.Users.Update(
+	_, err := client.TeamUsers.Update(
 		context.TODO(),
-		"user_id",
+		"id",
 		serval.TeamUserUpdateParams{
-			TeamID: "team_id",
 			Role:   serval.TeamUserUpdateParamsRoleTeamUserRoleUnspecified,
+			TeamID: serval.String("teamId"),
+			UserID: serval.String("userId"),
 		},
 	)
 	if err != nil {
@@ -115,15 +114,12 @@ func TestTeamUserListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Teams.Users.List(
-		context.TODO(),
-		"team_id",
-		serval.TeamUserListParams{
-			PageSize:  serval.Int(0),
-			PageToken: serval.String("pageToken"),
-			UserID:    serval.String("userId"),
-		},
-	)
+	_, err := client.TeamUsers.List(context.TODO(), serval.TeamUserListParams{
+		PageSize:  serval.Int(0),
+		PageToken: serval.String("pageToken"),
+		TeamID:    serval.String("teamId"),
+		UserID:    serval.String("userId"),
+	})
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
@@ -133,7 +129,7 @@ func TestTeamUserListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestTeamUserDelete(t *testing.T) {
+func TestTeamUserDeleteWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -146,11 +142,12 @@ func TestTeamUserDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.Teams.Users.Delete(
+	_, err := client.TeamUsers.Delete(
 		context.TODO(),
-		"user_id",
+		"id",
 		serval.TeamUserDeleteParams{
-			TeamID: "team_id",
+			TeamID: serval.String("teamId"),
+			UserID: serval.String("userId"),
 		},
 	)
 	if err != nil {

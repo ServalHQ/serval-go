@@ -44,15 +44,15 @@ func (r *AccessPolicyApprovalProcedureService) New(ctx context.Context, accessPo
 	opts = slices.Concat(r.Options, opts)
 	if accessPolicyID == "" {
 		err = errors.New("missing required access_policy_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/access-policies/%s/approval-procedures", accessPolicyID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // Get a specific approval procedure by ID for an access policy.
@@ -61,19 +61,19 @@ func (r *AccessPolicyApprovalProcedureService) Get(ctx context.Context, id strin
 	opts = slices.Concat(r.Options, opts)
 	if query.AccessPolicyID == "" {
 		err = errors.New("missing required access_policy_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/access-policies/%s/approval-procedures/%s", query.AccessPolicyID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // Update an existing approval procedure for an access policy.
@@ -82,19 +82,19 @@ func (r *AccessPolicyApprovalProcedureService) Update(ctx context.Context, id st
 	opts = slices.Concat(r.Options, opts)
 	if params.AccessPolicyID == "" {
 		err = errors.New("missing required access_policy_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/access-policies/%s/approval-procedures/%s", params.AccessPolicyID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, params, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // List all approval procedures for an access policy.
@@ -103,15 +103,15 @@ func (r *AccessPolicyApprovalProcedureService) List(ctx context.Context, accessP
 	opts = slices.Concat(r.Options, opts)
 	if accessPolicyID == "" {
 		err = errors.New("missing required access_policy_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/access-policies/%s/approval-procedures", accessPolicyID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // Delete an approval procedure for an access policy.
@@ -119,15 +119,15 @@ func (r *AccessPolicyApprovalProcedureService) Delete(ctx context.Context, id st
 	opts = slices.Concat(r.Options, opts)
 	if body.AccessPolicyID == "" {
 		err = errors.New("missing required access_policy_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/access-policies/%s/approval-procedures/%s", body.AccessPolicyID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 type AccessPolicyApprovalProcedure struct {

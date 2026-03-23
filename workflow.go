@@ -47,10 +47,10 @@ func (r *WorkflowService) New(ctx context.Context, body WorkflowNewParams, opts 
 	path := "v2/workflows"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // Get a specific workflow by ID.
@@ -59,15 +59,15 @@ func (r *WorkflowService) Get(ctx context.Context, id string, opts ...option.Req
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/workflows/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // Update an existing workflow.
@@ -76,15 +76,15 @@ func (r *WorkflowService) Update(ctx context.Context, id string, body WorkflowUp
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/workflows/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // List all workflows for a team.
@@ -115,11 +115,11 @@ func (r *WorkflowService) Delete(ctx context.Context, id string, opts ...option.
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v2/workflows/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 type Workflow struct {
@@ -196,6 +196,8 @@ type WorkflowNewParams struct {
 	//
 	// Any of "WORKFLOW_EXECUTION_SCOPE_UNSPECIFIED", "TEAM_PRIVATE", "TEAM_PUBLIC".
 	ExecutionScope WorkflowNewParamsExecutionScope `json:"executionScope,omitzero"`
+	// The IDs of the tags to associate with the workflow.
+	TagIDs []string `json:"tagIds,omitzero"`
 	paramObj
 }
 
@@ -261,6 +263,9 @@ type WorkflowUpdateParams struct {
 	Name param.Opt[string] `json:"name,omitzero"`
 	// Whether the workflow requires form confirmation.
 	RequireFormConfirmation param.Opt[bool] `json:"requireFormConfirmation,omitzero"`
+	// If provided, replaces the workflow's tag associations with the given tag IDs. If
+	// omitted, tag associations are left unchanged.
+	TagIDs WorkflowUpdateParamsTagIDs `json:"tagIds,omitzero"`
 	// The execution scope of the workflow.
 	//
 	// Any of "WORKFLOW_EXECUTION_SCOPE_UNSPECIFIED", "TEAM_PRIVATE", "TEAM_PUBLIC".
@@ -284,6 +289,21 @@ const (
 	WorkflowUpdateParamsExecutionScopeTeamPrivate                       WorkflowUpdateParamsExecutionScope = "TEAM_PRIVATE"
 	WorkflowUpdateParamsExecutionScopeTeamPublic                        WorkflowUpdateParamsExecutionScope = "TEAM_PUBLIC"
 )
+
+// If provided, replaces the workflow's tag associations with the given tag IDs. If
+// omitted, tag associations are left unchanged.
+type WorkflowUpdateParamsTagIDs struct {
+	IDs []string `json:"ids,omitzero"`
+	paramObj
+}
+
+func (r WorkflowUpdateParamsTagIDs) MarshalJSON() (data []byte, err error) {
+	type shadow WorkflowUpdateParamsTagIDs
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *WorkflowUpdateParamsTagIDs) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
 
 type WorkflowUpdateResponseEnvelope struct {
 	// The updated workflow.

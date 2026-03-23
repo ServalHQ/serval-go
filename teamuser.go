@@ -40,74 +40,58 @@ func NewTeamUserService(opts ...option.RequestOption) (r TeamUserService) {
 }
 
 // Add a user to a team with a specified role.
-func (r *TeamUserService) New(ctx context.Context, teamID string, body TeamUserNewParams, opts ...option.RequestOption) (res *TeamUser, err error) {
+func (r *TeamUserService) New(ctx context.Context, body TeamUserNewParams, opts ...option.RequestOption) (res *TeamUser, err error) {
 	var env TeamUserNewResponseEnvelope
 	opts = slices.Concat(r.Options, opts)
-	if teamID == "" {
-		err = errors.New("missing required team_id parameter")
-		return
-	}
-	path := fmt.Sprintf("v2/teams/%s/users", teamID)
+	path := "v2/team-users"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
-// Get a specific team user by team ID and user ID.
-func (r *TeamUserService) Get(ctx context.Context, userID string, query TeamUserGetParams, opts ...option.RequestOption) (res *TeamUser, err error) {
+// Get a specific team user by team ID and user ID, or by composite ID.
+func (r *TeamUserService) Get(ctx context.Context, id string, query TeamUserGetParams, opts ...option.RequestOption) (res *TeamUser, err error) {
 	var env TeamUserGetResponseEnvelope
 	opts = slices.Concat(r.Options, opts)
-	if query.TeamID == "" {
-		err = errors.New("missing required team_id parameter")
-		return
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return nil, err
 	}
-	if userID == "" {
-		err = errors.New("missing required user_id parameter")
-		return
-	}
-	path := fmt.Sprintf("v2/teams/%s/users/%s", query.TeamID, userID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &env, opts...)
+	path := fmt.Sprintf("v2/team-users/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
 // Update a team user's role.
-func (r *TeamUserService) Update(ctx context.Context, userID string, params TeamUserUpdateParams, opts ...option.RequestOption) (res *TeamUser, err error) {
+func (r *TeamUserService) Update(ctx context.Context, id string, body TeamUserUpdateParams, opts ...option.RequestOption) (res *TeamUser, err error) {
 	var env TeamUserUpdateResponseEnvelope
 	opts = slices.Concat(r.Options, opts)
-	if params.TeamID == "" {
-		err = errors.New("missing required team_id parameter")
-		return
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return nil, err
 	}
-	if userID == "" {
-		err = errors.New("missing required user_id parameter")
-		return
-	}
-	path := fmt.Sprintf("v2/teams/%s/users/%s", params.TeamID, userID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, params, &env, opts...)
+	path := fmt.Sprintf("v2/team-users/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, &env, opts...)
 	if err != nil {
-		return
+		return nil, err
 	}
 	res = &env.Data
-	return
+	return res, nil
 }
 
-// List all users in a team.
-func (r *TeamUserService) List(ctx context.Context, teamID string, query TeamUserListParams, opts ...option.RequestOption) (res *pagination.CursorPage[TeamUser], err error) {
+// List team users. Filter by team_id and/or user_id.
+func (r *TeamUserService) List(ctx context.Context, query TeamUserListParams, opts ...option.RequestOption) (res *pagination.CursorPage[TeamUser], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	if teamID == "" {
-		err = errors.New("missing required team_id parameter")
-		return
-	}
-	path := fmt.Sprintf("v2/teams/%s/users", teamID)
+	path := "v2/team-users"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -120,29 +104,27 @@ func (r *TeamUserService) List(ctx context.Context, teamID string, query TeamUse
 	return res, nil
 }
 
-// List all users in a team.
-func (r *TeamUserService) ListAutoPaging(ctx context.Context, teamID string, query TeamUserListParams, opts ...option.RequestOption) *pagination.CursorPageAutoPager[TeamUser] {
-	return pagination.NewCursorPageAutoPager(r.List(ctx, teamID, query, opts...))
+// List team users. Filter by team_id and/or user_id.
+func (r *TeamUserService) ListAutoPaging(ctx context.Context, query TeamUserListParams, opts ...option.RequestOption) *pagination.CursorPageAutoPager[TeamUser] {
+	return pagination.NewCursorPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Remove a user from a team.
-func (r *TeamUserService) Delete(ctx context.Context, userID string, body TeamUserDeleteParams, opts ...option.RequestOption) (res *TeamUserDeleteResponse, err error) {
+func (r *TeamUserService) Delete(ctx context.Context, id string, body TeamUserDeleteParams, opts ...option.RequestOption) (res *TeamUserDeleteResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
-	if body.TeamID == "" {
-		err = errors.New("missing required team_id parameter")
-		return
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return nil, err
 	}
-	if userID == "" {
-		err = errors.New("missing required user_id parameter")
-		return
-	}
-	path := fmt.Sprintf("v2/teams/%s/users/%s", body.TeamID, userID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
+	path := fmt.Sprintf("v2/team-users/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, body, &res, opts...)
+	return res, err
 }
 
 type TeamUser struct {
-	// A timestamp in RFC 3339 format (e.g., "2017-01-15T01:30:15.01Z").
+	// Composite identifier in the format {team_id}:{user_id}.
+	ID string `json:"id"`
+	// A timestamp in RFC 3339 format (e.g., "2025-01-15T01:30:15Z").
 	CreatedAt time.Time `json:"createdAt" format:"date-time"`
 	// Any of "TEAM_USER_ROLE_UNSPECIFIED", "TEAM_USER_ROLE_AGENT",
 	// "TEAM_USER_ROLE_MANAGER", "TEAM_USER_ROLE_BUILDER", "TEAM_USER_ROLE_VIEWER",
@@ -152,6 +134,7 @@ type TeamUser struct {
 	UserID string       `json:"userId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
+		ID          respjson.Field
 		CreatedAt   respjson.Field
 		Role        respjson.Field
 		TeamID      respjson.Field
@@ -185,6 +168,7 @@ type TeamUserNewParams struct {
 	// "TEAM_USER_ROLE_MANAGER", "TEAM_USER_ROLE_BUILDER", "TEAM_USER_ROLE_VIEWER",
 	// "TEAM_USER_ROLE_CONTRIBUTOR".
 	Role   TeamUserNewParamsRole `json:"role,omitzero" api:"required"`
+	TeamID string                `json:"teamId" api:"required"`
 	UserID string                `json:"userId" api:"required"`
 	paramObj
 }
@@ -225,8 +209,17 @@ func (r *TeamUserNewResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type TeamUserGetParams struct {
-	TeamID string `path:"team_id" api:"required" json:"-"`
+	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
+	UserID param.Opt[string] `query:"userId,omitzero" json:"-"`
 	paramObj
+}
+
+// URLQuery serializes [TeamUserGetParams]'s query parameters as `url.Values`.
+func (r TeamUserGetParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type TeamUserGetResponseEnvelope struct {
@@ -246,11 +239,12 @@ func (r *TeamUserGetResponseEnvelope) UnmarshalJSON(data []byte) error {
 }
 
 type TeamUserUpdateParams struct {
-	TeamID string `path:"team_id" api:"required" json:"-"`
 	// Any of "TEAM_USER_ROLE_UNSPECIFIED", "TEAM_USER_ROLE_AGENT",
 	// "TEAM_USER_ROLE_MANAGER", "TEAM_USER_ROLE_BUILDER", "TEAM_USER_ROLE_VIEWER",
 	// "TEAM_USER_ROLE_CONTRIBUTOR".
-	Role TeamUserUpdateParamsRole `json:"role,omitzero" api:"required"`
+	Role   TeamUserUpdateParamsRole `json:"role,omitzero" api:"required"`
+	TeamID param.Opt[string]        `json:"teamId,omitzero"`
+	UserID param.Opt[string]        `json:"userId,omitzero"`
 	paramObj
 }
 
@@ -294,6 +288,8 @@ type TeamUserListParams struct {
 	PageSize param.Opt[int64] `query:"pageSize,omitzero" json:"-"`
 	// Token for pagination. Leave empty for the first request.
 	PageToken param.Opt[string] `query:"pageToken,omitzero" json:"-"`
+	// Filter by team ID. Required when using /v2/teams/{team_id}/users path.
+	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
 	// Filter by user ID. If not provided, returns all users in the team.
 	UserID param.Opt[string] `query:"userId,omitzero" json:"-"`
 	paramObj
@@ -308,6 +304,15 @@ func (r TeamUserListParams) URLQuery() (v url.Values, err error) {
 }
 
 type TeamUserDeleteParams struct {
-	TeamID string `path:"team_id" api:"required" json:"-"`
+	TeamID param.Opt[string] `query:"teamId,omitzero" json:"-"`
+	UserID param.Opt[string] `query:"userId,omitzero" json:"-"`
 	paramObj
+}
+
+// URLQuery serializes [TeamUserDeleteParams]'s query parameters as `url.Values`.
+func (r TeamUserDeleteParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
