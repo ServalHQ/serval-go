@@ -13,7 +13,7 @@ import (
 	"github.com/ServalHQ/serval-go/option"
 )
 
-func TestTeamUserNew(t *testing.T) {
+func TestTagNewWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -26,10 +26,11 @@ func TestTeamUserNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.TeamUsers.New(context.TODO(), serval.TeamUserNewParams{
-		Role:   serval.TeamUserNewParamsRoleTeamUserRoleUnspecified,
-		TeamID: "teamId",
-		UserID: "userId",
+	_, err := client.Tags.New(context.TODO(), serval.TagNewParams{
+		Name:     "name",
+		TeamID:   "teamId",
+		Color:    serval.String("color"),
+		IconSlug: serval.String("iconSlug"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -40,7 +41,7 @@ func TestTeamUserNew(t *testing.T) {
 	}
 }
 
-func TestTeamUserGetWithOptionalParams(t *testing.T) {
+func TestTagGet(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -53,12 +54,36 @@ func TestTeamUserGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.TeamUsers.Get(
+	_, err := client.Tags.Get(context.TODO(), "id")
+	if err != nil {
+		var apierr *serval.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestTagUpdateWithOptionalParams(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := serval.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithBearerToken("My Bearer Token"),
+	)
+	_, err := client.Tags.Update(
 		context.TODO(),
 		"id",
-		serval.TeamUserGetParams{
-			TeamID: serval.String("teamId"),
-			UserID: serval.String("userId"),
+		serval.TagUpdateParams{
+			Color:    serval.String("color"),
+			IconSlug: serval.String("iconSlug"),
+			Name:     serval.String("name"),
 		},
 	)
 	if err != nil {
@@ -70,7 +95,7 @@ func TestTeamUserGetWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestTeamUserUpdateWithOptionalParams(t *testing.T) {
+func TestTagListWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -83,42 +108,10 @@ func TestTeamUserUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.TeamUsers.Update(
-		context.TODO(),
-		"id",
-		serval.TeamUserUpdateParams{
-			Role:   serval.TeamUserUpdateParamsRoleTeamUserRoleUnspecified,
-			TeamID: serval.String("teamId"),
-			UserID: serval.String("userId"),
-		},
-	)
-	if err != nil {
-		var apierr *serval.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestTeamUserListWithOptionalParams(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := serval.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithBearerToken("My Bearer Token"),
-	)
-	_, err := client.TeamUsers.List(context.TODO(), serval.TeamUserListParams{
+	_, err := client.Tags.List(context.TODO(), serval.TagListParams{
 		PageSize:  serval.Int(0),
 		PageToken: serval.String("pageToken"),
 		TeamID:    serval.String("teamId"),
-		UserID:    serval.String("userId"),
 	})
 	if err != nil {
 		var apierr *serval.Error
@@ -129,7 +122,7 @@ func TestTeamUserListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestTeamUserDeleteWithOptionalParams(t *testing.T) {
+func TestTagDelete(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -142,14 +135,7 @@ func TestTeamUserDeleteWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithBearerToken("My Bearer Token"),
 	)
-	_, err := client.TeamUsers.Delete(
-		context.TODO(),
-		"id",
-		serval.TeamUserDeleteParams{
-			TeamID: serval.String("teamId"),
-			UserID: serval.String("userId"),
-		},
-	)
+	_, err := client.Tags.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *serval.Error
 		if errors.As(err, &apierr) {
