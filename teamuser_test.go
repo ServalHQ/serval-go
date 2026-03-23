@@ -43,7 +43,7 @@ func TestTeamUserNew(t *testing.T) {
 	}
 }
 
-func TestTeamUserGet(t *testing.T) {
+func TestTeamUserGetWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -61,6 +61,7 @@ func TestTeamUserGet(t *testing.T) {
 		"user_id",
 		serval.TeamUserGetParams{
 			TeamID: "team_id",
+			ID:     serval.String("id"),
 		},
 	)
 	if err != nil {
@@ -72,7 +73,7 @@ func TestTeamUserGet(t *testing.T) {
 	}
 }
 
-func TestTeamUserUpdate(t *testing.T) {
+func TestTeamUserUpdateWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -91,6 +92,7 @@ func TestTeamUserUpdate(t *testing.T) {
 		serval.TeamUserUpdateParams{
 			TeamID: "team_id",
 			Role:   serval.TeamUserUpdateParamsRoleTeamUserRoleUnspecified,
+			ID:     serval.String("id"),
 		},
 	)
 	if err != nil {
@@ -133,7 +135,7 @@ func TestTeamUserListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestTeamUserDelete(t *testing.T) {
+func TestTeamUserDeleteWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -151,6 +153,7 @@ func TestTeamUserDelete(t *testing.T) {
 		"user_id",
 		serval.TeamUserDeleteParams{
 			TeamID: "team_id",
+			ID:     serval.String("id"),
 		},
 	)
 	if err != nil {
