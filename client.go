@@ -32,6 +32,7 @@ type Client struct {
 	ApprovalDelegations ApprovalDelegationService
 	Tags                TagService
 	CustomServices      CustomServiceService
+	Tickets             TicketService
 }
 
 // DefaultClientOptions read from the environment (SERVAL_CLIENT_ID,
@@ -79,6 +80,7 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r.ApprovalDelegations = NewApprovalDelegationService(opts...)
 	r.Tags = NewTagService(opts...)
 	r.CustomServices = NewCustomServiceService(opts...)
+	r.Tickets = NewTicketService(opts...)
 
 	return
 }
