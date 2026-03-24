@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.1 (2026-03-24)
+
+Full Changelog: [v0.22.0...v0.22.1](https://github.com/ServalHQ/serval-go/compare/v0.22.0...v0.22.1)
+
+### Chores
+
+* **internal:** update gitignore ([05bcd88](https://github.com/ServalHQ/serval-go/commit/05bcd8820b02edc9eb3d188e2621471e602e2145))
+
 ## 0.22.0 (2026-03-23)
 
 Full Changelog: [v0.21.0...v0.22.0](https://github.com/ServalHQ/serval-go/compare/v0.21.0...v0.22.0)
