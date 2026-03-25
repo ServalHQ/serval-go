@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.2 (2026-03-25)
+
+Full Changelog: [v0.22.1...v0.22.2](https://github.com/ServalHQ/serval-go/compare/v0.22.1...v0.22.2)
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([525a621](https://github.com/ServalHQ/serval-go/commit/525a621b7497327e352c57e285612be4dcbc7c7b))
+
 ## 0.22.1 (2026-03-24)
 
 Full Changelog: [v0.22.0...v0.22.1](https://github.com/ServalHQ/serval-go/compare/v0.22.0...v0.22.1)
