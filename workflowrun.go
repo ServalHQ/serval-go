@@ -91,6 +91,8 @@ func (r *WorkflowRunService) Search(ctx context.Context, body WorkflowRunSearchP
 type WorkflowRun struct {
 	// The unique ID of the workflow run.
 	ID string `json:"id"`
+	// The ID of the approval request associated with this workflow run, if any.
+	ApprovalRequestID string `json:"approvalRequestId" api:"nullable"`
 	// The timestamp when the workflow run completed (if applicable).
 	CompletedAt string `json:"completedAt" api:"nullable"`
 	// The timestamp when the workflow run was created.
@@ -120,6 +122,7 @@ type WorkflowRun struct {
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                respjson.Field
+		ApprovalRequestID respjson.Field
 		CompletedAt       respjson.Field
 		CreatedAt         respjson.Field
 		InitiatedByUserID respjson.Field

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.23.0 (2026-03-26)
+
+Full Changelog: [v0.22.2...v0.23.0](https://github.com/ServalHQ/serval-go/compare/v0.22.2...v0.23.0)
+
+### Features
+
+* **api:** manual updates ([0a3bbab](https://github.com/ServalHQ/serval-go/commit/0a3bbab7684ad7800ae31fbd4a694d1ffb4f59a3))
+
+
+### Chores
+
+* **client:** fix multipart serialisation of Default() fields ([908558d](https://github.com/ServalHQ/serval-go/commit/908558d3eda22f52bda1851c110ebe58c89d02e7))
+* **internal:** support default value struct tag ([9570856](https://github.com/ServalHQ/serval-go/commit/9570856e9d9850538d7bf665e570937f16332aaa))
+
 ## 0.22.2 (2026-03-25)
 
 Full Changelog: [v0.22.1...v0.22.2](https://github.com/ServalHQ/serval-go/compare/v0.22.1...v0.22.2)
