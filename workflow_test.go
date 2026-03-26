@@ -91,9 +91,7 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 			IsPublished:             serval.Bool(true),
 			Name:                    serval.String("name"),
 			RequireFormConfirmation: serval.Bool(true),
-			TagIDs: serval.WorkflowUpdateParamsTagIDs{
-				IDs: []string{"string"},
-			},
+			TagIDs:                  []string{"string"},
 		},
 	)
 	if err != nil {
