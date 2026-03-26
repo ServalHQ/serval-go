@@ -263,13 +263,12 @@ type WorkflowUpdateParams struct {
 	Name param.Opt[string] `json:"name,omitzero"`
 	// Whether the workflow requires form confirmation.
 	RequireFormConfirmation param.Opt[bool] `json:"requireFormConfirmation,omitzero"`
-	// If provided, replaces the workflow's tag associations with the given tag IDs. If
-	// omitted, tag associations are left unchanged.
-	TagIDs WorkflowUpdateParamsTagIDs `json:"tagIds,omitzero"`
 	// The execution scope of the workflow.
 	//
 	// Any of "WORKFLOW_EXECUTION_SCOPE_UNSPECIFIED", "TEAM_PRIVATE", "TEAM_PUBLIC".
 	ExecutionScope WorkflowUpdateParamsExecutionScope `json:"executionScope,omitzero"`
+	// The IDs of the tags to associate with the workflow.
+	TagIDs []string `json:"tagIds,omitzero"`
 	paramObj
 }
 
@@ -289,21 +288,6 @@ const (
 	WorkflowUpdateParamsExecutionScopeTeamPrivate                       WorkflowUpdateParamsExecutionScope = "TEAM_PRIVATE"
 	WorkflowUpdateParamsExecutionScopeTeamPublic                        WorkflowUpdateParamsExecutionScope = "TEAM_PUBLIC"
 )
-
-// If provided, replaces the workflow's tag associations with the given tag IDs. If
-// omitted, tag associations are left unchanged.
-type WorkflowUpdateParamsTagIDs struct {
-	IDs []string `json:"ids,omitzero"`
-	paramObj
-}
-
-func (r WorkflowUpdateParamsTagIDs) MarshalJSON() (data []byte, err error) {
-	type shadow WorkflowUpdateParamsTagIDs
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *WorkflowUpdateParamsTagIDs) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
 
 type WorkflowUpdateResponseEnvelope struct {
 	// The updated workflow.

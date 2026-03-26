@@ -174,6 +174,10 @@ const (
 type AccessRequestTimeAllocation struct {
 	// The unique ID of the time allocation.
 	ID string `json:"id"`
+	// The ID of the approval request for this time allocation, if any. Each time
+	// allocation may have its own approval round (e.g., initial request vs. extension
+	// each go through separate approval).
+	ApprovalRequestID string `json:"approvalRequestId" api:"nullable"`
 	// The number of minutes actually approved. Null while the time allocation is
 	// pending.
 	ApprovedMinutes int64 `json:"approvedMinutes" api:"nullable"`
@@ -208,6 +212,7 @@ type AccessRequestTimeAllocation struct {
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                    respjson.Field
+		ApprovalRequestID     respjson.Field
 		ApprovedMinutes       respjson.Field
 		BusinessJustification respjson.Field
 		CreatedAt             respjson.Field
