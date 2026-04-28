@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.24.0 (2026-04-28)
+
+Full Changelog: [v0.23.0...v0.24.0](https://github.com/ServalHQ/serval-go/compare/v0.23.0...v0.24.0)
+
+### Features
+
+* **go:** add default http client with timeout ([9afab5d](https://github.com/ServalHQ/serval-go/commit/9afab5d680cfc79489c9eded60bb2bc7b2b0b7b4))
+* **internal:** support comma format in multipart form encoding ([c3b8ba3](https://github.com/ServalHQ/serval-go/commit/c3b8ba3e5224ef75cbea2bb179816c9f25ff80dc))
+* support setting headers via env ([592c350](https://github.com/ServalHQ/serval-go/commit/592c350603954e0543898a2086c64f3e958a88ba))
+
+
+### Bug Fixes
+
+* prevent duplicate ? in query params ([405ed9d](https://github.com/ServalHQ/serval-go/commit/405ed9d25c9c033170e40708a199538b9f0afc39))
+
+
+### Chores
+
+* **ci:** support opting out of skipping builds on metadata-only commits ([34ca0ef](https://github.com/ServalHQ/serval-go/commit/34ca0eff430dccf311f4ece4398aa85e9193986a))
+* **internal:** more robust bootstrap script ([a19ded8](https://github.com/ServalHQ/serval-go/commit/a19ded8b19f38d7c739334c76befb1557ef540c0))
+* remove unnecessary error check for url parsing ([7739a63](https://github.com/ServalHQ/serval-go/commit/7739a637e70a5647f98b060fa8bb73c50c9224e4))
+* update docs for api:"required" ([eef7ade](https://github.com/ServalHQ/serval-go/commit/eef7adeeae380412584ea470d7dc32b0f2e9c9cc))
+
 ## 0.23.0 (2026-03-26)
 
 Full Changelog: [v0.22.2...v0.23.0](https://github.com/ServalHQ/serval-go/compare/v0.22.2...v0.23.0)
